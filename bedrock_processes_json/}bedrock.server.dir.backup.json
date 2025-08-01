@@ -1,0 +1,64 @@
+{
+  "Name": "}bedrock.server.dir.backup",
+  "PrologProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n#Region @DOC\r\n# Description:\r\n# This process has been depreciated and only exists to maintain backwards compatibility. \r\n#\r\n#EndRegion @DOC\r\n\r\nLogOutput( 'WARNING', 'Process \"' | GetProcessName() | '\" has been depreciated and should no longer be called.' );\r\n",
+  "MetadataProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n",
+  "DataProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n",
+  "EpilogProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n#DEPRECIATED",
+  "HasSecurityAccess": true,
+  "UIData": "",
+  "DataSource": {
+    "Type": "None"
+  },
+  "Parameters": [
+    {
+      "Name": "pLogOutput",
+      "Prompt": "OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pStrictErrorHandling",
+      "Prompt": "OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pSrcDir",
+      "Prompt": "REQUIRED: Source Directory to Backup",
+      "Value": ".",
+      "Type": "String"
+    },
+    {
+      "Name": "pTgtDir",
+      "Prompt": "REQUIRED: Destination Directory for Backup",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pExcludeFilter",
+      "Prompt": "OPTIONAL: Exclude filter (To include all files use pFilterExclude = \"\")",
+      "Value": ".log & .cfg & .csv & .cmal & .txt & .feeders",
+      "Type": "String"
+    },
+    {
+      "Name": "pDelim",
+      "Prompt": "OPTIONAL: Delimiter",
+      "Value": "&",
+      "Type": "String"
+    },
+    {
+      "Name": "pSubDirCopy",
+      "Prompt": "OPTIONAL: Include subdirectories? (Boolean True = 1)",
+      "Value": 1,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pRobocopy",
+      "Prompt": "OPTIONAL: Use robocopy? (Boolean True = 1), WIN only",
+      "Value": 0,
+      "Type": "Numeric"
+    }
+  ],
+  "Variables": [],
+  "VariablesUIData": []
+}

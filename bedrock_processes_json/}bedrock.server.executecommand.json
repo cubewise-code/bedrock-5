@@ -1,0 +1,54 @@
+{
+  "Name": "}bedrock.server.executecommand",
+  "PrologProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n#Region @DOC\r\n# Description:\r\n# This process has been depreciated and only exists to maintain backwards compatibility. \r\n#\r\n#EndRegion @DOC\r\n\r\nLogOutput( 'WARNING', 'Process \"' | GetProcessName() | '\" has been depreciated and should no longer be called.' );\r\n",
+  "MetadataProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n",
+  "DataProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n",
+  "EpilogProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n#DEPRECIATED",
+  "HasSecurityAccess": false,
+  "UIData": "",
+  "DataSource": {
+    "Type": "None"
+  },
+  "Parameters": [
+    {
+      "Name": "pLogOutput",
+      "Prompt": "Optional: write parameters and action summary to server message log (Boolean True = 1)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pStrictErrorHandling",
+      "Prompt": "OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pCommand",
+      "Prompt": "The full command line string to execute",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pWait",
+      "Prompt": "Wait for command to finish 0=false 1=true",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pPowerShell",
+      "Prompt": "Execute a PowerShell script 0=false 1=true",
+      "Value": 0,
+      "Type": "Numeric"
+    }
+  ],
+  "Variables": [
+    {
+      "Name": "vCommandOutput",
+      "Type": "String",
+      "Position": 1,
+      "StartByte": 0,
+      "EndByte": 0
+    }
+  ],
+  "VariablesUIData": []
+}
