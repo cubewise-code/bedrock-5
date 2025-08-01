@@ -1,0 +1,263 @@
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+# LIST OF V12 AUTH MODES:
+#    # IBM_CLOUD_API_KEY is legacy early-release of v12. Deprecate with next major release
+#    AuthenticationMode.IBM_CLOUD_API_KEY,
+#    AuthenticationMode.SERVICE_TO_SERVICE,
+#    AuthenticationMode.PA_PROXY,
+#    AuthenticationMode.BASIC_API_KEY,
+#    AuthenticationMode.ACCESS_TOKEN
+sError = '';
+
+# BASIC API KEY AUTHENTICATION PARAMETERS
+user = 'apikey';
+password = '<api_key_value>';
+base_url = 'https://us-east-1.planninganalytics.saas.ibm.com/api/<tenant_id>/v0/tm1/<database_name>';
+
+# ACCESS TOKEN AUTHENTICATION PARAMETERS
+#user = 'apikey';
+#password = '<api_key_value>';
+#base_url = 'https://us-east-1.planninganalytics.saas.ibm.com/api/<tenant_id>/v0/tm1/<database_name>';
+access_token = '';
+
+# SERVICE TO SERVICE AUTHENTICATION PARAMETERS
+address = '';
+database = '';
+instance = '';
+application_client_id = '';
+application_client_secret = '';
+
+# PA PROXY AUTHENTICATION PARAMETERS
+#user = 'apikey';
+#password = '<api_key_value>';
+address = '';
+database = '';
+cpd_url = '';
+
+# IBM CLOUD API KEY AUTHENTICATION PARAMETERS
+tenant = '';
+address = '';
+database = '';
+api_key = '';
+iam_url = '';
+
+# MISCELLANEOUS PARAMETERS
+auth_url = '';
+ssl = 'true';
+namespace = '';
+gateway = '';
+integrated_login = 'false';
+
+proxies = '{}';
+verify = 'true';
+port = '';
+
+
+
+
+IF( LOWER( ssl ) @= 'true' );
+  sSsl = 's';
+ELSE;
+  sSsl = '';
+ENDIF;
+
+IF( LOWER( verify ) @= 'true' );
+  verify = '';
+ELSE;
+  verify = '-k';
+ENDIF;
+
+IF( LOWER( integrated_login ) @= 'true' );
+  integrated_login = 'true';
+ELSE;
+  integrated_login = '';
+ENDIF;
+
+
+#Region - _determine_auth_mode (Convert Python to TI)
+sAuthenticationMode = '';
+IF( auth_url @= '' & instance @= '' & database @= '' & api_key  @= '' & iam_url  @= '' & tenant @= '' );
+  
+  IF( namespace @= '' & gateway @= '' & integrated_login @= '' );
+    
+    IF( user @= 'apikey' & Scan( 'planninganalytics.saas.ibm.com', base_url) > 0 );
+      sAuthenticationMode = 'BASIC_API_KEY';
+    ELSEIF( access_token @<> '' );
+      sAuthenticationMode = 'ACCESS_TOKEN';
+    ELSE;
+      sAuthenticationMode = 'BASIC';
+    ENDIF;
+  
+  ELSEIF( gateway @<> '' );
+    sAuthenticationMode = 'CAM_SSO';
+  ELSEIF( integrated_login @<> '' );
+    sAuthenticationMode = 'WIA';
+  ELSE;
+    sAuthenticationMode = 'CAM';
+  ENDIF;
+
+ELSEIF( iam_url @<> '' );
+  sAuthenticationMode = 'IBM_CLOUD_API_KEY';
+ELSEIF( address @<> '' & user @<> '' & instance @= '' );
+    sAuthenticationMode = 'PA_PROXY';
+ELSE;
+    sAuthenticationMode = 'SERVICE_TO_SERVICE';
+ENDIF;
+#EndRegion - _determine_auth_mode (Convert Python to TI)
+
+##########################################################################################
+#Region - _construct_service_and_auth_root (Convert Python to TI)
+##########################################################################################
+
+#Region - _construct_ibm_cloud_service_and_auth_root (Convert Python to TI)
+IF( sAuthenticationMode @= 'IBM_CLOUD_API_KEY' );
+  IF( address @= '' % tenant @= '' % database @= '' );
+    sError = 'Authentication Method was determined to be: "' | sAuthenticationMode | '", which requires "address", "tenant", and "database". However, "address='|address|'", "tenant='|tenant|'", and "database='|database|'".';
+    LogOutput( 'ERROR', sError );
+    ProcessBreak();
+  ENDIF;
+  
+  IF( sSsl @= '' );
+    sError = 'Authentication Method was determined to be: "' | sAuthenticationMode | '", which requires "ssl" to be "true".';
+    LogOutput( 'ERROR', sError );
+    ProcessBreak();
+  ENDIF;
+  
+  base_url = 'https://'|address|'/api/'|tenant|'/v0/tm1/'|database;
+  auth_url = base_url|'/Configuration/ProductVersion/$value';
+#EndRegion - _construct_ibm_cloud_service_and_auth_root (Convert Python to TI)
+  
+#Region - _construct_s2s_service_and_auth_root (Convert Python to TI)
+ELSEIF( sAuthenticationMode @= 'SERVICE_TO_SERVICE' );
+  IF( instance @= '' % database @= '' );
+    sError = 'Authentication Method was determined to be: "' | sAuthenticationMode | '", which requires "instance" and "database". However, "instance='|instance|'" and "database='|database|'".';
+    LogOutput( 'ERROR', sError );
+    ProcessBreak();
+  ENDIF;
+  
+  sAddress = IF( address @= '', 'localhost', address );
+  sPort = IF( port @= '', '', ':' | port );
+    
+  base_url = 'http'|sSsl|'://'|sAddress|sPort|'/'|instance|'/api/v1/Databases('''|database|''')';
+  auth_url = 'http'|sSsl|'://'|sAddress|sPort|'/'|instance|'/api/v1/session';
+#EndRegion - _construct_s2s_service_and_auth_root (Convert Python to TI)
+
+#Region - _construct_pa_proxy_service_and_auth_root (Convert Python to TI)
+ELSEIF( sAuthenticationMode @= 'PA_PROXY' );
+  IF( address @= '' % database @= '' );
+    sError = 'Authentication Method was determined to be: "' | sAuthenticationMode | '", which requires "address" and "database". However, "address='|address|'" and "database='|database|'".';
+    LogOutput( 'ERROR', sError );
+    ProcessBreak();
+  ENDIF;
+  
+  base_url = 'http'|sSsl|'://'|address|'/tm1/'|database|'/api/v1';
+  auth_url = 'http'|sSsl|'://'|address|'/login';
+#EndRegion - _construct_pa_proxy_service_and_auth_root (Convert Python to TI)
+
+#Region - _construct_all_version_service_and_auth_root_from_base_url (Convert Python to TI)
+ELSEIF( sAuthenticationMode @= 'BASIC_API_KEY' % sAuthenticationMode @= 'ACCESS_TOKEN' );
+  sEndsWith = '/api/v1';
+  nEndsWith = LONG( sEndsWith );
+  
+  IF( address @<> '' );
+    sError = 'Authentication Method was determined to be: "' | sAuthenticationMode | '", which requires either "address" or "base_url". However, both were specified: "address='|address|'" and "base_url='|base_url|'".';
+    LogOutput( 'ERROR', sError );
+    ProcessBreak();
+  ELSEIF( SCAN( 'api/v1/Databases', base_url ) <> 0 );
+    IF( auth_url @= '' );
+      sError = 'Authentication Method was determined to be: "' | sAuthenticationMode | '" and base_url includes "api/v1/Databases", which requires "auth_url". However, "auth_url='|auth_url|'".';
+      LogOutput( 'ERROR', sError );
+      ProcessBreak();
+    ENDIF;
+    
+  ELSEIF( SUBST( base_url, LONG( base_url ) - nEndsWith, nEndsWith ) @= sEndsWith );
+    auth_url = base_url | '/Configuration/ProductVersion/$value';
+  ELSE;
+    base_url = base_url | sEndsWith;
+    auth_url = base_url | '/Configuration/ProductVersion/$value';
+  ENDIF;
+  #EndRegion - _construct_all_version_service_and_auth_root_from_base_url (Convert Python to TI)
+  
+ELSE;
+  sError = 'Authentication Method was determined to be: "' | sAuthenticationMode | '", which is not a V12 Authentication Method. Please modify parameters and try again.';
+  LogOutput( 'ERROR', sError );
+  ProcessBreak();
+ENDIF;
+##########################################################################################
+#EndRegion - _construct_service_and_auth_root (Convert Python to TI)
+##########################################################################################
+
+#Region - _start_session (Convert Python to TI)
+
+IF( sAuthenticationMode @= 'SERVICE_TO_SERVICE' );
+  auth_header = Base64Encode( application_client_id|':'|application_client_secret, 2 );
+  auth_header = 'Authorization:'|auth_header;
+  
+ELSEIF( sAuthenticationMode @= 'PA_PROXY' );
+  IF( cpd_url @= '' );
+    sError = 'Authentication Method was determined to be: "' | sAuthenticationMode | '", which requires "cpd_url". However, "cpd_url='|cpd_url|'".';
+    LogOutput( 'ERROR', sError );
+    ProcessBreak();
+  ENDIF;
+  
+  sProxyAuthUrl = cpd_url|'/v1/preauth/signin';
+  ExecuteHttpRequest(
+  'POST',
+  sProxyAuthUrl,
+  '-h Content-Type:application/json;charset=UTF-8',
+  '-d {"username": "'|user|'", "password": "'|password|'"}',
+  verify
+  );
+  sBody = HttpResponseGetBody();
+  sBody = JwtDecode( sBody );
+  jwt = JsonToString( JsonGet( sBody, 'token' ) );
+
+ELSEIF( sAuthenticationMode @= 'IBM_CLOUD_API_KEY' );
+  IF( iam_url @= '' % api_key @= '' );
+    sError = 'Authentication Method was determined to be: "' | sAuthenticationMode | '", which requires "iam_url" and "api_key". However, "iam_url='|iam_url|'" and "api_key='|api_key|'".';
+    LogOutput( 'ERROR', sError );
+    ProcessBreak();
+  ENDIF;
+  
+  ExecuteHttpRequest(
+    'POST',
+    iam_url,
+    '-h Accept:application/json',
+    '-h Content-Type:application/x-www-form-urlencoded',
+    '-d {"grant_type": "urn%3Aibm%3Aparams%3Aoauth%3Agrant-type%3Aapikey&apikey='|api_key|'"}'
+  );
+  sBody = HttpResponseGetBody();
+  access_token = JsonToString( JsonGet( sBody, 'access_token' ) );
+  
+  auth_header = 'Authorization:Bearer '|access_token;
+  
+ELSEIF( sAuthenticationMode @= 'ACCESS_TOKEN' );
+  auth_header = 'Authorization:Bearer '|access_token;
+ELSE;
+  #LEFTOFF: Python 728
+ENDIF;
+
+#EndRegion - _start_session (Convert Python to TI)
+
+base_url = base_url | '/Processes';
+
+#Region - ExecuteHttpRequest to create loading TI
+sProcessBody = '{"Name": "generate_ti_from_json", "PrologProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n# List of Keys required for a Process to be created from HTTP Request\r\nsJsonKeyList = ''[\r\n    \"Name\",\r\n    \"PrologProcedure\",\r\n    \"MetadataProcedure\",\r\n    \"DataProcedure\",\r\n    \"EpilogProcedure\",\r\n    \"HasSecurityAccess\",\r\n    \"UIData\",\r\n    \"DataSource\",\r\n    \"Parameters\",\r\n    \"Variables\",\r\n    \"VariablesUIData\"\r\n]'';\r\n\r\n# Create the Variable Mapping based on List of Keys\r\nsVarMapping = ''{}'';\r\nnListSize = JsonSize( sJsonKeyList );\r\ni = 0;\r\nWHILE( i <  nListSize );\r\n    sKeyName = JsonToString( JsonGet(sJsonKeyList, i ) );\r\n    sVarMapping = JsonAdd( sVarMapping, ''v'' | sKeyName, StringToJson ( ''/'' | sKeyName ) );\r\n\r\n    i = i + 1;\r\nEND;\r\n\r\n# Datasource Variables\r\nDataSourceJsonVariableMapping = sVarMapping;\r\nDataSourceType = ''JSON'';\r\nDataSourceJsonRootPointer     = ''/data'';\r\nDatasourceNameForServer       = ''bedrock.json'';\r\n\r\n\r\n# url = u\r\n\r\n\r\n#EndRegion\r\n\r\n#if self._auth_mode in [\r\n#    # IBM_CLOUD_API_KEY is legacy early-release of v12. Deprecate with next major release\r\n#    AuthenticationMode.IBM_CLOUD_API_KEY,\r\n#    AuthenticationMode.SERVICE_TO_SERVICE,\r\n#    AuthenticationMode.BASIC_API_KEY,\r\n#    AuthenticationMode.ACCESS_TOKEN\r\n#]:\r\n", "MetadataProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****", "DataProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\nsProcessJson = ''{}'';\r\ni = 0;\r\nWHILE( i <  nListSize );\r\n    sKeyName = JsonToString( JsonGet(sJsonKeyList, i ) );\r\n    sProcessJson = JsonAdd( sProcessJson, sKeyName, EXPAND( ''%v'' | sKeyName | ''%'' ) );\r\n\r\n    i = i + 1;\r\nEND;\r\n\r\n\r\nsProcessName = JsonToString( JsonGet( sProcessJson, ''Name'' ) );\r\n\r\nExecuteHttpRequest( ''delete'', url | ''('''''' | sProcessName | '''''')'', ''-u apikey:'' | api_key, ''-h User-Agent:BedrockInstaller'', ''-h Content-Type:application/json; odata.streaming=true; charset=utf-8'', ''-h Accept:application/json;odata.metadata=none,text/plain'', ''-h TM1-SessionContext:BedrockInstaller'', ''-k'' );\r\nsBody = HttpResponseGetBody(); nStatusCode = HttpResponseGetStatusCode();\r\n\r\nExecuteHttpRequest( ''POST'', url, ''-u apikey:'' | api_key, ''-h User-Agent:BedrockInstaller'', ''-h Content-Type:application/json; odata.streaming=true; charset=utf-8'', ''-h Accept:application/json;odata.metadata=none,text/plain'', ''-h TM1-SessionContext:BedrockInstaller'', ''-d '' | sProcessJson, ''-k'' );\r\nsBody = HttpResponseGetBody(); nStatusCode = HttpResponseGetStatusCode();\r\n\r\nIF( INT( nStatusCode / 100 ) <> 2 );\r\n  LogOutput( ''ERROR'', ''Failed to Create/Modify Process: \"'' | sProcessName | ''\". Status Code: '' | NumberToString( nStatusCode ) );\r\n    TextOutput(''INFO.txt'', sProcessJson );\r\n    TextOutput(''INFO.txt'', NumberToString( nStatusCode ), sBody );\r\nENDIF;\r\n\r\na = 1;\r\n", "EpilogProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****", "HasSecurityAccess": false, "UIData": "_ParameterConstraints=e30=\f", "DataSource": {"Type": "JSON", "dataSourceNameForClient": "", "dataSourceNameForServer": "", "jsonRootPointer": "", "jsonVariableMapping": "{}"}, "Parameters": [{"Name": "url", "Prompt": "", "Value": "", "Type": "String"}, {"Name": "api_key", "Prompt": "", "Value": "", "Type": "String"}], "Variables": [{"Name": "vName", "Type": "String", "Position": 1, "StartByte": 0, "EndByte": 0}, {"Name": "vPrologProcedure", "Type": "String", "Position": 2, "StartByte": 0, "EndByte": 0}, {"Name": "vMetadataProcedure", "Type": "String", "Position": 3, "StartByte": 0, "EndByte": 0}, {"Name": "vDataProcedure", "Type": "String", "Position": 4, "StartByte": 0, "EndByte": 0}, {"Name": "vEpilogProcedure", "Type": "String", "Position": 5, "StartByte": 0, "EndByte": 0}, {"Name": "vHasSecurityAccess", "Type": "String", "Position": 6, "StartByte": 0, "EndByte": 0}, {"Name": "vUIData", "Type": "String", "Position": 7, "StartByte": 0, "EndByte": 0}, {"Name": "vDataSource", "Type": "String", "Position": 8, "StartByte": 0, "EndByte": 0}, {"Name": "vParameters", "Type": "String", "Position": 9, "StartByte": 0, "EndByte": 0}, {"Name": "vVariables", "Type": "String", "Position": 10, "StartByte": 0, "EndByte": 0}, {"Name": "vVariablesUIData", "Type": "String", "Position": 11, "StartByte": 0, "EndByte": 0}], "VariablesUIData": ["VarType=32\fColType=827\f", "VarType=32\fColType=827\f", "VarType=32\fColType=827\f", "VarType=32\fColType=827\f", "VarType=32\fColType=827\f", "VarType=32\fColType=827\f", "VarType=32\fColType=827\f", "VarType=32\fColType=827\f", "VarType=32\fColType=827\f", "VarType=32\fColType=827\f", "VarType=32\fColType=827\f"]}';
+sProcessName = JsonToString( JsonGet( sProcessBody, 'Name' ) );
+
+ExecuteHttpRequest( 'delete', base_url | '(''' | sProcessName | ''')', '-u '|user|':'|password, '-h User-Agent:BedrockInstaller', '-h Content-Type:application/json; odata.streaming=true; charset=utf-8', '-h Accept:application/json;odata.metadata=none,text/plain', '-h TM1-SessionContext:BedrockInstaller', '-k' );
+sBody = HttpResponseGetBody(); nStatusCode = HttpResponseGetStatusCode();
+
+ExecuteHttpRequest( 'POST', base_url, '-u '|user|':'|password, '-h User-Agent:BedrockInstaller', '-h Content-Type:application/json; odata.streaming=true; charset=utf-8', '-h Accept:application/json;odata.metadata=none,text/plain', '-h TM1-SessionContext:BedrockInstaller', '-d ' | sProcessBody, '-k' );
+sBody = HttpResponseGetBody(); nStatusCode = HttpResponseGetStatusCode();
+
+IF( INT( nStatusCode / 100 ) <> 2 );
+  LogOutput( 'ERROR', 'Failed to TI Generating Process: "' | sProcessName | '". Status Code: ' | NumberToString( nStatusCode ) | '. Body: ' | sBody );
+  ProcessQuit();
+ENDIF;
+#EndRegion
+
+ExecuteProcess( sProcessName,
+  'url', base_url,
+  'api_key', password );
