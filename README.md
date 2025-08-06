@@ -1,14 +1,14 @@
 # Bedrock NextGen
 This repository provides updates to the Bedrock library for compatibility with TM1 Version 12. It includes a list of deprecated and modified Bedrock processes due to changes in TM1 functions and system behavior. The modified processes maintain the same functionality, with necessary adjustments to support TM1 V12. An installation guide is included to help deploy the updated processes.
 
-[Depreciation Functions](#depreciation-functions)
+[Deprecated Functions](#deprecated-functions)
 
 [Modified Functions](#modified-functions)
 
 [Installation Guide](#installation-guide)
 
-# Depreciation Functions
-Due to certain functions being depreciated in TM1 V12, the following bedrock processes have been depreciated:
+# Deprecated Functions
+Due to certain functions being deprecated in TM1 V12, the following bedrock processes have been deprecated:
 | Bedrock Process                                   | TM1 Deprecated Function         |
 |---------------------------------------------------|---------------------------------|
 | `}bedrock.cube.data.save`                         | `CubeSaveData`                  |
@@ -23,18 +23,18 @@ Due to certain functions being depreciated in TM1 V12, the following bedrock pro
 | `}bedrock.server.logfile.delete`                  | `ExecuteCommand`                |
 | `}bedrock.server.savedataall`                     | `SaveDataAll`                   |
 
-When these processes are run, they will only log an output stating that they have been depreciated. They will not do what they did in TM1 V11.
+When these processes are run, they will only log an output stating that they have been deprecated. They will not do what they did in TM1 V11.
 
 # Modified Functions
-Due to certain functions being depreciated in TM1 V12, the following bedrock processes have been modified to be able to run on TM1 V12. **The functionality of these processes has not changed.**
+Due to certain functions being deprecated in TM1 V12, the following bedrock processes have been modified to be able to run on TM1 V12. **The functionality of these processes has not changed.**
 ## Overview
 Changes were primarily due to the:
-- Depreciation of `CubeSetLogChanges`.
+- Deprecated of `CubeSetLogChanges`.
 - Inability to access to the .rux file.
-- Depreciation of `ExecuteCommand`, using the function to delete a file. Replaced with ASCIIDelete.
-- Depreciation of the `}DimensionProperties` cube.
-- Depreciation of `AssignClientPassword`.
-- Depreciation of the `}ApplicationSecurity` cube.
+- Deprecated of `ExecuteCommand`, using the function to delete a file. Replaced with ASCIIDelete.
+- Deprecated of the `}DimensionProperties` cube.
+- Deprecated of `AssignClientPassword`.
+- Deprecated of the `}ApplicationSecurity` cube.
   
 ## List of Changes
 | Process Name                                 | Change Description                                                                                                                                       |
@@ -50,18 +50,18 @@ Changes were primarily due to the:
 | `}bedrock.cube.dimension.replace`           | Replaced attempt to read rule from .rux file to `CubeRuleGet` function.                                                                                  |
 | `}bedrock.cube.rule.manage`                 | Replaced attempt to read rule from .rux file to `CubeRuleGet` function.<br>Replaced use of `ExecuteCommand` to delete a file with `ASCIIDelete`.         |
 | `}bedrock.dim.attr.create`                  | Bug fix: The process parameters say that the default value for `pAttrType` is 'S' but that was not true. It has been added.                                |
-| `}bedrock.dim.clone`                        | The `}DimensionProperties` cube has been depreciated, all references have been removed.<br>NOTE: Because of this the dimension's sort order cannot be cloned. |
+| `}bedrock.dim.clone`                        | The `}DimensionProperties` cube has been deprecated, all references have been removed.<br>NOTE: Because of this the dimension's sort order cannot be cloned. |
 | `}bedrock.dim.create`                       | Created this function.                                                                                                                                   |
-| `}bedrock.hier.clone`                       | The `}DimensionProperties` cube has been depreciated, all references have been removed.<br>NOTE: Because of this the hierarchy's sort order cannot be cloned. |
-| `}bedrock.hier.create.fromsubset`           | The `}DimensionProperties` cube has been depreciated, all references have been removed.<br>NOTE: Because of this the hierarchy's sort order cannot be cloned.<br>Removal of `CubeSetLogChanges` function. |
-| `}bedrock.hier.export.script`               | The `}DimensionProperties` cube has been depreciated, all references have been removed.<br>NOTE: Because of this the dimension's sort order cannot be exported. |
-| `}bedrock.hier.export`                      | The `}DimensionProperties` cube has been depreciated, all references have been removed.<br>NOTE: Because of this the dimension's sort order cannot be exported.<br>Bug fix: String attribute values of "0" would not be exported. |
-| `}bedrock.hier.import`                      | The `}DimensionProperties` cube has been depreciated, all references have been removed.<br>NOTE: Because of this the dimension's sort order cannot be imported. |
+| `}bedrock.hier.clone`                       | The `}DimensionProperties` cube has been deprecated, all references have been removed.<br>NOTE: Because of this the hierarchy's sort order cannot be cloned. |
+| `}bedrock.hier.create.fromsubset`           | The `}DimensionProperties` cube has been deprecated, all references have been removed.<br>NOTE: Because of this the hierarchy's sort order cannot be cloned.<br>Removal of `CubeSetLogChanges` function. |
+| `}bedrock.hier.export.script`               | The `}DimensionProperties` cube has been deprecated, all references have been removed.<br>NOTE: Because of this the dimension's sort order cannot be exported. |
+| `}bedrock.hier.export`                      | The `}DimensionProperties` cube has been deprecated, all references have been removed.<br>NOTE: Because of this the dimension's sort order cannot be exported.<br>Bug fix: String attribute values of "0" would not be exported. |
+| `}bedrock.hier.import`                      | The `}DimensionProperties` cube has been deprecated, all references have been removed.<br>NOTE: Because of this the dimension's sort order cannot be imported. |
 | `}bedrock.hier.unwind`                      | Removal of `CubeSetLogChanges` function.                                                                                                                 |
 | `}bedrock.process.template`                 | Removal of `CubeSetLogChanges` function.                                                                                                                 |
 | `}bedrock.security.client.clone`            | Removal of `AssignClientPassword` function.<br>NOTE: Because of this a client's password cannot be set.                                                  |
 | `}bedrock.security.client.create`           | Removal of `AssignClientPassword` function.<br>NOTE: Because of this a client's password cannot be set.                                                  |
-| `}bedrock.security.object.assign`           | The `}ApplicationSecurity` cube has been depreciated, all references have been removed.<br>NOTE: Because of this an application's security cannot be set. |
+| `}bedrock.security.object.assign`           | The `}ApplicationSecurity` cube has been deprecated, all references have been removed.<br>NOTE: Because of this an application's security cannot be set. |
 
 A full list of all process modifications from Bedrock V4 to Bedrock NextGen can be found [here](https://github.com/bdunleavy22/bedrock-compare/pull/2/files).
 # Installation Guide
