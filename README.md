@@ -65,6 +65,8 @@ Changes were primarily due to the:
 
 A full list of all process modifications from Bedrock V4 to Bedrock NextGen can be found [here](https://github.com/bdunleavy22/bedrock-compare/pull/2/files).
 # Installation Guide
+> [!CAUTION]
+> :bangbang: If you have modified your bedrock processes, this installation guide will overwrite those changes. :bangbang:
 1. Navigate to the folder `installation_files` in this GitHub Repo.
 2. Download a copy of the file `bedrock.json`.
 3. Go to your TM1 Database File Manager.
