@@ -66,7 +66,7 @@ Changes were primarily due to the:
 A full list of all process modifications from Bedrock V4 to Bedrock NextGen can be found [here](https://github.com/bdunleavy22/bedrock-compare/pull/2/files).
 # Installation Guide
 > [!CAUTION]
-> :bangbang: If you have modified your bedrock processes, this installation guide will overwrite those changes. :bangbang:
+> :bangbang: If the current bedrock processes have been modified, this installation guide will overwrite those changes. Please see the [Upgrade Guide](#upgrade-guide) instead. :bangbang:
 1. Navigate to the folder `installation_files` in this GitHub Repo.
 2. Download a copy of the file `bedrock.json`.
 3. Go to your TM1 Database File Manager.
@@ -81,3 +81,87 @@ A full list of all process modifications from Bedrock V4 to Bedrock NextGen can 
 12. When the process is complete, bedrock will be installed!
 13. Delete `}bedrock-installation.process` from the TM1 Database.
 14. (Optional) Delete `bedrock.json` from your Database's files. Delete the process you created.
+
+# Upgrade Guide
+1. Navigate to the folder `installation_files` in this GitHub Repo.
+2. Download a copy of the file `bedrock-v11.json`.
+3. Create a process with the following specifications:
+  1. In the Variables Tab, create 11 string variables in the following order with the following names:
+```
+[{"Name":"vName","Type":"String","Position":1,"StartByte":0,"EndByte":0},
+{"Name":"vPrologProcedure","Type":"String","Position":2,"StartByte":0,"EndByte":0},
+{"Name":"vMetadataProcedure","Type":"String","Position":3,"StartByte":0,"EndByte":0},
+{"Name":"vDataProcedure","Type":"String","Position":4,"StartByte":0,"EndByte":0},
+{"Name":"vEpilogProcedure","Type":"String","Position":5,"StartByte":0,"EndByte":0},
+{"Name":"vHasSecurityAccess","Type":"String","Position":6,"StartByte":0,"EndByte":0},
+{"Name":"vUIData","Type":"String","Position":7,"StartByte":0,"EndByte":0},
+{"Name":"vDataSource","Type":"String","Position":8,"StartByte":0,"EndByte":0},
+{"Name":"vParameters","Type":"String","Position":9,"StartByte":0,"EndByte":0},
+{"Name":"vVariables","Type":"String","Position":10,"StartByte":0,"EndByte":0},
+{"Name":"vVariablesUIData","Type":"String","Position":11,"StartByte":0,"EndByte":0}] 
+```
+  3. In the Prologue Tab, paste the following code:
+``` # List of Keys required for a Process to be created from HTTP Request
+url = '<base_url>';
+api_key = '<api_key>';
+sJsonKeyList = '[
+    "Name",
+    "PrologProcedure",
+    "MetadataProcedure",
+    "DataProcedure",
+    "EpilogProcedure",
+    "HasSecurityAccess",
+    "UIData",
+    "DataSource",
+    "Parameters",
+    "Variables",
+    "VariablesUIData"
+]';
+
+# Create the Variable Mapping based on List of Keys
+sVarMapping = '{}';
+nListSize = JsonSize( sJsonKeyList );
+i = 0;
+WHILE( i <  nListSize );
+    sKeyName = JsonToString( JsonGet(sJsonKeyList, i ) );
+    sVarMapping = JsonAdd( sVarMapping, 'v' | sKeyName, StringToJson ( '/' | sKeyName ) );
+
+    i = i + 1;
+END;
+
+# Datasource Variables
+DataSourceJsonVariableMapping = sVarMapping;
+DataSourceType = 'JSON';
+DataSourceJsonRootPointer     = '/data';
+DatasourceNameForServer       = 'bedrock-v11.json';
+```
+  replacing `<base_url>` and `<api_key>` with the correct values.
+  
+  4. In the Data Tab, paste the following code:
+  ```
+sProcessJson = '{}';
+i = 0;
+WHILE( i <  nListSize );
+    sKeyName = JsonToString( JsonGet(sJsonKeyList, i ) );
+    sProcessJson = JsonAdd( sProcessJson, sKeyName, EXPAND( '%v' | sKeyName | '%' ) );
+
+    i = i + 1;
+END;
+
+
+sProcessName = JsonToString( JsonGet( sProcessJson, 'Name' ) );
+
+ExecuteHttpRequest( 'GET', url | '(''' | sProcessName | ''')', '-u apikey:' | api_key, '-h User-Agent:BedrockInstaller', '-h Content-Type:application/json; odata.streaming=true; charset=utf-8', '-h Accept:application/json;odata.metadata=none,text/plain', '-h TM1-SessionContext:BedrockInstaller', '-k' );
+sBody = HttpResponseGetBody(); nStatusCode = HttpResponseGetStatusCode();
+sDifference = 'SAME: ';
+IF( JsonTest( sBody, sProcessJson ) = 0 );
+  sDifference = 'DIFF: ';
+ENDIF;
+TextOutput( 'bedrock_process_comparison.txt', sDifference, sProcessName );
+```
+5. Run the process.
+6. Open `bedrock_process_comparison.txt` to see which processes were found to be different.
+7. Navigate to the folder `installation_files` in this GitHub Repo.
+8. Download a copy of the file `bedrock.json`.
+9. Manually delete the lines in the file `bedrock.json` which has `ProcessName` of the processes which you would not like to be overridden.
+10. Continue to Step 3. in the [Installation Guide](#installation-guide)
