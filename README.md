@@ -1,4 +1,4 @@
-# Bedrock NextGen
+# Bedrock for Planning Analytics Engine (PAE) BETA
 This repository provides updates to the Bedrock library for compatibility with TM1 Version 12. It includes a list of deprecated and modified Bedrock processes due to changes in TM1 functions and system behavior. The modified processes maintain the same functionality, with necessary adjustments to support TM1 V12. An installation guide is included to help deploy the updated processes.
 
 [Deprecated Functions](#deprecated-functions)
