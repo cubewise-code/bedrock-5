@@ -1,8 +1,8 @@
-# Bedrock for Planning Analytics Engine (PAE) BETA
+# Bedrock 5 for TM1 v12+ (BETA)
 
-### ⚠️ Bedrock for PAE is still under development, please wait for the v1 release to use it in your projects. ⚠️ 
+### ⚠️ Bedrock 5 is still under development, please wait for the v1 release to use it in your projects. ⚠️ 
 
-This repository provides updates to the Bedrock library for compatibility with TM1 Version 12. It includes a list of deprecated and modified Bedrock processes due to changes in TM1 functions and system behavior. The modified processes maintain the same functionality, with necessary adjustments to support TM1 V12. An installation guide is included to help deploy the updated processes.
+This repository provides updates to the Bedrock library for compatibility with TM1 Version 12+. It includes a list of deprecated and modified Bedrock processes due to changes in TM1 functions and system behavior. The modified processes maintain the same functionality, with necessary adjustments to support TM1 V12. An installation guide is included to help deploy the updated processes.
 
 [Deprecated Functions](#deprecated-functions)
 
