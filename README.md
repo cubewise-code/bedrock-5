@@ -104,21 +104,22 @@ A full list of all process modifications from Bedrock V4 to Bedrock NextGen can 
 
   <img width="2554" height="1217" alt="Screenshot 2025-08-29 122531" src="https://github.com/user-attachments/assets/0dd381c8-93f9-4400-9230-d62f15be9169" />
 
+<a name="get-connection-details"></a>
 9. In line 7, replace `<api_key_value>` with your API Key. [To generate an API Key, follow the steps in this guide.](#Generate-API-Key-Guide)
-11. In line 8, replace `<tenant_id>` with your instance's Tenant ID. Your Tenant ID can be found in the TM1 url, after `tenantId=` and before `&`, as seen here:
+10. In line 8, replace `<tenant_id>` with your instance's Tenant ID. Your Tenant ID can be found in the TM1 url, after `tenantId=` and before `&`, as seen here:
 
   <img width="1129" height="513" alt="Screenshot 2025-08-29 123349" src="https://github.com/user-attachments/assets/70162024-12f5-4272-9dd3-e166fdeff14d" />
 
-12. In line 8, replace `<database_name>` with your TM1 Database's Name. The TM1 Database Name can be seen here: 
+11. In line 8, replace `<database_name>` with your TM1 Database's Name. The TM1 Database Name can be seen here: 
 
   <img width="350" height="361" alt="Screenshot 2025-08-29 123603" src="https://github.com/user-attachments/assets/17e8fa89-dcc6-4c34-a5f9-5682b1f72e56" />
   
   ‼️Make sure your TM1 Database Name is url encoded. To url encode your Database Name, paste it in the text box at this website: [URL Encoder](https://www.urlencoder.org/)
 
-13. Save the process, then run the process.
-14. When the process is complete, bedrock will be installed!
-15. Delete `}bedrock-installation.process` from the TM1 Database.
-16. (Optional) Delete `bedrock.json` from your Database's files. Delete the process you created.
+12. Save the process, then run the process.
+13. When the process is complete, bedrock will be installed!
+14. Delete `}bedrock-installation.process` from the TM1 Database.
+15. (Optional) Delete `bedrock.json` from your Database's files. Delete the process you created.
 
 # Upgrade Guide
 1. In this repository, navigate to the folder [`installation_files`](https://github.com/cubewise-code/bedrock-5/tree/main/installation_files).
@@ -126,81 +127,84 @@ A full list of all process modifications from Bedrock V4 to Bedrock NextGen can 
 3. Upload the `bedrock-v11.json` to the TM1 Database File Manager. [For how to navigate to the File Manager, go to step 3. in the Installation Guide.](#database-file-manager-steps)
 4. Create a process with the following specifications:
     1. In the Variables Tab, create 11 string variables in the following order with the following names:
-```
-[{"Name":"vName","Type":"String","Position":1,"StartByte":0,"EndByte":0},
-{"Name":"vPrologProcedure","Type":"String","Position":2,"StartByte":0,"EndByte":0},
-{"Name":"vMetadataProcedure","Type":"String","Position":3,"StartByte":0,"EndByte":0},
-{"Name":"vDataProcedure","Type":"String","Position":4,"StartByte":0,"EndByte":0},
-{"Name":"vEpilogProcedure","Type":"String","Position":5,"StartByte":0,"EndByte":0},
-{"Name":"vHasSecurityAccess","Type":"String","Position":6,"StartByte":0,"EndByte":0},
-{"Name":"vUIData","Type":"String","Position":7,"StartByte":0,"EndByte":0},
-{"Name":"vDataSource","Type":"String","Position":8,"StartByte":0,"EndByte":0},
-{"Name":"vParameters","Type":"String","Position":9,"StartByte":0,"EndByte":0},
-{"Name":"vVariables","Type":"String","Position":10,"StartByte":0,"EndByte":0},
-{"Name":"vVariablesUIData","Type":"String","Position":11,"StartByte":0,"EndByte":0}] 
-```
+
+    ```
+    [{"Name":"vName","Type":"String","Position":1,"StartByte":0,"EndByte":0},
+    {"Name":"vPrologProcedure","Type":"String","Position":2,"StartByte":0,"EndByte":0},
+    {"Name":"vMetadataProcedure","Type":"String","Position":3,"StartByte":0,"EndByte":0},
+    {"Name":"vDataProcedure","Type":"String","Position":4,"StartByte":0,"EndByte":0},
+    {"Name":"vEpilogProcedure","Type":"String","Position":5,"StartByte":0,"EndByte":0},
+    {"Name":"vHasSecurityAccess","Type":"String","Position":6,"StartByte":0,"EndByte":0},
+    {"Name":"vUIData","Type":"String","Position":7,"StartByte":0,"EndByte":0},
+    {"Name":"vDataSource","Type":"String","Position":8,"StartByte":0,"EndByte":0},
+    {"Name":"vParameters","Type":"String","Position":9,"StartByte":0,"EndByte":0},
+    {"Name":"vVariables","Type":"String","Position":10,"StartByte":0,"EndByte":0},
+    {"Name":"vVariablesUIData","Type":"String","Position":11,"StartByte":0,"EndByte":0}] 
+    ```
+    2. In the Prologue Tab, paste the following code:
+
+    ```
+    # List of Keys required for a Process to be created from HTTP Request
+    user = 'apikey';
+    password = '<api_key_value>';
+    base_url = 'https://us-east-1.planninganalytics.saas.ibm.com/api/<tenant_id>/v0/tm1/<database_name>';
     
-  2. In the Prologue Tab, paste the following code:
-```
-# List of Keys required for a Process to be created from HTTP Request
-url = '<base_url>';
-api_key = '<api_key>';
-sJsonKeyList = '[
-    "Name",
-    "PrologProcedure",
-    "MetadataProcedure",
-    "DataProcedure",
-    "EpilogProcedure",
-    "HasSecurityAccess",
-    "UIData",
-    "DataSource",
-    "Parameters",
-    "Variables",
-    "VariablesUIData"
-]';
-
-# Create the Variable Mapping based on List of Keys
-sVarMapping = '{}';
-nListSize = JsonSize( sJsonKeyList );
-i = 0;
-WHILE( i <  nListSize );
-    sKeyName = JsonToString( JsonGet(sJsonKeyList, i ) );
-    sVarMapping = JsonAdd( sVarMapping, 'v' | sKeyName, StringToJson ( '/' | sKeyName ) );
-
-    i = i + 1;
-END;
-
-# Datasource Variables
-DataSourceJsonVariableMapping = sVarMapping;
-DataSourceType = 'JSON';
-DataSourceJsonRootPointer     = '/data';
-DatasourceNameForServer       = 'bedrock-v11.json';
-```
-  replacing `<base_url>` and `<api_key>` with the correct values.
+    sJsonKeyList = '[
+        "Name",
+        "PrologProcedure",
+        "MetadataProcedure",
+        "DataProcedure",
+        "EpilogProcedure",
+        "HasSecurityAccess",
+        "UIData",
+        "DataSource",
+        "Parameters",
+        "Variables",
+        "VariablesUIData"
+    ]';
     
-  3. In the Data Tab, paste the following code:
-  
-  ```
-sProcessJson = '{}';
-i = 0;
-WHILE( i <  nListSize );
-    sKeyName = JsonToString( JsonGet(sJsonKeyList, i ) );
-    sProcessJson = JsonAdd( sProcessJson, sKeyName, EXPAND( '%v' | sKeyName | '%' ) );
+    # Create the Variable Mapping based on List of Keys
+    sVarMapping = '{}';
+    nListSize = JsonSize( sJsonKeyList );
+    i = 0;
+    WHILE( i <  nListSize );
+        sKeyName = JsonToString( JsonGet(sJsonKeyList, i ) );
+        sVarMapping = JsonAdd( sVarMapping, 'v' | sKeyName, StringToJson ( '/' | sKeyName ) );
+    
+        i = i + 1;
+    END;
+    
+    # Datasource Variables
+    DataSourceJsonVariableMapping = sVarMapping;
+    DataSourceType = 'JSON';
+    DataSourceJsonRootPointer     = '/data';
+    DatasourceNameForServer       = 'bedrock-v11.json';
+    ```
+    replacing `<api_key_value>`, `<database_name>` and `<tenant_id>` with the correct values. [To find the correct values, go to steps 9-11. in the Installation Guide.](#get-connection-details)
+    
+    3. In the Data Tab, paste the following code:
 
-    i = i + 1;
-END;
-
-
-sProcessName = JsonToString( JsonGet( sProcessJson, 'Name' ) );
-
-ExecuteHttpRequest( 'GET', url | '(''' | sProcessName | ''')', '-u apikey:' | api_key, '-h User-Agent:BedrockInstaller', '-h Content-Type:application/json; odata.streaming=true; charset=utf-8', '-h Accept:application/json;odata.metadata=none,text/plain', '-h TM1-SessionContext:BedrockInstaller', '-k' );
-sBody = HttpResponseGetBody(); nStatusCode = HttpResponseGetStatusCode();
-sDifference = 'SAME: ';
-IF( JsonTest( sBody, sProcessJson ) = 0 );
-  sDifference = 'DIFF: ';
-ENDIF;
-TextOutput( 'bedrock_process_comparison.txt', sDifference, sProcessName );
-```
+    ```
+    sProcessJson = '{}';
+    i = 0;
+    WHILE( i <  nListSize );
+        sKeyName = JsonToString( JsonGet(sJsonKeyList, i ) );
+        sProcessJson = JsonAdd( sProcessJson, sKeyName, EXPAND( '%v' | sKeyName | '%' ) );
+    
+        i = i + 1;
+    END;
+    
+    
+    sProcessName = JsonToString( JsonGet( sProcessJson, 'Name' ) );
+    
+    ExecuteHttpRequest( 'GET', base_url | '(''' | sProcessName | ''')', '-u '|user|':'|password, '-h User-Agent:BedrockInstaller', '-h Content-Type:application/json; odata.streaming=true; charset=utf-8', '-h Accept:application/json;odata.metadata=none,text/plain', '-h TM1-SessionContext:BedrockInstaller', '-k' );
+    sBody = HttpResponseGetBody(); nStatusCode = HttpResponseGetStatusCode();
+    sDifference = 'SAME: ';
+    IF( JsonTest( sBody, sProcessJson ) = 0 );
+      sDifference = 'DIFF: ';
+    ENDIF;
+    TextOutput( 'bedrock_process_comparison.txt', sDifference, sProcessName );
+    ```
 5. Run the process.
 6. Open `bedrock_process_comparison.txt` to see which processes were found to be different.
 7. Navigate to the folder `installation_files` in this GitHub Repo.
