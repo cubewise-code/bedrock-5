@@ -66,24 +66,47 @@ Changes were primarily due to the:
 | `}bedrock.security.client.create`           | Removal of `AssignClientPassword` function.<br>NOTE: Because of this a client's password cannot be set.                                                  |
 | `}bedrock.security.object.assign`           | The `}ApplicationSecurity` cube has been deprecated, all references have been removed.<br>NOTE: Because of this an application's security cannot be set. |
 
-A full list of all process modifications from Bedrock V4 to Bedrock NextGen can be found [here](https://github.com/bdunleavy22/bedrock-compare/pull/2/files).
+A full list of all process modifications from Bedrock V4 to Bedrock NextGen can be found here: [https://github.com/bdunleavy22/bedrock-compare/pull/2/files](https://github.com/bdunleavy22/bedrock-compare/pull/2/files).
 # Installation Guide
 > [!CAUTION]
 > :bangbang: If the current bedrock processes have been modified, this installation guide will overwrite those changes. Please see the [Upgrade Guide](#upgrade-guide) instead. :bangbang:
-1. Navigate to the folder `installation_files` in this GitHub Repo.
+1. In this repository, navigate to the folder [`installation_files`](https://github.com/cubewise-code/bedrock-5/tree/main/installation_files).
 2. Download a copy of the file `bedrock.json`.
-3. Go to your TM1 Database File Manager.
-4. Upload the file `bedrock.json` to your TM1 Database. Do not rename the file and do not upload it to a folder, upload it to the root directory.
+3. Go to your TM1 Database File Manager. To open your TM1 Database File Manager, complete the following steps:
+    1. Navigate to your TM1 V12 Environment. For most cases it can be found here: [https://us-east-1.planninganalytics.saas.ibm.com](https://us-east-1.planninganalytics.saas.ibm.com)
+       The home screen looks like this:
+
+       <img width="1584" height="718" alt="Screenshot 2025-08-28 205253" src="https://github.com/user-attachments/assets/5e5a9cda-98b5-426b-bd0e-1108969e0df7" />
+    2. Click the hamburger menu icon.
+     
+       <img width="1599" height="713" alt="Screenshot 2025-08-28 205516" src="https://github.com/user-attachments/assets/1c921878-7848-43ee-a84d-210ba4df510a" />
+    3. Click "+ New".
+     
+       <img width="1582" height="663" alt="Screenshot 2025-08-28 205627" src="https://github.com/user-attachments/assets/6b558d52-693e-4059-90ab-5d7e019f8940" />
+    4. Click "Workbench".
+  
+       <img width="464" height="410" alt="Screenshot 2025-08-28 210003" src="https://github.com/user-attachments/assets/9327664d-fba9-4467-bc15-95765d5793af" />
+    5. Right-Click the name of the Database you would like to install bedrock to.
+  
+       <img width="506" height="638" alt="Screenshot 2025-08-28 210319" src="https://github.com/user-attachments/assets/39183f40-5625-4d02-aeab-3ae2f09fb36f" />
+    6. Click "File Manager".
+  
+       <img width="2549" height="372" alt="Screenshot 2025-08-28 210757" src="https://github.com/user-attachments/assets/72d6295e-4625-4556-bd17-1b38307b5f2e" />
+4. Upload the file `bedrock.json` to your TM1 Database. Do not rename the file and do not upload it into a folder. To upload, click the upload icon.
+
+   <img width="2551" height="373" alt="Screenshot 2025-08-28 210607" src="https://github.com/user-attachments/assets/04e40ae1-87a8-41f3-9e09-90eacd533b77" />
 5. Create a new Turbo Integrator Process, you can name it whatever you like. It can be deleted after the installation process is complete.
-6. Go back to the folder `installation_files` in this GitHub Repo.
-7. Copy the text in the file `bedrock_installation_ti.txt` and paste it into the prologue of the Turbo Integrator process you just created.
-8. In line 15, replace `<api_key_value>` with your API Key.
-9. In line 16, replace `<tenant_id>` with your instance's Tenant ID.
-10. In line 16, replace `<database_name>` with your TM1 Database's Name.
-11. Save the process, then run the process.
-12. When the process is complete, bedrock will be installed!
-13. Delete `}bedrock-installation.process` from the TM1 Database.
-14. (Optional) Delete `bedrock.json` from your Database's files. Delete the process you created.
+
+   <img width="535" height="648" alt="Screenshot 2025-08-28 211047" src="https://github.com/user-attachments/assets/7d34635c-a499-4597-9c4b-ee5cdc843373" />
+7. In this repository, Go back to the folder [`installation_files`](https://github.com/cubewise-code/bedrock-5/tree/main/installation_files).
+8. Copy the text in the file `bedrock_installation_ti.txt` and paste it into the prologue of the Turbo Integrator process you just created.
+9. In line 15, replace `<api_key_value>` with your API Key.
+11. In line 16, replace `<tenant_id>` with your instance's Tenant ID.
+12. In line 16, replace `<database_name>` with your TM1 Database's Name. [Encode DB Name](https://www.urlencoder.org/)
+13. Save the process, then run the process.
+14. When the process is complete, bedrock will be installed!
+15. Delete `}bedrock-installation.process` from the TM1 Database.
+16. (Optional) Delete `bedrock.json` from your Database's files. Delete the process you created.
 
 # Upgrade Guide
 1. Navigate to the folder `installation_files` in this GitHub Repo.
