@@ -100,9 +100,16 @@ A full list of all process modifications from Bedrock V4 to Bedrock NextGen can 
    <img width="535" height="648" alt="Screenshot 2025-08-28 211047" src="https://github.com/user-attachments/assets/7d34635c-a499-4597-9c4b-ee5cdc843373" />
 7. In this repository, Go back to the folder [`installation_files`](https://github.com/cubewise-code/bedrock-5/tree/main/installation_files).
 8. Copy the text in the file `bedrock_installation_ti.txt` and paste it into the prologue of the Turbo Integrator process you just created.
-9. In line 15, replace `<api_key_value>` with your API Key.
-11. In line 16, replace `<tenant_id>` with your instance's Tenant ID.
-12. In line 16, replace `<database_name>` with your TM1 Database's Name. [Encode DB Name](https://www.urlencoder.org/)
+
+  <img width="2554" height="1217" alt="Screenshot 2025-08-29 122531" src="https://github.com/user-attachments/assets/0dd381c8-93f9-4400-9230-d62f15be9169" />
+9. In line 7, replace `<api_key_value>` with your API Key. [To generate an API Key, follow the steps in this guide.](#Generate-API-Key-Guide)
+11. In line 8, replace `<tenant_id>` with your instance's Tenant ID. Your Tenant ID can be found in the TM1 url, after `tenantId=` and before `&`, as seen here:
+
+  <img width="1129" height="513" alt="Screenshot 2025-08-29 123349" src="https://github.com/user-attachments/assets/70162024-12f5-4272-9dd3-e166fdeff14d" />
+12. In line 8, replace `<database_name>` with your TM1 Database's Name. The TM1 Database Name can be seen here: 
+
+  <img width="350" height="361" alt="Screenshot 2025-08-29 123603" src="https://github.com/user-attachments/assets/17e8fa89-dcc6-4c34-a5f9-5682b1f72e56" />
+  ‼️Make sure your TM1 Database Name is url encoded. To url encode your Database Name, paste it in the text box at this website: [URL Encoder](https://www.urlencoder.org/)
 13. Save the process, then run the process.
 14. When the process is complete, bedrock will be installed!
 15. Delete `}bedrock-installation.process` from the TM1 Database.
