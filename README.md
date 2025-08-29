@@ -123,7 +123,7 @@ A full list of all process modifications from Bedrock V4 to Bedrock NextGen can 
 # Upgrade Guide
 1. In this repository, navigate to the folder [`installation_files`](https://github.com/cubewise-code/bedrock-5/tree/main/installation_files).
 2. Download a copy of the file `bedrock-v11.json`.
-3. Upload the `bedrock-v11.json` to the TM1 Database File Manager. [For how to navigate to the File Manager, see here.](#database-file-manager-steps)
+3. Upload the `bedrock-v11.json` to the TM1 Database File Manager. [For how to navigate to the File Manager, go to step 3. in the Installation Guide.](#database-file-manager-steps)
 4. Create a process with the following specifications:
     1. In the Variables Tab, create 11 string variables in the following order with the following names:
 ```
