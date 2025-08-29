@@ -72,6 +72,7 @@ A full list of all process modifications from Bedrock V4 to Bedrock NextGen can 
 > :bangbang: If the current bedrock processes have been modified, this installation guide will overwrite those changes. Please see the [Upgrade Guide](#upgrade-guide) instead. :bangbang:
 1. In this repository, navigate to the folder [`installation_files`](https://github.com/cubewise-code/bedrock-5/tree/main/installation_files).
 2. Download a copy of the file `bedrock.json`.
+<a name="database-file-manager-steps"></a>
 3. Go to your TM1 Database File Manager. To open your TM1 Database File Manager, complete the following steps:
     1. Navigate to your TM1 V12 Environment. For most cases it can be found here: [https://us-east-1.planninganalytics.saas.ibm.com](https://us-east-1.planninganalytics.saas.ibm.com)
        The home screen looks like this:
@@ -120,10 +121,11 @@ A full list of all process modifications from Bedrock V4 to Bedrock NextGen can 
 16. (Optional) Delete `bedrock.json` from your Database's files. Delete the process you created.
 
 # Upgrade Guide
-1. Navigate to the folder `installation_files` in this GitHub Repo.
+1. In this repository, navigate to the folder [`installation_files`](https://github.com/cubewise-code/bedrock-5/tree/main/installation_files).
 2. Download a copy of the file `bedrock-v11.json`.
-3. Create a process with the following specifications:
-  1. In the Variables Tab, create 11 string variables in the following order with the following names:
+3. Upload the `bedrock-v11.json` to the TM1 Database File Manager. [For how to navigate to the File Manager, see here.](#database-file-manager-steps)
+4. Create a process with the following specifications:
+    1. In the Variables Tab, create 11 string variables in the following order with the following names:
 ```
 [{"Name":"vName","Type":"String","Position":1,"StartByte":0,"EndByte":0},
 {"Name":"vPrologProcedure","Type":"String","Position":2,"StartByte":0,"EndByte":0},
@@ -137,8 +139,10 @@ A full list of all process modifications from Bedrock V4 to Bedrock NextGen can 
 {"Name":"vVariables","Type":"String","Position":10,"StartByte":0,"EndByte":0},
 {"Name":"vVariablesUIData","Type":"String","Position":11,"StartByte":0,"EndByte":0}] 
 ```
-  3. In the Prologue Tab, paste the following code:
-``` # List of Keys required for a Process to be created from HTTP Request
+    
+  2. In the Prologue Tab, paste the following code:
+```
+# List of Keys required for a Process to be created from HTTP Request
 url = '<base_url>';
 api_key = '<api_key>';
 sJsonKeyList = '[
@@ -173,8 +177,9 @@ DataSourceJsonRootPointer     = '/data';
 DatasourceNameForServer       = 'bedrock-v11.json';
 ```
   replacing `<base_url>` and `<api_key>` with the correct values.
+    
+  3. In the Data Tab, paste the following code:
   
-  4. In the Data Tab, paste the following code:
   ```
 sProcessJson = '{}';
 i = 0;
