@@ -35,94 +35,93 @@ When these processes are run, they will only log a message indicating that they 
 Due to the deprecation of certain functions in TM1 V12, the following Bedrock processes have been modified to ensure compatibility with TM1 V12. **The functionality of these processes has not changed.**
 ## Overview
 Changes were primarily due to:
-- Deprecation of CubeSetLogChanges.
-- Inability to access the .rux file.
-- Deprecation of ExecuteCommand when used to delete a file (replaced with ASCIIDelete).
-- Deprecation of the }DimensionProperties cube.
-- Deprecation of AssignClientPassword.
-- Deprecation of the }ApplicationSecurity cube.
+- Deprecation of `CubeSetLogChanges`.
+- Inability to access the `.rux` file.
+- Deprecation of `ExecuteCommand` when used to delete a file (replaced with `ASCIIDelete`).
+- Deprecation of the `}DimensionProperties` cube.
+- Deprecation of `AssignClientPassword`.
+- Deprecation of the `}ApplicationSecurity` cube.
   
 ## List of Changes
 | Process Name                                 | Change Description                                                                                                                                       |
 |---------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `}bedrock.cube.clone`                        | Replaced the attempt to read rules from the .rux file with the `CubeRuleGet` function.                                                                                  |
-| `}bedrock.cube.data.clear`                  | Removal of the `CubeSetLogChanges` function.                                                                                                                 |
-| `}bedrock.cube.data.copy.intercube`         | Removal of the `CubeSetLogChanges` function. <br>Replaced the use of `ExecuteCommand` to delete a file with `ASCIIDelete`.                                       |
-| `}bedrock.cube.data.copy`                   | Removal of the `CubeSetLogChanges` function. <br>Replaced the use of `ExecuteCommand` to delete a file with `ASCIIDelete`.                                       |
-| `}bedrock.cube.data.export`                 | Removal of the `CubeSetLogChanges` function.                                                                                                                 |
-| `}bedrock.cube.data.import`                 | Removal of the `CubeSetLogChanges` function.                                                                                                                 |
-| `}bedrock.cube.dimension.add`               | Replaced the attempt to read rules from the .rux file with the `CubeRuleGet` function.                                                                                  |
-| `}bedrock.cube.dimension.delete`            | Replaced the attempt to read rules from the .rux file with the `CubeRuleGet` function.                                                                                  |
-| `}bedrock.cube.dimension.replace`           | Replaced the attempt to read rules from the .rux file with the `CubeRuleGet` function.                                                                                  |
-| `}bedrock.cube.rule.manage`                 | Replaced the attempt to read rules from the .rux file with the `CubeRuleGet` function. <br>Replaced the use of `ExecuteCommand` to delete a file with `ASCIIDelete`.         |
+| `}bedrock.cube.data.clear`                  | Removed the `CubeSetLogChanges` function.                                                                                                                 |
+| `}bedrock.cube.data.copy.intercube`         | Removed the `CubeSetLogChanges` function. Replaced the use of `ExecuteCommand` to delete a file with `ASCIIDelete`.                                       |
+| `}bedrock.cube.data.copy`                   | Removed the `CubeSetLogChanges` function. Replaced the use of `ExecuteCommand` to delete a file with `ASCIIDelete`.                                       |
+| `}bedrock.cube.data.export`                 | Removed the `CubeSetLogChanges` function.                                                                                                                 |
+| `}bedrock.cube.data.import`                 | Removed the `CubeSetLogChanges` function.                                                                                                                 |
+| `}bedrock.cube.dimension.add`               | Replaced the attempt to read rules from the `.rux` file with the `CubeRuleGet` function.                                                                                  |
+| `}bedrock.cube.dimension.delete`            | Replaced the attempt to read rules from the `.rux` file with the `CubeRuleGet` function.                                                                                  |
+| `}bedrock.cube.dimension.replace`           | Replaced the attempt to read rules from the `.rux` file with the `CubeRuleGet` function.                                                                                 |
+| `}bedrock.cube.rule.manage`                 | Replaced the attempt to read rules from the `.rux` file with the `CubeRuleGet` function. Replaced the use of `ExecuteCommand` to delete a file with `ASCIIDelete`.         |
 | `}bedrock.dim.attr.create`                  | Bug fix: The process parameters indicated that the default value for `pAttrType` was 'S', but this was not the case. The default has now been added.                                |
-| `}bedrock.dim.clone`                        | The `}DimensionProperties` cube has been deprecated, and all references to it have been removed. <br>Note: As a result, a dimension’s sort order can no longer be cloned. |
+| `}bedrock.dim.clone`                        | The `}DimensionProperties` cube has been deprecated, and all references to it have been removed. Note: As a result, a dimension’s sort order can no longer be cloned. |
 | `}bedrock.dim.create`                       | Implemented the `}bedrock.dim.create` function.                                                                                                                                  |
-| `}bedrock.hier.clone`                       | The `}DimensionProperties` cube has been deprecated, all references have been removed. <br>NOTE: Because of this the hierarchy's sort order cannot be cloned. |
-| `}bedrock.hier.create.fromsubset`           | The `}DimensionProperties` cube has been deprecated, all references have been removed. <br>NOTE: Because of this the hierarchy's sort order cannot be cloned. <br>Removal of `CubeSetLogChanges` function. |
-| `}bedrock.hier.export.script`               | The `}DimensionProperties` cube has been deprecated, all references have been removed. <br>NOTE: Because of this the dimension's sort order cannot be exported. |
-| `}bedrock.hier.export`                      | The `}DimensionProperties` cube has been deprecated, all references have been removed. <br>NOTE: Because of this the dimension's sort order cannot be exported. <br>Bug fix: String attribute values of "0" would not be exported. |
-| `}bedrock.hier.import`                      | The `}Diexported. <perties` cube has been deprecated, all references have been removed. <br>NOTE: Because of this the dimension's sort order cannot be imported. |
-| `}bedrock.hier.unwind`                      | Removal of `CubeSetLogChanges` function.                                                                                                                 |
-| `}bedrock.process.template`                 | Removal of `CubeSetLogChanges` function.                                                                                                                 |
-| `}bedrock.security.client.clone`            | Removal of `AssignClientPassword` function. <br>NOTE: Because of this a client's password cannot be set.                                                  |
-| `}bedrock.security.client.create`           | Removal of `AssignClientPassword` function. <br>NOTE: Because of this a client's password cannot be set.                                                  |
-| `}bedrock.security.object.assign`           | The `}ApplicationSecurity` cube has been deprecated, all references have been removed. <br>NOTE: Because of this an application's security cannot be set. |
+| `}bedrock.hier.clone`                       | The `}DimensionProperties` cube has been deprecated, and all references have been removed. Note: Because of this, the hierarchy's sort order cannot be cloned. |
+| `}bedrock.hier.create.fromsubset`           | The `}DimensionProperties` cube has been deprecated, and all references have been removed. Note: Because of this, the hierarchy's sort order cannot be cloned. <br>Removal of `CubeSetLogChanges` function. |
+| `}bedrock.hier.export.script`               | The `}DimensionProperties` cube has been deprecated, and all references have been removed. Note: Because of this, the dimension's sort order cannot be exported. |
+| `}bedrock.hier.export`                      | The `}DimensionProperties` cube has been deprecated, and all references have been removed. Note: Because of this, the dimension's sort order cannot be exported. >Bug fix: String attribute values of "0" would not be exported. |
+| `}bedrock.hier.import`                      | The `}DimensionProperties` cube has been deprecated, and all references have been removed. Note: Because of this, the dimension's sort order cannot be imported. |
+| `}bedrock.hier.unwind`                      | Removed the `CubeSetLogChanges` function.                                                                                                                |
+| `}bedrock.process.template`                 | Removed the `CubeSetLogChanges` function.                                                                                                               |
+| `}bedrock.security.client.clone`            | Removed the `AssignClientPassword` function. Note: Because of this, a client's password cannot be set.                                                    |
+| `}bedrock.security.client.create`           | RRemoved the `AssignClientPassword` function. Note: Because of this, a client's password cannot be set.                                                    |
+| `}bedrock.security.object.assign`           | The `}ApplicationSecurity` cube has been deprecated, all references have been removed. Note: Because of this, an application's security cannot be set. |
 
-A full list of all process modifications from Bedrock V4 to Bedrock NextGen can be found here: [https://github.com/bdunleavy22/bedrock-compare/pull/2/files](https://github.com/bdunleavy22/bedrock-compare/pull/2/files).
+A full list of all process modifications from Bedrock V4 to Bedrock V5 can be found here: [Bedrock Compare Pull Request](https://github.com/bdunleavy22/bedrock-compare/pull/2/files).
 # Installation Guide
 > [!CAUTION]
-> :bangbang: If the current bedrock processes have been modified, this installation guide will overwrite those changes. Please see the [Upgrade Guide](#upgrade-guide) instead. :bangbang:
+> :bangbang: If the current Bedrock processes have been modified, this installation guide will overwrite those changes. Please see the [Upgrade Guide](#upgrade-guide) instead. :bangbang:
 1. In this repository, navigate to the folder [`installation_files`](https://github.com/cubewise-code/bedrock-5/tree/main/installation_files).
 2. Download a copy of the file `bedrock.json`.
 <a name="database-file-manager-steps"></a>
 3. Go to your TM1 Database File Manager. To open your TM1 Database File Manager, complete the following steps:
-    1. Navigate to your TM1 V12 Environment. For most cases it can be found here: [https://us-east-1.planninganalytics.saas.ibm.com](https://us-east-1.planninganalytics.saas.ibm.com)
-       The home screen looks like this:
+    - Navigate to your TM1 V12 Environment: https://`<us-east-1>`.planninganalytics.saas.ibm.com
 
        <img width="1584" height="718" alt="Screenshot 2025-08-28 205253" src="https://github.com/user-attachments/assets/5e5a9cda-98b5-426b-bd0e-1108969e0df7" />
-    2. Click the hamburger menu icon.
+    - Click the hamburger menu icon.
      
        <img width="1599" height="713" alt="Screenshot 2025-08-28 205516" src="https://github.com/user-attachments/assets/1c921878-7848-43ee-a84d-210ba4df510a" />
-    3. Click "+ New".
+    - Click "+ New".
      
        <img width="1582" height="663" alt="Screenshot 2025-08-28 205627" src="https://github.com/user-attachments/assets/6b558d52-693e-4059-90ab-5d7e019f8940" />
-    4. Click "Workbench".
+    - Click "Workbench".
   
        <img width="464" height="410" alt="Screenshot 2025-08-28 210003" src="https://github.com/user-attachments/assets/9327664d-fba9-4467-bc15-95765d5793af" />
-    5. Right-Click the name of the Database you would like to install bedrock to.
+    - Right-Click the name of the Database you would like to install bedrock to.
   
        <img width="506" height="638" alt="Screenshot 2025-08-28 210319" src="https://github.com/user-attachments/assets/39183f40-5625-4d02-aeab-3ae2f09fb36f" />
-    6. Click "File Manager".
+    - Click "File Manager".
   
        <img width="2549" height="372" alt="Screenshot 2025-08-28 210757" src="https://github.com/user-attachments/assets/72d6295e-4625-4556-bd17-1b38307b5f2e" />
-4. Upload the file `bedrock.json` to your TM1 Database. Do not rename the file and do not upload it into a folder. To upload, click the upload icon.
+4. Upload the file `bedrock.json` to your TM1 Database. Do not rename the file or upload it into a folder. To upload, click the upload icon.
 
    <img width="2551" height="373" alt="Screenshot 2025-08-28 210607" src="https://github.com/user-attachments/assets/04e40ae1-87a8-41f3-9e09-90eacd533b77" />
-5. Create a new Turbo Integrator Process, you can name it whatever you like. It can be deleted after the installation process is complete.
+5. Create a new Turbo Integrator Process. You can name it anything; it can be deleted after installation.
 
    <img width="535" height="648" alt="Screenshot 2025-08-28 211047" src="https://github.com/user-attachments/assets/7d34635c-a499-4597-9c4b-ee5cdc843373" />
-7. In this repository, Go back to the folder [`installation_files`](https://github.com/cubewise-code/bedrock-5/tree/main/installation_files).
-8. Copy the text in the file `bedrock_installation_ti.txt` and paste it into the prologue of the Turbo Integrator process you just created.
+6. Go back to the folder [`installation_files`](https://github.com/cubewise-code/bedrock-5/tree/main/installation_files).
+7. Copy the text in the file `bedrock_installation_ti.txt` and paste it into the prologue of the Turbo Integrator process you just created.
 
   <img width="2554" height="1217" alt="Screenshot 2025-08-29 122531" src="https://github.com/user-attachments/assets/0dd381c8-93f9-4400-9230-d62f15be9169" />
 
 <a name="get-connection-details"></a>
-9. In line 7, replace `<api_key_value>` with your API Key. [To generate an API Key, follow the steps in this guide.](#Generate-API-Key-Guide)
-10. In line 8, replace `<tenant_id>` with your instance's Tenant ID. Your Tenant ID can be found in the TM1 url, after `tenantId=` and before `&`, as seen here:
+8. In line 7, replace `<api_key_value>` with your API Key. [To generate an API Key, follow the steps in this guide.](#Generate-API-Key-Guide)
+9. In line 8, replace `<tenant_id>` with your instance's Tenant ID. Your Tenant ID can be found in the TM1 url, after `tenantId=` and before `&`, as seen here:
 
   <img width="1129" height="513" alt="Screenshot 2025-08-29 123349" src="https://github.com/user-attachments/assets/70162024-12f5-4272-9dd3-e166fdeff14d" />
 
-11. In line 8, replace `<database_name>` with your TM1 Database's Name. The TM1 Database Name can be seen here: 
+10. In line 8, replace `<database_name>` with your TM1 Database's Name. The TM1 Database Name can be seen here: 
 
   <img width="350" height="361" alt="Screenshot 2025-08-29 123603" src="https://github.com/user-attachments/assets/17e8fa89-dcc6-4c34-a5f9-5682b1f72e56" />
   
   ‼️Make sure your TM1 Database Name is url encoded. To url encode your Database Name, paste it in the text box at this website: [URL Encoder](https://www.urlencoder.org/)
 
-12. Save the process, then run the process.
-13. When the process is complete, bedrock will be installed!
-14. Delete `}bedrock-installation.process` from the TM1 Database.
-15. (Optional) Delete `bedrock.json` from your Database's files. Delete the process you created.
+11. Save and run the process.
+12. When the process is complete, Bedrock will be installed!
+13. Delete `}bedrock-installation.process` from the TM1 Database.
+14. (Optional) Delete `bedrock.json` and the process you created.
 
 # Upgrade Guide
 1. In this repository, navigate to the folder [`installation_files`](https://github.com/cubewise-code/bedrock-5/tree/main/installation_files).
