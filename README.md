@@ -1,3 +1,6 @@
+
+<img width="9149" height="2224" alt="bedrock5_logogray" src="https://github.com/user-attachments/assets/bdb178a3-7463-4c0b-a74b-f2c1a5059532" />
+
 # Bedrock 5 for TM1 v12+ (BETA)
 
 ### ⚠️ Bedrock 5 is still under development, please wait for the v1 release to use it in your projects. ⚠️ 
