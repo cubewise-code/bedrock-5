@@ -24,7 +24,8 @@ Didn't get the expected result? Describe:
 **Environment:**
 - Bedrock5 Version: [e.g. 1.0.0]
 - TM1 Server Version: [e.g. 12.4.1]
-- HA Settings [e.g. number of replicas]
+- HA Settings: [e.g. number of replicas]
+- Installation type: [e.g. PA SaaS, CP4D, Local, etc.]
 
 **Additional context**
 If you encounter an error, please add the error message and the stack trace:

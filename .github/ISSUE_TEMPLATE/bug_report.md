@@ -23,6 +23,7 @@ If applicable, add screenshots to help explain your problem.
 - Bedrock5 Version: [e.g. 1.0.0]
 - TM1 Server Version: [e.g. 12.4.1]
 - HA Settings [e.g. number of replicas]
+- Installation type: [e.g. PA SaaS, CP4D, Local, etc.]
 
 **Additional context**
 Add any other context about the problem here.
