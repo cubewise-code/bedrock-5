@@ -124,7 +124,7 @@ Changes were primarily due to:
 | `}bedrock.hier.unwind`                      | Removed the `CubeSetLogChanges` function.                                                                                                                |
 | `}bedrock.process.template`                 | Removed the `CubeSetLogChanges` function.                                                                                                               |
 | `}bedrock.security.client.clone`            | Removed the `AssignClientPassword` function. Note: Because of this, a client's password cannot be set.                                                    |
-| `}bedrock.security.client.create`           | RRemoved the `AssignClientPassword` function. Note: Because of this, a client's password cannot be set.                                                    |
+| `}bedrock.security.client.create`           | Removed the `AssignClientPassword` function. Note: Because of this, a client's password cannot be set.                                                    |
 | `}bedrock.security.object.assign`           | The `}ApplicationSecurity` cube has been deprecated, all references have been removed. Note: Because of this, an application's security cannot be set. |
 
 A full list of all process modifications from Bedrock V4 to Bedrock V5 can be found here: [Bedrock Compare Pull Request](https://github.com/bdunleavy22/bedrock-compare/pull/2/files).
