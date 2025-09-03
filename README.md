@@ -5,7 +5,7 @@
 
 ### ⚠️ Bedrock 5 is still under development, please wait for the v1 release to use it in your projects. ⚠️ 
 
-<b>Bedrock 5</b> is the latest evolution of the Bedrock library, specifically updated for compatibility with IBM Planning Analytics / TM1 Version 12+. This release reflects the ongoing commitment to maintaining best practices for TM1 development, providing optimized, standardized, and scalable TurboIntegrator (TI) code assets that align with changes introduced in TM1 v12.
+<b>Bedrock 5</b> is the latest evolution of the Bedrock library, specifically updated for compatibility with IBM Planning Analytics / TM1 Version 12+. This release reflects the ongoing commitment to maintaining best practices for TM1 development, providing optimized, standardized, and scalable TurboIntegrator (TI) code assets that align with changes introduced in TM1 v12+.
 
 In this article:
 - [What is Bedrock?](#what-is-bedrock)
@@ -26,11 +26,11 @@ The Bedrock library is built on years of global TM1 implementation experience an
 
 Bedrock 5 brings targeted updates to support TM1 v12+, including:
 - <b>Compatibility Fixes</b>: Adjustments for updated TM1 system behavior and function changes.
-- <b>Deprecated Processes</b>: Clear documentation of processes no longer required or supported in TM1 v12.
+- <b>Deprecated Processes</b>: Clear documentation of processes no longer required or supported in TM1 v12+.
 - <b>Modified Processes</b>: Existing processes updated to maintain their original functionality while aligning with new TM1 features and syntax.
 - <b>Updated Installation Guide</b>: Step-by-step instructions for deploying Bedrock 5 into your Planning Analytics environment.
 
-Note: Bedrock 5 is intended only for TM1 v12+ environments. For TM1 v11.x or PA 2.0.x, use Bedrock 4
+Note: Bedrock 5 is intended only for TM1 v12+ environments. For TM1 v11.x or PA 2.0.x, use [Bedrock 4](https://github.com/cubewise-code/bedrock)
 
 ## Why Bedrock?
 With growing TM1 adoption, standardization is critical. Bedrock provides:
@@ -72,7 +72,7 @@ The source code is hosted at [github.com/cubewise-code/bedrock-5](https://github
 
 
 # Deprecated Functions
-Due to the deprecation of certain functions in TM1 V12, the following Bedrock processes have also been deprecated:
+Due to the deprecation of certain functions in TM1 v12, the following Bedrock processes have also been deprecated:
 | Bedrock Process                                   | TM1 Deprecated Function         |
 |---------------------------------------------------|---------------------------------|
 | `}bedrock.cube.data.save`                         | `CubeSaveData`                  |
@@ -90,7 +90,7 @@ Due to the deprecation of certain functions in TM1 V12, the following Bedrock pr
 When these processes are run, they will only log a message indicating that they have been deprecated. They will no longer perform their original functionality from TM1 V11.
 
 # Modified Functions
-Due to the deprecation of certain functions in TM1 V12, the following Bedrock processes have been modified to ensure compatibility with TM1 V12. **The functionality of these processes has not changed.**
+Due to the deprecation of certain functions in TM1 v12, the following Bedrock processes have been modified to ensure compatibility with TM1 v12+. **The functionality of these processes has not changed.**
 ## Overview
 Changes were primarily due to:
 - Deprecation of `CubeSetLogChanges`.
@@ -135,7 +135,7 @@ A full list of all process modifications from Bedrock V4 to Bedrock V5 can be fo
 2. Download a copy of the file `bedrock.json`.
 <a name="database-file-manager-steps"></a>
 3. Go to your TM1 Database File Manager. To open your TM1 Database File Manager, complete the following steps:
-    - Navigate to your TM1 V12 environment at: `https://<us-east-1>.planninganalytics.saas.ibm.com`. Replace `<us-east-1>` with your region.
+    - Navigate to your TM1 v12 environment at: `https://<us-east-1>.planninganalytics.saas.ibm.com`. Replace `<us-east-1>` with your region.
 
        <img width="1584" height="718" alt="Screenshot 2025-08-28 205253" src="https://github.com/user-attachments/assets/5e5a9cda-98b5-426b-bd0e-1108969e0df7" />
     - Click the hamburger menu icon.
@@ -273,7 +273,7 @@ A full list of all process modifications from Bedrock V4 to Bedrock V5 can be fo
 10. Continue to Step 3. in the [Installation Guide](#installation-guide)
 
 # Generate API Key Guide
-1. Navigate to your TM1 V12 environment at: `https://<us-east-1>.planninganalytics.saas.ibm.com`. Replace `<us-east-1>` with your region.
+1. Navigate to your TM1 v12 environment at: `https://<us-east-1>.planninganalytics.saas.ibm.com`. Replace `<us-east-1>` with your region.
 
    <img width="1584" height="718" alt="Screenshot 2025-08-28 205253" src="https://github.com/user-attachments/assets/5e5a9cda-98b5-426b-bd0e-1108969e0df7" />
 2. Click your profile icon in the top-right corner of the screen.
