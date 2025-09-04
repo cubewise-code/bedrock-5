@@ -5,7 +5,7 @@
 
 ### ⚠️ Bedrock 5 is still under development and will be released on the 30th of September, [click here for the upcoming webinar](https://events.teams.microsoft.com/event/f7564ab5-78aa-4c30-a93f-b880451f2de2@0635d657-0279-4110-9c8f-2ee27b1e065b). Please wait for the upcoming official release to use it in your projects. ⚠️ 
 
-## This next-generation release of Bedrock has been refactored and rigorously tested to support the latest IBM Planning Analytics deployment options including TM1 Containerized, v12, and PA3 versions of the TM1 Server. Bedrock 5 does not support earlier versions of the TM1 Server. These versions (v11) are supported by [Bedrock 4](https://github.com/cubewise-code/bedrock)
+### This next-generation release of Bedrock has been refactored and rigorously tested to support the latest IBM Planning Analytics deployment options including TM1 Containerized, v12, and PA3 versions of the TM1 Server. Bedrock 5 does not support earlier versions of the TM1 Server. These versions (v11) are supported by [Bedrock 4](https://github.com/cubewise-code/bedrock)
 
 <b>Bedrock 5</b> is the latest evolution of the Bedrock library, specifically updated for compatibility with TM1 Containerized, v12, and PA3 versions of the TM1 Server. This release reflects the ongoing commitment to maintaining best practices for Planning Analytics development, providing optimized, standardized, and scalable TurboIntegrator (TI) code assets that align with changes introduced in the TM1 Containerized, v12, and PA3 versions of the TM1 Server.
 
