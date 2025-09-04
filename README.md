@@ -1,7 +1,16 @@
-
-<img width="9149" height="2224" alt="bedrock5_logogray" src="https://github.com/user-attachments/assets/bdb178a3-7463-4c0b-a74b-f2c1a5059532" />
+<h1 align="center">
+  <br>
+  <a href="https://github.com/cubewise-code/bedrock-5"><img width="9149" height="2224" alt="bedrock5_logogray" src="https://github.com/user-attachments/assets/bdb178a3-7463-4c0b-a74b-f2c1a5059532" />
+</h1>
 
 # Bedrock 5 Supports TM1 Containerized, v12, and PA3 Deployments of IBM Planning Analytics
+
+<p align="center">
+  <a href=""><img src="https://img.shields.io/badge/TM1_Database-v12.4+-blue" alt="TM1 versions"></a>
+  <a href="https://code.cubewise.com/open-source/bedrock/"><img src="https://img.shields.io/badge/latest_release-v5.0.0-green" alt="v5.0.0"></a>
+</p>
+
+<h1></h1>
 
 ### ⚠️ Bedrock 5 is still under development and will be released on the 30th of September, [click here for the upcoming webinar](https://events.teams.microsoft.com/event/f7564ab5-78aa-4c30-a93f-b880451f2de2@0635d657-0279-4110-9c8f-2ee27b1e065b). Please wait for the upcoming official release to use it in your projects. ⚠️ 
 
