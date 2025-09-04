@@ -129,8 +129,8 @@ Changes in the Bedrock processes were primarily due to:
 
 A full list of all process modifications from Bedrock 4 to Bedrock 5 can be found here: [Bedrock Compare Pull Request](https://github.com/bdunleavy22/bedrock-compare/pull/2/files).
 
-<a name="installation-guide"></a>
-# Installation Guide (For IBM Planning Analytics as a Service on AWS or Azure)
+
+# Installation Guide (For IBM Planning Analytics as a Service on AWS or Azure) <a name="installation-guide"></a>
 > [!CAUTION]
 > :bangbang: If the current Bedrock processes have been modified, this installation guide will overwrite those changes. Please see the [Upgrade Guide](#upgrade-guide) instead. :bangbang:
 1. In this repository, navigate to the folder [`installation_files`](https://github.com/cubewise-code/bedrock-5/tree/main/installation_files).
@@ -166,11 +166,9 @@ A full list of all process modifications from Bedrock 4 to Bedrock 5 can be foun
 
   <img width="2554" height="1217" alt="Screenshot 2025-08-29 122531" src="https://github.com/user-attachments/assets/0dd381c8-93f9-4400-9230-d62f15be9169" />
 
-<a name="get-connection-details"></a>
-8. In line 7, replace `<api_key_value>` with your API Key. [To generate an API Key, follow the steps in this guide.](#Generate-API-Key-Guide)
-9. In line 8, replace `<tenant_id>` with your instance's Tenant ID. Your Tenant ID can be found in the TM1 url, after `tenantId=` and before `&`, as seen here:
-
-  <img width="1129" height="513" alt="Screenshot 2025-08-29 123349" src="https://github.com/user-attachments/assets/70162024-12f5-4272-9dd3-e166fdeff14d" />
+8. <a name="get-connection-details"></a>In line 7, replace `<api_key_value>` with your API Key. [To generate an API Key, follow the steps in this guide](#Generate-API-Key-Guide).
+9. In line 8, replace `<tenant_id>` with your instance's Tenant ID. Your Tenant ID can be found in the TM1 url, after `tenantId=` and before `&`, as seen here: 
+  <img width="1129" height="513" alt="Screenshot 2025-08-29 123349" src="https://github.com/user-attachments/assets/bb3d228b-d608-466d-a218-a058b21ea1b2" />
 
 10. In line 8, replace `<database_name>` with your TM1 Database's Name. The TM1 Database Name can be seen here: 
 
