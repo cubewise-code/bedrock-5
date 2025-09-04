@@ -128,6 +128,8 @@ Changes in the Bedrock processes were primarily due to:
 | `}bedrock.security.object.assign`           | The `}ApplicationSecurity` cube has been deprecated, all references have been removed. Note: Because of this, an application's security cannot be set. |
 
 A full list of all process modifications from Bedrock 4 to Bedrock 5 can be found here: [Bedrock Compare Pull Request](https://github.com/bdunleavy22/bedrock-compare/pull/2/files).
+
+<a name="installation-guide"></a>
 # Installation Guide (For IBM Planning Analytics as a Service on AWS or Azure)
 > [!CAUTION]
 > :bangbang: If the current Bedrock processes have been modified, this installation guide will overwrite those changes. Please see the [Upgrade Guide](#upgrade-guide) instead. :bangbang:
