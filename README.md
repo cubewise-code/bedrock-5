@@ -3,7 +3,7 @@
   <a href="https://github.com/cubewise-code/bedrock-5"><img width="9149" height="2224" alt="bedrock5_logogray" src="https://github.com/user-attachments/assets/bdb178a3-7463-4c0b-a74b-f2c1a5059532" />
 </h1>
 
-# Bedrock 5 Supports TM1 Containerized, v12, and PA3 Deployments of IBM Planning Analytics
+# Bedrock 5 is fully compatible with IBM® Planning Analytics TM1 Database 12.4+
 
 <p align="center">
   <a href="https://www.ibm.com/docs/en/planning-analytics/2.0.0?topic=12-welcome-tm1-database"><img src="https://img.shields.io/badge/TM1_Database-v12.4+-blue" alt="TM1 versions"></a>
