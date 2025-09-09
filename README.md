@@ -13,9 +13,9 @@
 
 ### ⚠️ Bedrock 5 is still under development and will be released on the 30th of September, [click here for the upcoming webinar](https://events.teams.microsoft.com/event/f7564ab5-78aa-4c30-a93f-b880451f2de2@0635d657-0279-4110-9c8f-2ee27b1e065b). Please wait for the upcoming official release to use it in your projects. ⚠️ 
 
-### This next-generation release of Bedrock has been refactored and rigorously tested to support the latest IBM Planning Analytics deployment options including TM1 Containerized, v12, and PA3 versions of the TM1 Server. Bedrock 5 does not support earlier versions of the TM1 Server. These versions (v11) are supported by [Bedrock 4](https://github.com/cubewise-code/bedrock)
+### This next-generation release of Bedrock has been refactored and rigorously tested to support IBM® Planning Analytics TM1 Database 12.4+. Bedrock 5 does not support earlier versions of the TM1 Database. These versions (11.x) are supported by [Bedrock 4](https://github.com/cubewise-code/bedrock)
 
-<b>Bedrock 5</b> is the latest evolution of the Bedrock library, specifically updated for compatibility with TM1 Containerized, v12, and PA3 versions of the TM1 Server. This release reflects the ongoing commitment to maintaining best practices for Planning Analytics development, providing optimized, standardized, and scalable TurboIntegrator (TI) code assets that align with changes introduced in the TM1 Containerized, v12, and PA3 versions of the TM1 Server.
+<b>Bedrock 5</b> is the latest evolution of the Bedrock library, specifically updated for compatibility with IBM® Planning Analytics TM1 Database 12.4+. This release reflects the ongoing commitment to maintaining best practices for Planning Analytics development, providing optimized, standardized, and scalable TurboIntegrator (TI) code assets that align with changes introduced in the IBM® Planning Analytics TM1 Database 12.
 
 In this article:
 - [What is Bedrock?](#what-is-bedrock)
@@ -34,13 +34,13 @@ The Bedrock library is built on years of global Planning Analytics implementatio
 
 ## What's New in Bedrock 5?
 
-Bedrock 5 brings targeted updates to support TM1 Containerized, v12, and PA3 versions of the TM1 Server, including:
+Bedrock 5 brings targeted updates to support IBM® Planning Analytics TM1 Database 12.4+, including:
 - <b>Compatibility Fixes</b>: Adjustments for updated Planning Analytics system behavior and function changes.
 - <b>Deprecated Processes</b>: Clear documentation of processes no longer required or supported in the latest version of Planning Analytics.
 - <b>Modified Processes</b>: Existing processes updated to maintain their original functionality while aligning with new Planning Analytics features and syntax.
 - <b>Updated Installation Guide</b>: Step-by-step instructions for deploying Bedrock 5 into your Planning Analytics environment.
 
-Note: Bedrock 5 is intended only for the TM1 Containerized, v12, and PA3 versions of the TM1 Server. For TM1 v11.x or PA 2.0.x, use [Bedrock 4](https://github.com/cubewise-code/bedrock)
+Note: Bedrock 5 is intended only for the IBM® Planning Analytics TM1 Database 12.4+. For TM1 11.x or PA 2.0.x, use [Bedrock 4](https://github.com/cubewise-code/bedrock)
 
 ## Why Bedrock?
 With growing Planning Analytics adoption, standardization is critical. Bedrock provides:
@@ -82,7 +82,7 @@ The source code is hosted at [github.com/cubewise-code/bedrock-5](https://github
 
 
 # Deprecated Functions
-TM1 Containerized, v12, and PA3 versions of the TM1 Server have deprecated functions when compared to the earlier versions of the TM1 Server. Because of this, the following Bedrock processes have now been deprecated:
+IBM® Planning Analytics TM1 Database 12 has deprecated functions when compared to the earlier versions of the TM1 Database. Because of this, the following Bedrock processes have now been deprecated:
 | Bedrock Process                                   | TM1 Deprecated Function         |
 |---------------------------------------------------|---------------------------------|
 | `}bedrock.cube.data.save`                         | `CubeSaveData`                  |
@@ -98,7 +98,7 @@ TM1 Containerized, v12, and PA3 versions of the TM1 Server have deprecated funct
 | `}bedrock.server.savedataall`                     | `SaveDataAll`                   |
 
 # Modified Functions
-Due to the deprecation of the above functions in the TM1 Containerized, v12, and PA3 versions of the TM1 Server, the following Bedrock processes have been modified to ensure compatibility with the latest version of Planning Analytics. **The functionality of these processes has not changed.**
+Due to the deprecation of the above functions in the IBM® Planning Analytics TM1 Database 12, the following Bedrock processes have been modified to ensure compatibility with the IBM® Planning Analytics TM1 Database 12.4+. **The functionality of these processes has not changed.**
 ## Overview
 Changes in the Bedrock processes were primarily due to:
 - Deprecation of `CubeSetLogChanges`.
