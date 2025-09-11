@@ -13,7 +13,7 @@
 
 ### ⚠️ Bedrock 5 is still under development and will be released on the 30th of September, [click here for the upcoming webinar](https://events.teams.microsoft.com/event/f7564ab5-78aa-4c30-a93f-b880451f2de2@0635d657-0279-4110-9c8f-2ee27b1e065b). Please wait for the upcoming official release to use it in your projects. ⚠️ 
 
-### This next-generation release of Bedrock has been refactored and rigorously tested to support IBM Planning Analytics TM1 Database 12.4+. Bedrock 5 does not support earlier versions of the TM1 Database (e.g. 11.x). These versions are supported by [Bedrock 4](https://github.com/cubewise-code/bedrock)
+### This next-generation release of Bedrock has been refactored and tested to support IBM Planning Analytics TM1 Database 12.4+. Bedrock 5 does not support earlier versions of the TM1 Database. These versions are supported by [Bedrock 4](https://github.com/cubewise-code/bedrock)
 
 <b>Bedrock 5</b> is the latest evolution of the Bedrock library, specifically updated for compatibility with IBM Planning Analytics TM1 Database 12.4+. This release reflects the ongoing commitment to maintaining best practices for IBM Planning Analytics development, providing optimized, standardized, and scalable TurboIntegrator (TI) code assets that align with changes introduced in the IBM Planning Analytics TM1 Database 12.
 
@@ -82,8 +82,8 @@ The source code is hosted at [github.com/cubewise-code/bedrock-5](https://github
 
 
 # Deprecated Functions
-IBM Planning Analytics TM1 Database 12 has several deprecated functions when compared to the earlier versions of the TM1 Database (e.g. 11.x) . Because of this, the following Bedrock processes have now been deprecated:
-| Bedrock Process                                   | TM1 Database Deprecated Function         |
+IBM Planning Analytics TM1 Database 12 has several deprecated functions when compared to the earlier versions of the TM1 Database. Because of this, the following Bedrock processes have now been deprecated:
+| Bedrock Process                                   | TM1 Deprecated Function         |
 |---------------------------------------------------|---------------------------------|
 | `}bedrock.cube.data.save`                         | `CubeSaveData`                  |
 | `}bedrock.dim.attr.swapalias`                     | `SwapAliasWithPrincipalName`    |
