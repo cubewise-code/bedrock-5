@@ -1,0 +1,50 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.security.client.create",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.security.client.create.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pClient",
+			"Prompt":"REQUIRED: Single user name or list of users separated by delimiter",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pAlias",
+			"Prompt":"OPTIONAL: single or delimited list of }TM1_DefaultDisplayValue alias to assign to user (if list of users then size of list of aliases must be the same!)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pPassword",
+			"Prompt":"OPTIONAL: Initial Password",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pDelim",
+			"Prompt":"OPTIONAL: Delimiter (Blank = &)",
+			"Value":"&",
+			"Type":"String"
+		}
+	],
+	"Variables":[]
+}

@@ -1,0 +1,92 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.hier.export",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.hier.export.ti",
+	"DataSource":
+	{
+		"Type":"TM1DimensionSubset",
+		"dataSourceNameForServer":"}Cubes",
+		"dataSourceNameForClient":"}Cubes",
+		"subset":"All"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pDim",
+			"Prompt":"REQUIRED: Dimension",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pHier",
+			"Prompt":"OPTIONAL: Hierarchy (defaults to dimension name if blank)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pTgtDir",
+			"Prompt":"OPTIONAL: Target Directory Path (defaults to Error File Directory)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pTgtFile",
+			"Prompt":"OPTIONAL: Target File Name (defaults to Dimension Hierarchy_Export.csv if blank)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pTitleRecord",
+			"Prompt":"REQUIRED: Boolean 1 = Yes - Include header row",
+			"Value":1,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pDelim",
+			"Prompt":"OPTIONAL: AsciiOutput delimiter character (Default=comma, exactly 3 digits = ASCII code)",
+			"Value":",",
+			"Type":"String"
+		},
+		{
+			"Name":"pQuote",
+			"Prompt":"OPTIONAL: AsciiOutput quote character (Accepts empty quote, exactly 3 digits = ASCII code)",
+			"Value":"\"",
+			"Type":"String"
+		},
+		{
+			"Name":"pLegacy",
+			"Prompt":"REQUIRED: Boolean 1 = Legacy format",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pCharacterSet",
+			"Prompt":"OPTIONAL: The output character set (defaults to TM1CS_UTF8 if blank)",
+			"Value":"",
+			"Type":"String"
+		}
+	],
+	"Variables":
+	[
+		{
+			"Name":"vEle",
+			"Type":"String",
+			"Position":1,
+			"StartByte":0,
+			"EndByte":0
+		}
+	]
+}

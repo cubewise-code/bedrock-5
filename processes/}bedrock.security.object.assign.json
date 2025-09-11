@@ -1,0 +1,62 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.security.object.assign",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.security.object.assign.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pGroup",
+			"Prompt":"REQUIRED: List of Groups Separated by Delimiter",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pObjectType",
+			"Prompt":"REQUIRED: Type of Object to Assign Security To (Application/Cube/Dimension/Process/Chore)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pObject",
+			"Prompt":"REQUIRED: List of Objects Separated by Delimiter",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pSecurityLevel",
+			"Prompt":"REQUIRED: Security Level (Read/Write/Admin/None)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pSecurityRefresh",
+			"Prompt":"OPTIONAL: Refresh Security? (Default = No)",
+			"Value":"No",
+			"Type":"String"
+		},
+		{
+			"Name":"pDelim",
+			"Prompt":"OPTIONAL: Delimiter (default value if blank = '&')",
+			"Value":"&",
+			"Type":"String"
+		}
+	],
+	"Variables":[]
+}

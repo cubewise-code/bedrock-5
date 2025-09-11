@@ -1,0 +1,62 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.hier.element.create",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.hier.element.create.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pDim",
+			"Prompt":"REQUIRED: dimension name, accepts wildcards (if = *, then all the dimensions)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pHier",
+			"Prompt":"OPTIONAL: hierarchy (default value same named hierarchy as dimension), accepts wildcards (if = *, then all hierarchies)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pEle",
+			"Prompt":"REQUIRED: element name, accepts delimited list",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pEleType",
+			"Prompt":"OPTIONAL: element type N S C (default value N)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pInsertionPoint",
+			"Prompt":"OPTIONAL: insertion point (default value blank)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pDelim",
+			"Prompt":"OPTIONAL: delimiter character for element list. (default value if blank = '&')",
+			"Value":"&",
+			"Type":"String"
+		}
+	],
+	"Variables":[]
+}

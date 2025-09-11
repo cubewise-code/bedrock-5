@@ -1,0 +1,104 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.hier.export.script",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.hier.export.script.ti",
+	"DataSource":
+	{
+		"Type":"TM1DimensionSubset",
+		"dataSourceNameForServer":"}Cubes",
+		"dataSourceNameForClient":"}Cubes",
+		"subset":"All"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pDim",
+			"Prompt":"REQUIRED: Target Dimension or Hierarchy (as dim:hier), accepts wildcards (if = *, then all the dimensions)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pEle",
+			"Prompt":"OPTIONAL: Target Element(s), accepts wildcards ( * will include ALL)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pDelim",
+			"Prompt":"OPTIONAL: Delimiter character if list used for pDim, pHier or pEle",
+			"Value":"&",
+			"Type":"String"
+		},
+		{
+			"Name":"pTgtDir",
+			"Prompt":"OPTIONAL: Target Directory Path (defaults to Error File Directory if blank)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pTgtFile",
+			"Prompt":"OPTIONAL: Root file name without file extension. If blank \"bedrock_dimension_script\" will be used",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pTitleRecord",
+			"Prompt":"REQUIRED: Boolean 1 = Yes - Include header row",
+			"Value":1,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pDimInfo",
+			"Prompt":"OPTIONAL: Include dimension info section (SortOrder, HierarchyProperties, etc.)",
+			"Value":1,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pAttr",
+			"Prompt":"OPTIONAL: Include creation of attributes",
+			"Value":1,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pSub",
+			"Prompt":"OPTIONAL: Include subset definitions",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pAttrVal",
+			"Prompt":"OPTIONAL: Include attribute values (for selected elements in pEle)",
+			"Value":1,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pCharacterSet",
+			"Prompt":"OPTIONAL: The output character set (defaults to TM1CS_UTF8 if blank)",
+			"Value":"",
+			"Type":"String"
+		}
+	],
+	"Variables":
+	[
+		{
+			"Name":"vDim",
+			"Type":"String",
+			"Position":1,
+			"StartByte":0,
+			"EndByte":0
+		}
+	]
+}

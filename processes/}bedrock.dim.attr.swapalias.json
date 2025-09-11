@@ -1,0 +1,38 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.dim.attr.swapalias",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.dim.attr.swapalias.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"REQUIRED: True or False (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pDim",
+			"Prompt":"REQUIRED: Dimension name",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pAlias",
+			"Prompt":"REQUIRED: Alias",
+			"Value":"",
+			"Type":"String"
+		}
+	],
+	"Variables":[]
+}

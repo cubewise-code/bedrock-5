@@ -1,0 +1,110 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.cube.view.create",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.cube.view.create.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pCube",
+			"Prompt":"REQUIRED: Cube Name",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pView",
+			"Prompt":"REQUIRED: Name of the View",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pFilter",
+			"Prompt":"OPTIONAL: Filter: Year¦ 2006 + 2007 & Scenario¦ Actual + Budget & Organization¦ North America Operations",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pSuppressZero",
+			"Prompt":"REQUIRED: Suppress Zero Data (Skip = 1)",
+			"Value":1,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pSuppressConsol",
+			"Prompt":"REQUIRED: Suppress Consolidations (Skip = 1)",
+			"Value":1,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pSuppressRules",
+			"Prompt":"REQUIRED: Suppress Rules (Skip = 1)",
+			"Value":1,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pSuppressConsolStrings",
+			"Prompt":"REQUIRED: Suppress Strings on Consolidations (Skip = 1, Include = 0) (Default [Skip] = -1 for backward compatibility)",
+			"Value":-1,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pIncludeDescendants",
+			"Prompt":"OPTIONAL: Include all descendants when copying consolidated values",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pDimDelim",
+			"Prompt":"REQUIRED: Delimiter for start of Dimension/Element set",
+			"Value":"&",
+			"Type":"String"
+		},
+		{
+			"Name":"pEleStartDelim",
+			"Prompt":"REQUIRED: Delimiter for start of element list",
+			"Value":"¦",
+			"Type":"String"
+		},
+		{
+			"Name":"pEleDelim",
+			"Prompt":"REQUIRED: Delimiter between elements",
+			"Value":"+",
+			"Type":"String"
+		},
+		{
+			"Name":"pTemp",
+			"Prompt":"OPTIONAL: Make View Temporary (1=Temporary)",
+			"Value":1,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pSandBox",
+			"Prompt":"OPTIONAL: To use sandbox not base data enter the sandbox name (invalid name will result in process error)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pSubN",
+			"Prompt":"OPTIONAL: Create N level subset for all dims not mentioned in pFilter",
+			"Value":0,
+			"Type":"Numeric"
+		}
+	],
+	"Variables":[]
+}

@@ -1,0 +1,56 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.dim.attr.create",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.dim.attr.create.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pDim",
+			"Prompt":"REQUIRED: dimension name, parameter accepts delimited list and wildcards",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pAttr",
+			"Prompt":"REQUIRED: attribute name, parameter accepts delimited list (separate with delimiter for multiple item e.g. Type&Active )",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pPrevAttr",
+			"Prompt":"OPTIONAL: insert position (previous attribute) (Defaults to blank)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pAttrType",
+			"Prompt":"OPTIONAL: attribute type (e.g. A, S or N. If blank then assumed to be type=string)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pDelim",
+			"Prompt":"OPTIONAL: delimiter character for attribute list. (Defaults to & if blank)",
+			"Value":"&",
+			"Type":"String"
+		}
+	],
+	"Variables":[]
+}

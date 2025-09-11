@@ -1,0 +1,50 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.cube.view.publish",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.cube.view.publish.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pCube",
+			"Prompt":"REQUIRED: Cube Name",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pView",
+			"Prompt":"REQUIRED: Private View Name",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pSubPublish",
+			"Prompt":"OPTIONAL: Publish Private Subsets? (Boolean 1=Yes)",
+			"Value":1,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pOverwrite",
+			"Prompt":"OPTIONAL: Overwrite Existing Named View? (Boolean 1=Yes)",
+			"Value":0,
+			"Type":"Numeric"
+		}
+	],
+	"Variables":[]
+}

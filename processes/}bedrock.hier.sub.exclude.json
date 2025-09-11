@@ -1,0 +1,62 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.hier.sub.exclude",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.hier.sub.exclude.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pDim",
+			"Prompt":"REQUIRED: Dimension name",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pHier",
+			"Prompt":"OPTIONAL: Hierarchy name (default if blank = same named hierarchy)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pSub",
+			"Prompt":"REQUIRED: Subset name",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pExclusions",
+			"Prompt":"OPTIONAL: Elements to Exclude From Subset (Separated by Delimiter, Accepts Wild card)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pDelim",
+			"Prompt":"OPTIONAL: Delimiter character",
+			"Value":"&",
+			"Type":"String"
+		},
+		{
+			"Name":"pTemp",
+			"Prompt":"OPTIONAL: Use temporary objects? (Boolean 1=True)",
+			"Value":1,
+			"Type":"Numeric"
+		}
+	],
+	"Variables":[]
+}

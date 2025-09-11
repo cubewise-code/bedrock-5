@@ -1,0 +1,44 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.hier.sub.create.orphans",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.hier.sub.create.orphans.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pDim",
+			"Prompt":"REQUIRED: Dimension name",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pHier",
+			"Prompt":"OPTIONAL: Hierarchy name (default if blank = same named hierarchy)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pTemp",
+			"Prompt":"OPTIONAL: Use temporary objects? (Boolean 1=True)",
+			"Value":1,
+			"Type":"Numeric"
+		}
+	],
+	"Variables":[]
+}

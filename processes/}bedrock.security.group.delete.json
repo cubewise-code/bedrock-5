@@ -1,0 +1,38 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.security.group.delete",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.security.group.delete.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pGroup",
+			"Prompt":"REQUIRED: Groups (Separated by Delimiter, Accepts Wild card)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pDelim",
+			"Prompt":"OPTIONAL: Delimiter character (Defaults to & if left blank)",
+			"Value":"&",
+			"Type":"String"
+		}
+	],
+	"Variables":[]
+}

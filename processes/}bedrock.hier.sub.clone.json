@@ -1,0 +1,86 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.hier.sub.clone",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.hier.sub.clone.ti",
+	"DataSource":
+	{
+		"Type":"TM1DimensionSubset",
+		"dataSourceNameForServer":"}Cubes",
+		"dataSourceNameForClient":"}Cubes",
+		"subset":"All"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pSrcDim",
+			"Prompt":"REQUIRED: Dimension where the subset exists",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pSrcHier",
+			"Prompt":"OPTIONAL: Source Hierarchy (blank = same as source)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pSrcSub",
+			"Prompt":"REQUIRED: Source Subset",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pTgtDim",
+			"Prompt":"OPTIONAL: Target dimension (blank = same as source)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pTgtHier",
+			"Prompt":"OPTIONAL: Target Hierarchy (blank = same as Target Dimension)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pTgtSub",
+			"Prompt":"REQUIRED: Target Subset",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pTemp",
+			"Prompt":"OPTIONAL: Use temporary objects? (Boolean 1=True)",
+			"Value":1,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pAlias",
+			"Prompt":"Optional: Set Alias for Subset",
+			"Value":"",
+			"Type":"String"
+		}
+	],
+	"Variables":
+	[
+		{
+			"Name":"vEle",
+			"Type":"String",
+			"Position":1,
+			"StartByte":0,
+			"EndByte":0
+		}
+	]
+}

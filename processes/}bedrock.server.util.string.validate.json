@@ -1,0 +1,74 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.server.util.string.validate",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.server.util.string.validate.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":1,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pInputString",
+			"Prompt":"REQUIRED: Element name to validate and update if necessary",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pUndesirableFileSystem",
+			"Prompt":"OPTIONAL: Undesirable characters for file system (e.g. /|\\>\"<:?* )",
+			"Value":"/|\\>\"<:?*",
+			"Type":"String"
+		},
+		{
+			"Name":"pUndesirable1st",
+			"Prompt":"OPTIONAL: Undesirable 1st characters (e.g. '+-[]@!{}% )",
+			"Value":"'+-[]@!{}%",
+			"Type":"String"
+		},
+		{
+			"Name":"pChanges",
+			"Prompt":"OPTIONAL: String showing what to change. Replaces with pReplaceIfNotFound if blank.",
+			"Value":"\\,B Slash&/,F Slash&|, &-,Minus&+,Plus&>,greater than&<,less than",
+			"Type":"String"
+		},
+		{
+			"Name":"pReplaceIfNotFound",
+			"Prompt":"OPTIONAL: Replace ndesirable character with this if not specified in pChanges above (blank will delete)",
+			"Value":"_",
+			"Type":"String"
+		},
+		{
+			"Name":"pDelim",
+			"Prompt":"REQUIRED: Delimiter between definitions",
+			"Value":"&",
+			"Type":"String"
+		},
+		{
+			"Name":"pSeperator",
+			"Prompt":"REQUIRED: Seperator between current & desired",
+			"Value":",",
+			"Type":"String"
+		},
+		{
+			"Name":"pMode",
+			"Prompt":"REQUIRED: 1=Validate for File System only, 2=Validate for 1st only, 3=Validate Fully",
+			"Value":3,
+			"Type":"Numeric"
+		}
+	],
+	"Variables":[]
+}

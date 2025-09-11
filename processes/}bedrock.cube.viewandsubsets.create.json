@@ -1,0 +1,86 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.cube.viewandsubsets.create",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.cube.viewandsubsets.create.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":1,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pCube",
+			"Prompt":"REQUIRED: List of Cubes (Separated by Delimiter, Accepts Wild card)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pView",
+			"Prompt":"OPTIONAL: View (will default to pSubset if left blank)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pSub",
+			"Prompt":"OPTIONAL: Subset (will default to pView if left blank)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pDim",
+			"Prompt":"REQUIRED: Dimension(s) to create empty processing subsets for (separated by delimiter), * = all",
+			"Value":"*",
+			"Type":"String"
+		},
+		{
+			"Name":"pDelim",
+			"Prompt":"OPTIONAL: List Delimiter (default value if blank = '&')",
+			"Value":"&",
+			"Type":"String"
+		},
+		{
+			"Name":"pSuppressZero",
+			"Prompt":"OPTIONAL: Suppress Zeros (Boolean Yes = 1)",
+			"Value":1,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pSuppressConsol",
+			"Prompt":"OPTIONAL: Suppress Calcs (Boolean Yes = 1)",
+			"Value":1,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pSuppressRules",
+			"Prompt":"OPTIONAL: Suppress Rules (Boolean Yes = 1)",
+			"Value":1,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pTemp",
+			"Prompt":"OPTIONAL: Make View Temporary (1=Temporary)",
+			"Value":1,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pSubN",
+			"Prompt":"OPTIONAL: Create N level subset for all dims not mentioned in pDim",
+			"Value":0,
+			"Type":"Numeric"
+		}
+	],
+	"Variables":[]
+}

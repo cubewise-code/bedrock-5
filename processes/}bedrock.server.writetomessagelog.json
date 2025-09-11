@@ -1,0 +1,38 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.server.writetomessagelog",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.server.writetomessagelog.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pLevel",
+			"Prompt":"REQUIRED: Severity of the message - INFO, DEBUG or ERROR",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pMessage",
+			"Prompt":"REQUIRED: Message to display in TM1 server Message Log",
+			"Value":"",
+			"Type":"String"
+		}
+	],
+	"Variables":[]
+}

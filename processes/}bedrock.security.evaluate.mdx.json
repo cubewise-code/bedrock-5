@@ -1,0 +1,56 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.security.evaluate.mdx",
+	"HasSecurityAccess":false,
+	"Code@Code.link":"}bedrock.security.evaluate.mdx.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pNameSpace",
+			"Prompt":"If CAM ID is used we need to check namespaces enter 1 for CAMID 0 for not (mode 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pFilePath",
+			"Prompt":"OPTIONAL: Export Directory (will default to error file path)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pFileName",
+			"Prompt":"OPTIONAL: Export Filename (If Left Blank Defaults to processname_export.csv)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pDelim",
+			"Prompt":"OPTIONAL: AsciiOutput delimiter character (Default=comma, exactly 3 digits = ASCII code)",
+			"Value":",",
+			"Type":"String"
+		},
+		{
+			"Name":"pQuote",
+			"Prompt":"OPTIONAL: AsciiOutput quote character (Accepts empty quote, exactly 3 digits = ASCII code)",
+			"Value":"\"",
+			"Type":"String"
+		}
+	],
+	"Variables":[]
+}

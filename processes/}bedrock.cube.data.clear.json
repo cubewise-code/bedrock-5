@@ -1,0 +1,104 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.cube.data.clear",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.cube.data.clear.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pCube",
+			"Prompt":"REQUIRED: Cube Name (wildcard * and/or cube1 & cube2 list)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pView",
+			"Prompt":"OPTIONAL: View name to be cleared (uses pFilter if pView not specified else clears entire cube)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pFilter",
+			"Prompt":"Optional but ignored if view is specified: Year¦ 2006 + 2007 & Scenario¦ Actual + Budget & Organization¦ North America Operations",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pFilterParallel",
+			"Prompt":"OPTIONAL: Parallelization Filter: Month:Q1+Q2+Q3+Q4 (Blank=run single threaded). Single dimension parallel slices. Will be added to filter single element at a time. Dimension must not be part of filter",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pParallelThreads",
+			"Prompt":"OPTIONAL: Ignored if pFilterParallel is empty. Maximum number of threads to run when parallel processing is enabled ( if <2 will execute one thread, but parallel filter is still applied )",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pDimDelim",
+			"Prompt":"OPTIONAL: Delimiter for start of Dimension/Element set  (default value if blank = '&')",
+			"Value":"&",
+			"Type":"String"
+		},
+		{
+			"Name":"pEleStartDelim",
+			"Prompt":"OPTIONAL: Delimiter for start of element list  (default value if blank = '¦')",
+			"Value":"¦",
+			"Type":"String"
+		},
+		{
+			"Name":"pEleDelim",
+			"Prompt":"OPTIONAL: Delimiter between elements (default value if blank = '+')",
+			"Value":"+",
+			"Type":"String"
+		},
+		{
+			"Name":"pSuppressConsolStrings",
+			"Prompt":"OPTIONAL: Suppress Consolidated String Cells (Skip = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pCubeLogging",
+			"Prompt":"Required: Cube Logging (0 = No transaction logging, 1 = Logging of transactions, 2 = Ignore Cube Logging - No Action Taken)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pTemp",
+			"Prompt":"OPTIONAL: Make Views and subsets Temporary (1=Temporary)",
+			"Value":1,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pSandbox",
+			"Prompt":"OPTIONAL: To use sandbox not base data enter the sandbox name (invalid name will result in process error)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pSubN",
+			"Prompt":"OPTIONAL: Create N level subset for all dims not mentioned in pFilter",
+			"Value":0,
+			"Type":"Numeric"
+		}
+	],
+	"Variables":[]
+}

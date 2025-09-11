@@ -1,0 +1,62 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.server.dir.backup",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.server.dir.backup.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pSrcDir",
+			"Prompt":"REQUIRED: Source Directory to Backup",
+			"Value":".",
+			"Type":"String"
+		},
+		{
+			"Name":"pTgtDir",
+			"Prompt":"REQUIRED: Destination Directory for Backup",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pExcludeFilter",
+			"Prompt":"OPTIONAL: Exclude filter (To include all files use pFilterExclude = \"\")",
+			"Value":".log & .cfg & .csv & .cmal & .txt & .feeders",
+			"Type":"String"
+		},
+		{
+			"Name":"pDelim",
+			"Prompt":"OPTIONAL: Delimiter",
+			"Value":"&",
+			"Type":"String"
+		},
+		{
+			"Name":"pSubDirCopy",
+			"Prompt":"OPTIONAL: Include subdirectories? (Boolean True = 1)",
+			"Value":1,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pRobocopy",
+			"Prompt":"OPTIONAL: Use robocopy? (Boolean True = 1), WIN only",
+			"Value":0,
+			"Type":"Numeric"
+		}
+	],
+	"Variables":[]
+}

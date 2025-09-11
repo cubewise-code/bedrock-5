@@ -1,8 +1,0 @@
-blank_issues_enabled: false
-contact_links:
-  - name: Documentation
-    url: https://github.com/cubewise-code/bedrock-5/wiki
-    about: Check out the documentation for detailed guides and API references
-  - name: Discussions
-    url: https://github.com/cubewise-code/bedrock-5/discussions
-    about: For general discussions, ideas, and community support

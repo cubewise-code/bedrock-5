@@ -1,0 +1,56 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.security.client.group.assign",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.security.client.group.assign.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pClient",
+			"Prompt":"REQUIRED: Client Names Separated by Delimiter and accepts wildcards",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pGroup",
+			"Prompt":"REQUIRED: Group Names Separated by Delimiter and excepts wildcards",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pDelim",
+			"Prompt":"OPTIONAL: Delimiter (default value if blank = '&')",
+			"Value":"&",
+			"Type":"String"
+		},
+		{
+			"Name":"pAddOrRemove",
+			"Prompt":"REQUIRED: Add or Remove",
+			"Value":"Add",
+			"Type":"String"
+		},
+		{
+			"Name":"pSecurityRefresh",
+			"Prompt":"REQUIRED: Refresh Security?",
+			"Value":"Yes",
+			"Type":"String"
+		}
+	],
+	"Variables":[]
+}

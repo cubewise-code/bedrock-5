@@ -1,0 +1,50 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.hier.sub.publish",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.hier.sub.publish.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pDim",
+			"Prompt":"REQUIRED: dimension name (if a dim:hier tuple is supplied then the hierarchy parameter will be ignored)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pHier",
+			"Prompt":"OPTIONAL: hierarchy name (if blank assume same named hierarchy. delimited dim:hier can also be passed in the dimension parameter)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pSub",
+			"Prompt":"REQUIRED: private subset name",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pOverwrite",
+			"Prompt":"OPTIONAL: Overwrite Existing public subset with same name? (Boolean 1=Yes)",
+			"Value":0,
+			"Type":"Numeric"
+		}
+	],
+	"Variables":[]
+}

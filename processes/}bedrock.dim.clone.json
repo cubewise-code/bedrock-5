@@ -1,0 +1,80 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.dim.clone",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.dim.clone.ti",
+	"DataSource":
+	{
+		"Type":"TM1DimensionSubset",
+		"dataSourceNameForServer":"}Cubes",
+		"dataSourceNameForClient":"}Cubes",
+		"subset":"All"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pSrcDim",
+			"Prompt":"REQUIRED: Source Dimension",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pTgtDim",
+			"Prompt":"OPTIONAL: Target Dimension (will default to pSrcDim_clone If blank (or) is same as pSrcDim)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pHier",
+			"Prompt":"REQUIRED: Hierarchies to be included (will use default is left blank), accepts wildcards (if = *, then all hierarchies)",
+			"Value":"*",
+			"Type":"String"
+		},
+		{
+			"Name":"pAttr",
+			"Prompt":"REQUIRED: Include Attributes? (Boolean 1=True)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pUnwind",
+			"Prompt":"REQUIRED: 0 = Delete all Elements, 1 = Unwind Existing Elements, 2 = Do not change Existing Elements",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pDelim",
+			"Prompt":"OPTIONAL: delimiter character for element list (required if pEle parameter is used) (default value if blank = '&')",
+			"Value":"&",
+			"Type":"String"
+		},
+		{
+			"Name":"pSub",
+			"Prompt":"OPTIONAL: if 1 = Clone subsets",
+			"Value":0,
+			"Type":"Numeric"
+		}
+	],
+	"Variables":
+	[
+		{
+			"Name":"vEle",
+			"Type":"String",
+			"Position":1,
+			"StartByte":0,
+			"EndByte":0
+		}
+	]
+}

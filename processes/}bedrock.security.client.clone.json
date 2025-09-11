@@ -1,0 +1,56 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.security.client.clone",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.security.client.clone.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pSrcClient",
+			"Prompt":"REQUIRED: Source Client",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pTgtClient",
+			"Prompt":"REQUIRED: List of Target Clients Separated by Delimiter",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pMode",
+			"Prompt":"OPTIONAL: Mode REPLACE or ADD (default = REPLACE)",
+			"Value":"REPLACE",
+			"Type":"String"
+		},
+		{
+			"Name":"pDelim",
+			"Prompt":"OPTIONAL: Delimiter (Use for a list of target users. Defaults to & if blank.)",
+			"Value":"&",
+			"Type":"String"
+		},
+		{
+			"Name":"pPassword",
+			"Prompt":"OPTIONAL: Initial Password",
+			"Value":"",
+			"Type":"String"
+		}
+	],
+	"Variables":[]
+}

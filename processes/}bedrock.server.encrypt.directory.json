@@ -1,0 +1,62 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.server.encrypt.directory",
+	"HasSecurityAccess":false,
+	"Code@Code.link":"}bedrock.server.encrypt.directory.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pType",
+			"Prompt":"REQUIRED: .rux, .dim, .pro, .cub",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pDirectory",
+			"Prompt":"REQUIRED: Source directory to be processed",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pDestPath",
+			"Prompt":"REQUIRED: Directory where to store encrypted files, blank = logging directory",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pConfigLocation",
+			"Prompt":"REQUIRED: Path to tm1crypt.config file",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pTM1CryptLocation",
+			"Prompt":"REQUIRED: Path to tm1crypt.exe",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pAction",
+			"Prompt":"REQUIRED: 5 = unencrypt, 4 = encrypt",
+			"Value":"5",
+			"Type":"String"
+		}
+	],
+	"Variables":[]
+}

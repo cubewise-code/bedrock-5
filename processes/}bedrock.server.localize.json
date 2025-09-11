@@ -1,0 +1,50 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.server.localize",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.server.localize.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pDim",
+			"Prompt":"OPTIONAL: Dimension (Delimited list & wildcards (*) acceptable)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pCube",
+			"Prompt":"OPTIONAL: Cube( Delimited list & wildcards (*) acceptable)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pDelim",
+			"Prompt":"OPTIONAL: delimiter character for dimension list. (Defaults to & if blank)",
+			"Value":"&",
+			"Type":"String"
+		},
+		{
+			"Name":"pSub",
+			"Prompt":"OPTIONAL: If localizing attributes for a dimension also localize subset names?",
+			"Value":0,
+			"Type":"Numeric"
+		}
+	],
+	"Variables":[]
+}

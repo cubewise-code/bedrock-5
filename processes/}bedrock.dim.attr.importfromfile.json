@@ -1,0 +1,86 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.dim.attr.importfromfile",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.dim.attr.importfromfile.ti",
+	"DataSource":
+	{
+		"Type":"ASCII",
+		"dataSourceNameForServer":"D:\\TM1Models\\Bedrock.v4\\Data\\Attribute.csv",
+		"dataSourceNameForClient":"D:\\TM1Models\\Bedrock.v4\\Data\\Attribute.csv",
+		"asciiHeaderRecords":1,
+		"asciiQuoteCharacter":"\"",
+		"asciiDecimalSeparator":".",
+		"asciiThousandSeparator":",",
+		"asciiDelimiterType":"Character",
+		"asciiDelimiterChar":","
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pDim",
+			"Prompt":"REQUIRED: dimension name",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pSrcDir",
+			"Prompt":"REQUIRED: Source Directory",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pSrcFile",
+			"Prompt":"REQUIRED: Source File Name",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pTitleRows",
+			"Prompt":"OPTIONAL: Number of Title Rows to Skip (default = 1)",
+			"Value":1,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pDelim",
+			"Prompt":"OPTIONAL: File Delimiter Character (Default=comma, exactly 3 digits = ASCII code)",
+			"Value":",",
+			"Type":"String"
+		},
+		{
+			"Name":"pQuote",
+			"Prompt":"OPTIONAL: Quote Character (Accepts empty quote, exactly 3 digits = ASCII code)",
+			"Value":"\"",
+			"Type":"String"
+		}
+	],
+	"Variables":
+	[
+		{
+			"Name":"vAttr",
+			"Type":"String",
+			"Position":1,
+			"StartByte":0,
+			"EndByte":0
+		},
+		{
+			"Name":"vAttrType",
+			"Type":"String",
+			"Position":2,
+			"StartByte":0,
+			"EndByte":0
+		}
+	]
+}

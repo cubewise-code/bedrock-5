@@ -1,0 +1,68 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.hier.consol.flat.create",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.hier.consol.flat.create.ti",
+	"DataSource":
+	{
+		"Type":"TM1DimensionSubset",
+		"dataSourceNameForServer":"}Dimensions",
+		"dataSourceNameForClient":"}Dimensions",
+		"subset":"All"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pDim",
+			"Prompt":"REQUIRED: Dimension",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pHier",
+			"Prompt":"OPTIONAL: Hierarchy (will default to dimension name if blank)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pSrcConsol",
+			"Prompt":"OPTIONAL: Source consolidated element name",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pTgtConsol",
+			"Prompt":"REQUIRED: Target consolidated element name",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pWeight",
+			"Prompt":"OPTIONAL: Component Weight",
+			"Value":1,
+			"Type":"Numeric"
+		}
+	],
+	"Variables":
+	[
+		{
+			"Name":"vElement",
+			"Type":"String",
+			"Position":1,
+			"StartByte":0,
+			"EndByte":0
+		}
+	]
+}

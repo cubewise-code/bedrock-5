@@ -1,0 +1,32 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.process.template",
+	"HasSecurityAccess":false,
+	"Code@Code.link":"}bedrock.process.template.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"Write status messages to tm1server.log file?",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pTemp",
+			"Prompt":"Use temporary objects for views & subsets?",
+			"Value":1,
+			"Type":"Numeric"
+		}
+	],
+	"Variables":[]
+}

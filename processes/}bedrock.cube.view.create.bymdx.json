@@ -1,0 +1,50 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.cube.view.create.bymdx",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.cube.view.create.bymdx.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pCube",
+			"Prompt":"REQUIRED: Cube Name",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pView",
+			"Prompt":"REQUIRED: View Name",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pMDXExpr",
+			"Prompt":"REQUIRED: Valid MDX Expression",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pTemp",
+			"Prompt":"OPTIONAL: Make View Temporary (1=Temporary)",
+			"Value":1,
+			"Type":"Numeric"
+		}
+	],
+	"Variables":[]
+}

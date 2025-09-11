@@ -1,0 +1,68 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.chore.execution.check",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.chore.execution.check.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pMonthDays",
+			"Prompt":"OPTIONAL: Delimited string of days in month as dd e.g. 01 & 02 & 30 & 31 (Blank=All)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pWeekDays",
+			"Prompt":"OPTIONAL: Delimited string of days in week as ddd e.g. MON & WED (Blank=All)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pDelim",
+			"Prompt":"OPTIONAL: String array delimiter. Only 1 character allowed (Blank=&)",
+			"Value":"&",
+			"Type":"String"
+		},
+		{
+			"Name":"pStartTime",
+			"Prompt":"OPTIONAL: Time to start running chore from in 24 hr time (at start of hour) (Blank=0)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pEndTime",
+			"Prompt":"OPTIONAL: Time to finish chore being able to start in 24 hr time (Blank=24)",
+			"Value":24,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pScheduleTimezone",
+			"Prompt":"OPTIONAL: Timezone to check the days / hours in if it is different from server timezone",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pServerTimezone",
+			"Prompt":"OPTIONAL: Timezone for server if ScheduleTimezone is different",
+			"Value":"",
+			"Type":"String"
+		}
+	],
+	"Variables":[]
+}

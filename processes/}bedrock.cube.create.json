@@ -1,0 +1,50 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.cube.create",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.cube.create.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pCube",
+			"Prompt":"REQUIRED: Cube Name",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pDims",
+			"Prompt":"REQUIRED: Dim1 & Dim2 & Dim3 & Dim4 & Dim5",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pRecreate",
+			"Prompt":"OPTIONAL: If cube exists delete and recreate (Default=0)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pDelim",
+			"Prompt":"OPTIONAL: Delimiter for Dimension list (default value if blank = '&')",
+			"Value":"&",
+			"Type":"String"
+		}
+	],
+	"Variables":[]
+}

@@ -1,0 +1,38 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.security.cube.cellsecurity.create",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.security.cube.cellsecurity.create.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pCube",
+			"Prompt":"REQUIRED: Cube to create cell security for",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pDim",
+			"Prompt":"REQUIRED: Map of dimensions to include in cell security as a array of 1:0 colon delimited e.g. \"1:0:0:1:0\"",
+			"Value":"",
+			"Type":"String"
+		}
+	],
+	"Variables":[]
+}

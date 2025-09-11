@@ -1,0 +1,62 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.hier.element.move",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.hier.element.move.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pDim",
+			"Prompt":"REQUIRED: Dimension Name",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pHier",
+			"Prompt":"OPTIONAL: Hierarchy Name",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pEle",
+			"Prompt":"REQUIRED: Element Name",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pTgtConsol",
+			"Prompt":"REQUIRED: Target Consolidation",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pMode",
+			"Prompt":"REQUIRED: Add or Remove Element from Hierarchy",
+			"Value":"Add",
+			"Type":"String"
+		},
+		{
+			"Name":"pWeight",
+			"Prompt":"OPTIONAL: Element Weight (for Add only)",
+			"Value":1,
+			"Type":"Numeric"
+		}
+	],
+	"Variables":[]
+}

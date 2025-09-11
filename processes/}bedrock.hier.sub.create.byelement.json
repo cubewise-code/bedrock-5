@@ -1,0 +1,80 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.hier.sub.create.byelement",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.hier.sub.create.byelement.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pDim",
+			"Prompt":"REQUIRED: Dimension name",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pHier",
+			"Prompt":"OPTIONAL: Hierarchy name (default if blank = same named hierarchy)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pSub",
+			"Prompt":"REQUIRED: Subset name",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pEle",
+			"Prompt":"REQUIRED: Elements Separated by Delimiter",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pDelim",
+			"Prompt":"OPTIONAL: Delimiter character",
+			"Value":"&",
+			"Type":"String"
+		},
+		{
+			"Name":"pAddToSubset",
+			"Prompt":"OPTIONAL: Add to Subset if it Already Exists (0=No 1=Yes)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pExpandConsol",
+			"Prompt":"OPTIONAL: Replace consolidations with their descendants or their leaf level descendants (0=No 1=Descendants 2=Leaf Level Descendants)",
+			"Value":1,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pAlias",
+			"Prompt":"OPTIONAL: Set Alias for Subset",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pTemp",
+			"Prompt":"OPTIONAL: Use temporary objects? (Boolean 1=True)",
+			"Value":1,
+			"Type":"Numeric"
+		}
+	],
+	"Variables":[]
+}

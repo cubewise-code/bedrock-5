@@ -1,0 +1,74 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.cube.dimension.replace",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.cube.dimension.replace.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pCube",
+			"Prompt":"REQUIRED: Cube",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pSrcDim",
+			"Prompt":"REQUIRED: Dimension to be replaced",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pTgtDim",
+			"Prompt":"REQUIRED: Replacement Dimension",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pIncludeData",
+			"Prompt":"REQUIRED: If 1 then data is kept (copied through clone cube)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pEle",
+			"Prompt":"REQUIRED: If pIncludeData =1: Element in target dimension to load data to",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pIncludeRules",
+			"Prompt":"REQUIRED: Unload and reload the rule (0 = do not keep the rule, 1 = unload the rule, 2 = unload the rule and reload on new cube)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pCtrlObj",
+			"Prompt":"REQUIRED: Allow overwrite control cubes",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pTemp",
+			"Prompt":"REQUIRED: Delete the clone cube (1 = delete, 0 = not delete)",
+			"Value":1,
+			"Type":"Numeric"
+		}
+	],
+	"Variables":[]
+}

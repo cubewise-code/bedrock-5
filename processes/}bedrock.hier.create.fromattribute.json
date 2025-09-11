@@ -1,0 +1,112 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.hier.create.fromattribute",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.hier.create.fromattribute.ti",
+	"DataSource":
+	{
+		"Type":"TM1CubeView",
+		"dataSourceNameForServer":"}ElementAttributes_}Clients",
+		"dataSourceNameForClient":"}ElementAttributes_}Clients",
+		"view":"Temp"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pDim",
+			"Prompt":"REQUIRED: Dimension",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pSrcHier",
+			"Prompt":"OPTIONAL: Source Hierarchy, If not specified takes the default Hierarchy",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pTgtHier",
+			"Prompt":"OPTIONAL: Target Hierarchy, If not specified, takes the same name as attribute",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pAttr",
+			"Prompt":"REQUIRED: Attribute",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pTopNode",
+			"Prompt":"OPTIONAL: The name of the Target Hierarchy top element (will default to 'All ' attribute name)",
+			"Value":"Total <pAttr>",
+			"Type":"String"
+		},
+		{
+			"Name":"pPrefix",
+			"Prompt":"OPTIONAL: Prefix before the attribute value",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pSuffix",
+			"Prompt":"OPTIONAL: Suffix after the attribute value",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pSkipBlank",
+			"Prompt":"OPTIONAL: To manage empty attribute: 0 = Skip, 1 = Send to unallocated node (by default blank attribute values are skipped)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pUnallocated",
+			"Prompt":"OPTIONAL: Naming convention for rollup if attribute is empty (eg. Unallocated <pAttr>, No <pAttr>, Undefined <pAttr>)",
+			"Value":"Undefined <pAttr>",
+			"Type":"String"
+		},
+		{
+			"Name":"pUnwind",
+			"Prompt":"OPTIONAL: Unwind target hierarchy (0 = Delete all elements, 1 = Unwind hierarchy and keep elements)",
+			"Value":0,
+			"Type":"Numeric"
+		}
+	],
+	"Variables":
+	[
+		{
+			"Name":"vEle",
+			"Type":"String",
+			"Position":1,
+			"StartByte":0,
+			"EndByte":0
+		},
+		{
+			"Name":"vAttr",
+			"Type":"String",
+			"Position":2,
+			"StartByte":0,
+			"EndByte":0
+		},
+		{
+			"Name":"Value",
+			"Type":"String",
+			"Position":3,
+			"StartByte":0,
+			"EndByte":0
+		}
+	]
+}

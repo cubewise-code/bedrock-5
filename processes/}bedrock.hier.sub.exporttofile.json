@@ -1,0 +1,92 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.hier.sub.exporttofile",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.hier.sub.exporttofile.ti",
+	"DataSource":
+	{
+		"Type":"TM1DimensionSubset",
+		"dataSourceNameForServer":"}Cubes",
+		"dataSourceNameForClient":"}Cubes",
+		"subset":"All"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pDim",
+			"Prompt":"REQUIRED: Dimension name",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pHier",
+			"Prompt":"OPTIONAL: Hierarchy name (default if blank = same named hierarchy)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pSub",
+			"Prompt":"REQUIRED: Subset name",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pTgtDir",
+			"Prompt":"REQUIRED: Target Directory Path",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pTgtFile",
+			"Prompt":"OPTIONAL: Target File Name (Default Extension .csv)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pTitleRecord",
+			"Prompt":"OPTIONAL: Boolean: 1 = Yes include header row",
+			"Value":1,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pDelim",
+			"Prompt":"OPTIONAL: AsciiOutput delimiter character (Default=comma, exactly 3 digits = ASCII code)",
+			"Value":",",
+			"Type":"String"
+		},
+		{
+			"Name":"pQuote",
+			"Prompt":"OPTIONAL: AsciiOutput quote character (Accepts empty quote, exactly 3 digits = ASCII code)",
+			"Value":"\"",
+			"Type":"String"
+		},
+		{
+			"Name":"pCharacterSet",
+			"Prompt":"OPTIONAL: The output character set (defaults to TM1CS_UTF8 if blank)",
+			"Value":"",
+			"Type":"String"
+		}
+	],
+	"Variables":
+	[
+		{
+			"Name":"vElement",
+			"Type":"String",
+			"Position":1,
+			"StartByte":0,
+			"EndByte":0
+		}
+	]
+}

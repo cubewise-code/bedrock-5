@@ -1,0 +1,56 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.hier.sub.delete",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.hier.sub.delete.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pDim",
+			"Prompt":"OPTIONAL: Dimension name (if * then ALL dimensions )",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pHier",
+			"Prompt":"OPTIONAL: Hierarchy name (if * then ALL hierarchies for the specified dimensions)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pSub",
+			"Prompt":"REQUIRED: Filter on subsets (delimiter separated list of subset names, accepts wildcards)",
+			"Value":"}Bedrock*",
+			"Type":"String"
+		},
+		{
+			"Name":"pDelim",
+			"Prompt":"OPTIONAL: Delimiter character for subset list (required if pSub parameter is used)",
+			"Value":"&",
+			"Type":"String"
+		},
+		{
+			"Name":"pMode",
+			"Prompt":"OPTIONAL: <=1 destroy subset, 2 delete all elements",
+			"Value":0,
+			"Type":"Numeric"
+		}
+	],
+	"Variables":[]
+}

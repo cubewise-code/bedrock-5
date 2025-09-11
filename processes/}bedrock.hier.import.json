@@ -1,0 +1,132 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.hier.import",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.hier.import.ti",
+	"DataSource":
+	{
+		"Type":"ASCII",
+		"dataSourceNameForServer":"D:\\TM1Models\\Bedrock.v4\\Log\\Currency Currency 2_Export.csv",
+		"dataSourceNameForClient":"D:\\TM1Models\\Bedrock.v4\\Log\\Currency Currency 2_Export.csv",
+		"asciiHeaderRecords":0,
+		"asciiQuoteCharacter":"\"",
+		"asciiDecimalSeparator":".",
+		"asciiThousandSeparator":",",
+		"asciiDelimiterType":"Character",
+		"asciiDelimiterChar":","
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pDim",
+			"Prompt":"REQUIRED: Dimension",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pHier",
+			"Prompt":"OPTIONAL: Target Hierarchy (defaults to dimension name if blank)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pSrcDir",
+			"Prompt":"OPTIONAL: Source Directory Path (defaults to Error File Directory)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pSrcFile",
+			"Prompt":"OPTIONAL: Source File Name (defaults to 'Dimension Hierarchy _Export.csv' if blank)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pDelim",
+			"Prompt":"OPTIONAL: AsciiOutput delimiter character (Default=comma, exactly 3 digits = ASCII code)",
+			"Value":",",
+			"Type":"String"
+		},
+		{
+			"Name":"pQuote",
+			"Prompt":"OPTIONAL: AsciiOutput quote character (Accepts empty quote, exactly 3 digits = ASCII code)",
+			"Value":"\"",
+			"Type":"String"
+		},
+		{
+			"Name":"pLegacy",
+			"Prompt":"OPTIONAL: 1 = Legacy format (bedrock v3) 0 or empty = new bedrock v4 format",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pUnwind",
+			"Prompt":"OPTIONAL: 1 = unwind elements 0 = like for like copy which may result in lost elements / data (2= no clear or unwind, only add)",
+			"Value":1,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pConsol",
+			"Prompt":"OPTIONAL: Target Consolidation, accepts wildcards ( * will unwind ALL). Note: ignored if pUnwind=0",
+			"Value":"*",
+			"Type":"String"
+		}
+	],
+	"Variables":
+	[
+		{
+			"Name":"V1",
+			"Type":"String",
+			"Position":1,
+			"StartByte":0,
+			"EndByte":0
+		},
+		{
+			"Name":"V2",
+			"Type":"String",
+			"Position":2,
+			"StartByte":0,
+			"EndByte":0
+		},
+		{
+			"Name":"V3",
+			"Type":"String",
+			"Position":3,
+			"StartByte":0,
+			"EndByte":0
+		},
+		{
+			"Name":"V4",
+			"Type":"String",
+			"Position":4,
+			"StartByte":0,
+			"EndByte":0
+		},
+		{
+			"Name":"V5",
+			"Type":"String",
+			"Position":5,
+			"StartByte":0,
+			"EndByte":0
+		},
+		{
+			"Name":"V6",
+			"Type":"String",
+			"Position":6,
+			"StartByte":0,
+			"EndByte":0
+		}
+	]
+}

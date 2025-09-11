@@ -1,0 +1,97 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.security.evaluate.mdx.private",
+	"HasSecurityAccess":false,
+	"Code@Code.link":"}bedrock.security.evaluate.mdx.private.ti",
+	"DataSource":
+	{
+		"Type":"ASCII",
+		"dataSourceNameForServer":"Admin\\store}subs\\Euros.sub",
+		"dataSourceNameForClient":"Admin\\store}subs\\Euros.sub",
+		"asciiHeaderRecords":1,
+		"asciiQuoteCharacter":"\"",
+		"asciiDecimalSeparator":".",
+		"asciiThousandSeparator":",",
+		"asciiDelimiterType":"Character",
+		"asciiDelimiterChar":"@"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pUser",
+			"Prompt":"REQUIRED: User name",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pDimension",
+			"Prompt":"REQUIRED: Dimension name",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pSubset",
+			"Prompt":"REQUIRED: Subset name",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pSubsetFile",
+			"Prompt":"REQUIRED: Path to subset file",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pFilePath",
+			"Prompt":"OPTIONAL: Export Directory (will default to error file path)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pFileName",
+			"Prompt":"OPTIONAL: Export Filename (If Left Blank Defaults to processname_user_dimension_subset_export.csv)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pDelim",
+			"Prompt":"OPTIONAL: AsciiOutput delimiter character (Default=comma, exactly 3 digits = ASCII code)",
+			"Value":",",
+			"Type":"String"
+		},
+		{
+			"Name":"pQuote",
+			"Prompt":"OPTIONAL: AsciiOutput quote character (Accepts empty quote, exactly 3 digits = ASCII code)",
+			"Value":"\"",
+			"Type":"String"
+		},
+		{
+			"Name":"pWriteOutput",
+			"Prompt":"DO NOT USE: for internal use only",
+			"Value":1,
+			"Type":"Numeric"
+		}
+	],
+	"Variables":
+	[
+		{
+			"Name":"vLine",
+			"Type":"String",
+			"Position":1,
+			"StartByte":0,
+			"EndByte":0
+		}
+	]
+}

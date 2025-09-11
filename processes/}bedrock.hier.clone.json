@@ -1,0 +1,74 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.hier.clone",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.hier.clone.ti",
+	"DataSource":
+	{
+		"Type":"TM1DimensionSubset",
+		"dataSourceNameForServer":"}Cubes",
+		"dataSourceNameForClient":"}Cubes",
+		"subset":"All"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pSrcDim",
+			"Prompt":"REQUIRED: Source Dimension",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pSrcHier",
+			"Prompt":"REQUIRED: Source Hierarchy",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pTgtDim",
+			"Prompt":"REQUIRED: Target Dimension (can be the same as source)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pTgtHier",
+			"Prompt":"OPTIONAL: Target Hierarchy (will default to SrcHier_Clone if the dimensions are the same)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pAttr",
+			"Prompt":"OPTIONAL: Include Attributes? (Boolean 1=True)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pUnwind",
+			"Prompt":"REQUIRED:  Unwind? (0 = Delete all Elements, 1 = Unwind Existing Elements, 2 = Do not change Existing Elements (Only relevant if target hierarchy exists) )",
+			"Value":0,
+			"Type":"Numeric"
+		}
+	],
+	"Variables":
+	[
+		{
+			"Name":"vEle",
+			"Type":"String",
+			"Position":1,
+			"StartByte":0,
+			"EndByte":0
+		}
+	]
+}

@@ -1,0 +1,74 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.hier.create.fromrollup",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.hier.create.fromrollup.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pSrcDim",
+			"Prompt":"REQUIRED: Source Dimension",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pSrcHier",
+			"Prompt":"OPTIONAL: Source Hierarchy (blank = same name as source dimension)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pConsol",
+			"Prompt":"REQUIRED: Cons element in source dim to create root element in target",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pTgtDim",
+			"Prompt":"OPTIONAL: Target Dimension (blank = same name as source dimension)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pTgtHier",
+			"Prompt":"OPTIONAL: Target Hierarchy (blank = same name as target dimension)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pAttr",
+			"Prompt":"OPTIONAL: Include Attributes? (Boolean 1=True)",
+			"Value":1,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pUnwind",
+			"Prompt":"OPTIONAL: 0 = Delete all Elements, 1 = Unwind Existing Elements, 2 = Do not change Existing Elements",
+			"Value":2,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pRemove",
+			"Prompt":"OPTIONAL: Remove cons elements from source? (1 = Yes, 0 = No)",
+			"Value":0,
+			"Type":"Numeric"
+		}
+	],
+	"Variables":[]
+}

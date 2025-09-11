@@ -1,0 +1,62 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.server.logfile.delete",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.server.logfile.delete.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pTgtDir",
+			"Prompt":"OPTIONAL: Log file directory. (Blank = from TM1 configuration file)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pLogDays",
+			"Prompt":"REQUIRED: The number of days to retain log Files",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pErrorDays",
+			"Prompt":"REQUIRED: The number of day to retain TM1 Error Logs",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pBedrockDays",
+			"Prompt":"REQUIRED: The number of days to retain Bedrock Debug Files",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pCSVDays",
+			"Prompt":"REQUIRED: The number of days to retain CSV files",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pFileSize",
+			"Prompt":"OPTIONAL: The file size of log files (in MB) to exceed before removal (Default=0). Note: for tm1s*.log transaction logs only",
+			"Value":0,
+			"Type":"Numeric"
+		}
+	],
+	"Variables":[]
+}

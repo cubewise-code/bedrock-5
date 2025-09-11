@@ -1,0 +1,62 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.hier.elements.validate",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.hier.elements.validate.ti",
+	"DataSource":
+	{
+		"Type":"TM1DimensionSubset",
+		"dataSourceNameForServer":"}Dimensions",
+		"dataSourceNameForClient":"}Dimensions",
+		"subset":"}Export.All"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pDim",
+			"Prompt":"OPTIONAL: Dimension name or list? (accepts wildcards). Will process ALL if = *",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pHier",
+			"Prompt":"OPTIONAL: Hierarchy name or list? (accepts wildcards). Will process ALL if = *",
+			"Value":"*",
+			"Type":"String"
+		},
+		{
+			"Name":"pFirst",
+			"Prompt":"OPTIONAL: 0 = Ignore 1st character requirements, 1 = Validate 1st character more stringently than other characters (e.g. for MDX no \"+\" as 1st character)",
+			"Value":1,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pDelim",
+			"Prompt":"OPTIONAL: Delimiter for dimension list (If blank or not passed then \"&\" will be used as default list delimiter)",
+			"Value":"&",
+			"Type":"String"
+		}
+	],
+	"Variables":
+	[
+		{
+			"Name":"vDim",
+			"Type":"String",
+			"Position":1,
+			"StartByte":0,
+			"EndByte":0
+		}
+	]
+}

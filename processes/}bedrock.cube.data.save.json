@@ -1,0 +1,38 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.cube.data.save",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.cube.data.save.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pCube",
+			"Prompt":"REQUIRED: Save data for this cube (Separated by Delimiter, Accepts Wild card)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pDelim",
+			"Prompt":"OPTIONAL: Delimiter",
+			"Value":"&",
+			"Type":"String"
+		}
+	],
+	"Variables":[]
+}

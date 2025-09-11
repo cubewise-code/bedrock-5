@@ -1,0 +1,44 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.cube.delete",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.cube.delete.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pCube",
+			"Prompt":"REQUIRED: List of Cubes to Delete (Separated by Delimiter, Accepts Wild card)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pDelim",
+			"Prompt":"OPTIONAL: Delimiter",
+			"Value":"&",
+			"Type":"String"
+		},
+		{
+			"Name":"pCtrlObj",
+			"Prompt":"OPTIONAL: To Delete control cube 1=Delete control objects, 0=Do not delete control objects, Default value 0",
+			"Value":0,
+			"Type":"Numeric"
+		}
+	],
+	"Variables":[]
+}

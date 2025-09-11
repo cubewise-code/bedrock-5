@@ -1,0 +1,44 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.security.group.create",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.security.group.create.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pGroup",
+			"Prompt":"REQUIRED: Groups separated by delimiter",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pAlias",
+			"Prompt":"OPTIONAL: single or delimited list of }TM1_DefaultDisplayValue alias to assign to group (if list of groups then size of list of aliases must be the same!)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pDelim",
+			"Prompt":"OPTIONAL: Delimiter character (Defaults to & if left blank)",
+			"Value":"&",
+			"Type":"String"
+		}
+	],
+	"Variables":[]
+}

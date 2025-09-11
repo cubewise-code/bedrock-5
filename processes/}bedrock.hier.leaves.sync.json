@@ -1,0 +1,62 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.hier.leaves.sync",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.hier.leaves.sync.ti",
+	"DataSource":
+	{
+		"Type":"TM1DimensionSubset",
+		"dataSourceNameForServer":"}Dimensions",
+		"dataSourceNameForClient":"}Dimensions",
+		"subset":"All"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pDim",
+			"Prompt":"REQUIRED: Dimension, accepts wildcards (all dimensions = *)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pHier",
+			"Prompt":"OPTIONAL: Hierarchy, accepts wildcards (all hierarchies = *)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pDelim",
+			"Prompt":"OPTIONAL: Delimiter character (default value if blank = '&')",
+			"Value":"&",
+			"Type":"String"
+		},
+		{
+			"Name":"pReverse",
+			"Prompt":"OPTIONAL: If true then also add any elements from the Leaves hierarchy not existing in the specified hierarchies to those hierarchies (under a consolidation bucket 'ORPHAN LEAVES')",
+			"Value":0,
+			"Type":"Numeric"
+		}
+	],
+	"Variables":
+	[
+		{
+			"Name":"vDimHier",
+			"Type":"String",
+			"Position":1,
+			"StartByte":0,
+			"EndByte":0
+		}
+	]
+}

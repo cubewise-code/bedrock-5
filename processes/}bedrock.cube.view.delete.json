@@ -1,0 +1,44 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.cube.view.delete",
+	"HasSecurityAccess":true,
+	"Code@Code.link":"}bedrock.cube.view.delete.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pCube",
+			"Prompt":"REQUIRED: List of Cubes Separated by Delimiter (For all cubes just the wildcard character alone i.e. *)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pView",
+			"Prompt":"REQUIRED: List of Views Separated by Delimiter. Wildcards Permitted on View Names.",
+			"Value":"}bedrock*",
+			"Type":"String"
+		},
+		{
+			"Name":"pDelim",
+			"Prompt":"OPTIONAL: Delimiter Character  (default value if blank = '&')",
+			"Value":"&",
+			"Type":"String"
+		}
+	],
+	"Variables":[]
+}

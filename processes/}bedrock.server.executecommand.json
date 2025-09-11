@@ -1,0 +1,53 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.server.executecommand",
+	"HasSecurityAccess":false,
+	"Code@Code.link":"}bedrock.server.executecommand.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pLogOutput",
+			"Prompt":"Optional: write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pCommand",
+			"Prompt":"The full command line string to execute",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pWait",
+			"Prompt":"Wait for command to finish 0=false 1=true",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pPowerShell",
+			"Prompt":"Execute a PowerShell script 0=false 1=true",
+			"Value":0,
+			"Type":"Numeric"
+		}
+	],
+	"Variables":
+	[
+		{
+			"Name":"vCommandOutput",
+			"Type":"String",
+			"Position":1,
+			"StartByte":0,
+			"EndByte":0
+		}
+	]
+}
