@@ -1,128 +1,177 @@
-# Bedrock 5 – Frequently Asked Questions (FAQ)
+# 📖 Bedrock 5 FAQ
 
-Welcome to the FAQ for Bedrock 5 – the next-generation open-source TI library for IBM Planning Analytics (TM1) v12+, PA3, and Containerized deployments.
-> Note: Bedrock 5 is under active development and will be officially released on September 30. See the upcoming webinar
+Welcome to the **Bedrock 5 Frequently Asked Questions (FAQ)**.  
+This document provides quick answers to common questions about Bedrock 5, its compatibility, installation, and usage.
 
-## General
+---
 
-### ❓ What is Bedrock?
+## ❓ What is Bedrock?
 
-Bedrock is a community-driven framework for IBM Planning Analytics (TM1) that provides:
-- Reusable, modular TurboIntegrator (TI) processes
-- Best practice implementations
-- Documentation and training resources
+Bedrock is a **community-driven Planning Analytics best practice framework**.  
+It provides modular, reusable TurboIntegrator (TI) processes, tools, documentation, and training resources designed to:
 
-It aims to speed up model development, improve maintainability, and standardize development across teams.
+- Accelerate model development  
+- Increase maintainability  
+- Improve auditability  
+- Reduce administration and support overhead  
 
-### ❓ What versions of TM1 are supported?
-Bedrock 5 supports:
-- TM1 Containerized
-- TM1 v12+
-- Planning Analytics 3 (PA3)
+Bedrock has been widely adopted in **enterprise-level Planning Analytics environments**.
 
-Not supported: 
-- TM1 v11
-- PA 2.0.x
+---
 
-Use Bedrock 4
+## ❓ What is new in Bedrock 5?
 
-### ❓ What’s new in Bedrock 5?
+Bedrock 5 has been **refactored and optimized** for compatibility with **IBM® Planning Analytics TM1 Database 12.4+**.  
+Key updates include:
 
-- Full support for changes in TM1 v12+ and PA3
-- Deprecated and modified processes to align with new TM1 APIs
-- Removal of unsupported features (e.g., ExecuteCommand, .rux file access)
-- Clean install via the bedrock.json file using the File Manager and TI
+- ✅ **Compatibility fixes** for new Planning Analytics behaviors  
+- 🚫 **Deprecated processes** removed due to TM1 v12 changes  
+- 🔄 **Modified processes** updated to maintain functionality under new syntax and rules  
+- 📘 **Updated installation guide** for smooth deployment  
 
-See: What’s New in Bedrock 5
+> ⚠️ Note: Bedrock 5 supports **only TM1 Database 12.4+**. For TM1 11.x or PA 2.0.x, use [Bedrock 4](https://github.com/cubewise-code/bedrock).
 
-### ❓ Is Bedrock 5 backward-compatible?
+---
 
-No. Bedrock 5 is not backward-compatible with TM1 v11 or earlier versions of Planning Analytics. For those environments, continue using Bedrock 4.
+## ❓ When will Bedrock 5 be officially released?
 
-### ❓ Is Bedrock 5 production-ready?
+Bedrock 5 is currently under development and will be **released on September 30th**.  
+👉 [Click here to join the upcoming release webinar](https://events.teams.microsoft.com/event/f7564ab5-78aa-4c30-a93f-b880451f2de2@0635d657-0279-4110-9c8f-2ee27b1e065b).
 
-Not yet. It’s under active development. The final release is scheduled for September 30, 2025. Avoid using it in production until then.
+---
 
-## Installation & Upgrade
-### ❓ How do I install Bedrock 5?
+## ❓ Which TM1 versions are supported?
 
-Full Installation Guide
-### ❓ What if I’ve already modified Bedrock processes?
+- **Supported:** IBM® Planning Analytics TM1 Database **12.4+**  
+- **Not supported:** TM1 11.x (use [Bedrock 4](https://github.com/cubewise-code/bedrock))  
 
-Installing Bedrock 5 will overwrite them.
+---
 
-Use the Upgrade Guide to compare and preserve changes before installation.
+## ❓ Why should I use Bedrock?
 
-### ❓ Where do I get my API key and Tenant ID?
-See the Generate API Key Guide.
-You’ll need:
-- API key (via TM1 Portal > Manage API Keys)
-- Tenant ID and Database name (from your environment URL)
+Using Bedrock ensures **standardization and scalability** in Planning Analytics projects:
 
-### ❓ Can I selectively upgrade only a few processes?
-Yes. Use the Upgrade Guide to:
-- Compare old vs. new processes
-- Filter out unchanged or custom ones
-- Only apply selected updates
+- Reusable, modular TI codebase  
+- Faster development cycles  
+- Reduced learning curve for new developers  
+- Transparent, auditable processes  
+- Improved scalability for large datasets and concurrent users  
 
-## Compatibility Changes
-### ❓ Which Bedrock processes are deprecated in v12 and PA3?
-Several processes using now-deprecated TM1 functions are removed, including:
-- }bedrock.server.executecommand
-- }bedrock.server.savedataall
-- }bedrock.security.client.password.reset
-See full list in the Deprecated Functions section.
+---
 
-### ❓ What changes were made to modified processes?
+## ❓ Where can I find more information?
 
-All modified processes maintain their functional intent but use new supported functions:
-- `.rux` file access → replaced with `CubeRuleGet`
-- `ExecuteCommand` → replaced with `ASCIIDelete` where applicable
-- `AssignClientPassword`, `CubeSetLogChanges`, and references to deprecated control cubes have been removed
-See full list in the Modified Functions section.
+- 🌐 Official site: [code.cubewise.com/bedrock](https://code.cubewise.com/bedrock)  
+- 📘 [Bedrock Wiki](https://github.com/cubewise-code/bedrock-5/wiki) with full process documentation  
+- 🆕 [What’s New in Bedrock 5](https://github.com/cubewise-code/bedrock-5/wiki#whats-new-in-bedrock-5)  
+- 📑 White Papers:  
+  - [Bedrock Modular Approach](https://downloads.cubewise.com/Bedrock/whitepapers/White_Paper_Modular_Approach.pdf)  
+  - [Best Practice Turbo Integrator](https://downloads.cubewise.com/Bedrock/whitepapers/White_Paper_Best_Practice_Turbo_Integrator.pdf)  
+  - [Best Practice Cube Design](https://downloads.cubewise.com/Bedrock/whitepapers/White_Paper_Best_Practice_Cube_Design.pdf)  
+  - [Best Practice Rules](https://downloads.cubewise.com/Bedrock/whitepapers/White_Paper_Best_Practice_Rules.pdf)  
 
-## Documentation & Resources
-### ❓ Where can I find documentation for each process?
-Check the Bedrock Wiki.
+---
 
-Each process includes:
-- Purpose
-- Parameters
-- Dependencies
+## ❓ What functions have been deprecated in Bedrock 5?
 
-### ❓ Are there white papers or best practices?
-Yes! Here are a few key ones:
-- Modular TI Design
-- TI Best Practices
-- Cube Design
-- Rules Best Practices
+Some Bedrock processes are no longer supported due to TM1 v12 deprecations.  
+Examples include:
 
-## Contributions & Licensing
-### ❓ Can I contribute to Bedrock 5?
-Yes! Fork the repo, make your changes, and create a pull request.
+- `}bedrock.cube.data.save` → `CubeSaveData` deprecated  
+- `}bedrock.dim.attr.swapalias` → `SwapAliasWithPrincipalName` deprecated  
+- `}bedrock.server.savedataall` → `SaveDataAll` deprecated  
 
-Start here: How to contribute
+👉 [Full list of deprecated functions here](#deprecated-functions).
 
-### ❓ What’s the license?
-You’re free to:
-- Copy
-- Modify
-- Use
-- Distribute
+---
 
-❗ But you must not publish the code elsewhere (e.g., on websites or services) without express permission. You must also credit the original authors.
+## ❓ What functions were modified?
 
-### ❓ Are there any warranties?
-No. Bedrock is provided as-is, with no warranty or liability.
+Many functions were updated for compatibility while preserving functionality.  
+For example:
 
-## Useful Links
-- GitHub Repository
-- Bedrock Wiki
-- What's New
-- Bedrock Homepage
-- Compare Bedrock 4 to Bedrock 5
+- `}bedrock.cube.clone` → Uses `CubeRuleGet` instead of reading `.rux` files  
+- `}bedrock.cube.data.copy` → Uses `ASCIIDelete` instead of `ExecuteCommand`  
+- `}bedrock.security.client.create` → Passwords can no longer be set due to `AssignClientPassword` deprecation  
 
+👉 [Full list of modified functions here](#modified-functions).  
+👉 [Compare changes from Bedrock 4 → 5](https://github.com/bdunleavy22/bedrock-compare/pull/2/files).
 
-<h1></h1>
+---
 
-Have more questions? Feel free to open an issue.
+## ❓ How is Bedrock licensed?
+
+Bedrock is **free and open-source**:  
+
+- ✅ You may copy, modify, use, compile, sell, or distribute the code for **any purpose** (commercial or non-commercial).  
+- ❌ You may not publish the information on external websites, online services, or print media without permission.  
+- ℹ️ Credit to the original authors must always remain intact.  
+
+---
+
+## ❓ Are there warranties?
+
+No.  
+All code, documents, and information in Bedrock are provided **without warranty**.
+
+---
+
+## ❓ How can I contribute?
+
+- 🔗 Source code: [github.com/cubewise-code/bedrock-5](https://github.com/cubewise-code/bedrock-5)  
+- 🛠️ To contribute:  
+  1. [Fork the repo](https://help.github.com/articles/fork-a-repo/)  
+  2. Make your changes  
+  3. Submit a [pull request](https://help.github.com/articles/about-pull-requests/)  
+
+---
+
+## ❓ Where can I see deprecated and modified functions?
+
+See the dedicated sections below:
+
+- [Deprecated Functions](#deprecated-functions)  
+- [Modified Functions](#modified-functions)  
+
+---
+
+# 📉 Deprecated Functions
+
+| Bedrock Process                                   | TM1 Deprecated Function         |
+|---------------------------------------------------|---------------------------------|
+| `}bedrock.cube.data.save`                         | `CubeSaveData`                  |
+| `}bedrock.dim.attr.swapalias`                     | `SwapAliasWithPrincipalName`    |
+| `}bedrock.hier.create.fromrollup.aliasswap`       | `SwapAliasWithPrincipalName`    |
+| `}bedrock.security.client.password.reset`         | `AssignClientPassword`          |
+| `}bedrock.server.dir.backup`                      | `ExecuteCommand`                |
+| `}bedrock.server.dir.listcontents`                | `ExecuteCommand`                |
+| `}bedrock.server.encrypt.directory`               | `ExecuteCommand`                |
+| `}bedrock.server.encrypt.file`                    | `ExecuteCommand`                |
+| `}bedrock.server.executecommand`                  | `ExecuteCommand`                |
+| `}bedrock.server.logfile.delete`                  | `ExecuteCommand`                |
+| `}bedrock.server.savedataall`                     | `SaveDataAll`                   |
+
+---
+
+# 🔄 Modified Functions
+
+Due to deprecations in TM1 v12, the following Bedrock processes were modified (functionality unchanged):  
+
+- Removal of `CubeSetLogChanges`  
+- Replacing `.rux` file reads with `CubeRuleGet`  
+- Replacement of `ExecuteCommand` (for file deletion) with `ASCIIDelete`  
+- Removal of references to deprecated cubes such as `}DimensionProperties` and `}ApplicationSecurity`  
+- Removal of `AssignClientPassword` support  
+
+👉 See the full [list of modified processes here](#modified-functions).  
+
+---
+
+## ✅ Summary
+
+- Bedrock 5 supports **TM1 Database 12.4+ only**  
+- Bedrock 4 remains the option for older TM1 versions  
+- Deprecations and modifications align Bedrock with the **latest TM1 standards**  
+- Fully open-source, community-driven, and available on GitHub  
+
+---
