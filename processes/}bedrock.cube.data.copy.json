@@ -97,18 +97,6 @@
 			"Type":"Numeric"
 		},
 		{
-			"Name":"pStringPrefix",
-			"Prompt":"OPTIONAL: Literal text to write in front.",
-			"Value":"",
-			"Type":"String"
-		},
-		{
-			"Name":"pStringSuffix",
-			"Prompt":"OPTIONAL: Literal text to append at the end.",
-			"Value":"",
-			"Type":"String"
-		},
-		{
 			"Name":"pSuppressConsol",
 			"Prompt":"OPTIONAL: Suppress Consolidated Cells (Skip = 1)",
 			"Value":1,
@@ -160,12 +148,6 @@
 			"Name":"pTemp",
 			"Prompt":"OPTIONAL: Delete temporary view and Subset ( 0 = Retain View and Subsets 1 = Delete View and Subsets 2 = Delete View only )",
 			"Value":1,
-			"Type":"Numeric"
-		},
-		{
-			"Name":"pCubeLogging",
-			"Prompt":"Required: Cube Logging (0 = No transaction logging, 1 = Logging of transactions, 2 = Ignore Cube Logging - No Action Taken, parameter does not work with Parallel thread))",
-			"Value":0,
 			"Type":"Numeric"
 		},
 		{
@@ -226,6 +208,12 @@
 			"Name":"pMaxWaitSeconds",
 			"Prompt":"OPTIONAL: Used with parallel to define wait time",
 			"Value":1800,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pCubeLogging",
+			"Prompt":"OBSOLETE: This parameter does nothing and is only included for backwards compatability",
+			"Value":0,
 			"Type":"Numeric"
 		}
 	],
@@ -588,5 +576,60 @@
 			"StartByte":0,
 			"EndByte":0
 		}
+	],
+	"UID": "1752858602000",
+	"UIData": "_ParameterConstraints=e30=\f",
+	"VariablesUIData": [
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=33\fColType=827\f"
 	]
 }

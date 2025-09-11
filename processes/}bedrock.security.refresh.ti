@@ -9,17 +9,17 @@ EndIf;
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
-################################################################################################# 
-##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0~~##
-################################################################################################# 
+################################################################################################### 
+##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~## 
+################################################################################################### 
 
 #Region @DOC
 # Description:
 # This process refreshes TM1 security.
 
 # Use case: Intended for development or production.
-# 1/ Refresh security after new clients or security groups are added.
-# 2/ If security cubes have rules and they had to be changed.
+# 1. Refresh security after new clients or security groups are added.
+# 2. If security cubes have rules and they had to be changed.
 
 # Note:
 # This can be a time consuming process and may need to be run overnight.

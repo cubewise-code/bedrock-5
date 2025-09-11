@@ -64,5 +64,8 @@
 			"Type":"String"
 		}
 	],
-	"Variables":[]
+	"Variables":[],
+	"UID": "17528585970001",
+	"UIData": "",
+	"VariablesUIData": []
 }

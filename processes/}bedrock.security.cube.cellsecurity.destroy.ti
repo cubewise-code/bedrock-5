@@ -12,16 +12,16 @@ EndIf;
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
-################################################################################################# 
-##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0~~##
-################################################################################################# 
+################################################################################################### 
+##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~## 
+################################################################################################### 
 
 #Region @DOC
 # Description:
 # This process will destroy the cell security cube(s) for the specified cube(s).
 
 # Use case: Intended for development.
-# 1/ Remove cell level security for one or more cubes.
+# 1. Remove cell level security for one or more cubes.
 
 # Note:
 # Naturally, a valid cube (pCube) is mandatory otherwise the process will abort.

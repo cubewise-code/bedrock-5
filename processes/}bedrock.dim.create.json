@@ -1,8 +1,8 @@
 {
 	"@type":"Process",
-	"Name":"}bedrock.cube.view.publish",
+	"Name":"}bedrock.dim.create",
 	"HasSecurityAccess":true,
-	"Code@Code.link":"}bedrock.cube.view.publish.ti",
+	"Code@Code.link":"}bedrock.dim.create.ti",
 	"DataSource":
 	{
 		"Type":"None"
@@ -22,32 +22,20 @@
 			"Type":"Numeric"
 		},
 		{
-			"Name":"pCube",
-			"Prompt":"REQUIRED: Cube Name",
+			"Name":"pDim",
+			"Prompt":"REQUIRED: Dimension, accepts delimted list",
 			"Value":"",
 			"Type":"String"
 		},
 		{
-			"Name":"pView",
-			"Prompt":"REQUIRED: Private View Name",
-			"Value":"",
+			"Name":"pDelim",
+			"Prompt":"OPTIONAL: delimiter character for element list. (default value if blank = '&')",
+			"Value":"&",
 			"Type":"String"
-		},
-		{
-			"Name":"pSubPublish",
-			"Prompt":"OPTIONAL: Publish Private Subsets? (Boolean 1=Yes)",
-			"Value":1,
-			"Type":"Numeric"
-		},
-		{
-			"Name":"pOverwrite",
-			"Prompt":"OPTIONAL: Overwrite Existing Named View? (Boolean 1=Yes)",
-			"Value":0,
-			"Type":"Numeric"
 		}
 	],
 	"Variables":[],
-	"UID": "17528586160001",
+	"UID": "1752858623000",
 	"UIData": "",
 	"VariablesUIData": []
 }

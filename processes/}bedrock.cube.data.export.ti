@@ -19,9 +19,9 @@ EndIf;
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
-#################################################################################################
-##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0~~##
-#################################################################################################
+################################################################################################### 
+##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~## 
+###################################################################################################
 
 #Region @DOC
 # Description:
@@ -54,7 +54,6 @@ EndIf;
 StringGlobalVariable('sProcessReturnCode');
 NumericGlobalVariable('nProcessReturnCode');
 StringGlobalVariable('sBedrockViewCreateParsedFilter');
-NumericGlobalVariable('nDataCount');
 
 ### Constants ###
 cThisProcName     = GetProcessName();
@@ -75,11 +74,6 @@ pDecimalSeparator = TRIM(pDecimalSeparator);
 pThousandSeparator= TRIM(pThousandSeparator);
 nDataCount        = 0;
 nErrors           = 0;
-
-## Capture current transaction logging state
-If( CubeExists(pCube) = 1 );
-  sCubeLogging = CellGetS('}CubeProperties', pCube, 'LOGGING' );
-EndIf;
 
 ## Default filter delimiters
 If( pDimDelim     @= '' );
@@ -301,9 +295,6 @@ EndIf;
 IF ( nErrors > 0 );
     DataSourceType = 'NULL';
     If( pStrictErrorHandling = 1 );
-        If( CubeExists(pCube) = 1 );
-          CubeSetLogChanges( pCube, IF(sCubeLogging@='YES',1,0) );
-        EndIf;
         ProcessQuit;
     Else;
         ProcessBreak;
@@ -465,9 +456,6 @@ Else;
       nErrors = nErrors + 1;
       LogOutput( cMsgErrorLevel, Expand( cMsgErrorContent ) );
       If( pStrictErrorHandling = 1 );
-          If( CubeExists(pCube) = 1 );
-            CubeSetLogChanges( pCube, IF(sCubeLogging@='YES',1,0) );
-          EndIf;
           ProcessQuit;
       Else;
           ProcessBreak;
@@ -554,13 +542,7 @@ TextOutput( cExportFile, Expand(sRow) );
 
 ### Delete source data ###
 If( pZeroSource = 1 & nErrors = 0 & nParallelRun = 0 );
-    If ( pCubeLogging <= 1 );
-      CubeSetLogChanges( pCube, pCubeLogging);
-    EndIf;
     ViewZeroOut( pCube, cView );
-    If ( pCubeLogging <= 1 );
-      CubeSetLogChanges( pCube, IF(sCubeLogging@='YES',1,0) );
-    EndIf;
 EndIf;
 
 ### Return code & final error message handling
@@ -570,9 +552,6 @@ If( nErrors > 0 );
     LogOutput( cMsgErrorLevel, Expand( cMsgErrorContent ) );
     sProcessReturnCode = Expand( '%sProcessReturnCode% Process:%cThisProcName% completed with errors. Check tm1server.log for details.' );
     If( pStrictErrorHandling = 1 );
-        If( CubeExists(pCube) = 1 );
-          CubeSetLogChanges( pCube, IF(sCubeLogging@='YES',1,0) );
-        EndIf;
         ProcessQuit;
     EndIf;
 Else;

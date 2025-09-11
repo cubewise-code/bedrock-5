@@ -16,9 +16,9 @@ EndIf;
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
-################################################################################################# 
-##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0~~##
-################################################################################################# 
+################################################################################################### 
+##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~## 
+################################################################################################### 
 
 #Region @DOC
 # Description:
@@ -55,7 +55,7 @@ cDimCountMax    = 30 ;
 
 ## LogOutput parameters
 IF( pLogoutput = 1 );
-    LogOutput('INFO', Expand( cLogInfo ) );   
+  LogOutput('INFO', Expand( cLogInfo ) );   
 ENDIF;
 
 ### Initialise ###
@@ -204,10 +204,10 @@ EndIf;
 
 ### Attach rules to cloned cube ###
 If( nErrors = 0 & pIncludeRules = 1 );
-  sRuleFile = pSrcCube | '.rux';
-  If( FileExists( sRuleFile ) = 1 );
+  sRule=CubeRuleGet( pSrcCube );
+  If( sRule@<> '' );
     If( nErrors = 0 );
-      RuleLoadFromFile( pTgtCube, sRuleFile );
+      CubeRuleSet(pTgtCube, sRule);
     EndIf;
   EndIf;
 EndIf;
@@ -225,8 +225,8 @@ Else;
     sProcessAction = Expand( 'Process:%cThisProcName% successfully cloned the %pSrcCube% cube to %pTgtCube%.' );
     sProcessReturnCode = Expand( '%sProcessReturnCode% %sProcessAction%' );
     nProcessReturnCode = 1;
-    If( pLogoutput = 1 );
-        LogOutput('INFO', Expand( sProcessAction ) );   
+    If ( pLogOutput = 1 );
+            LogOutput('INFO', Expand ( sProcessAction ) );
     EndIf;
 EndIf;
 

@@ -16,17 +16,17 @@ EndIf;
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
-################################################################################################# 
-##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0~~##
-################################################################################################# 
+################################################################################################### 
+##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~## 
+################################################################################################### 
 
 #Region @DOC
 # Description:
 # This process will load a csv text file to the target cube.
 
 # Use case: Intended for development/prototyping or in Production environment.
-#1/ Import data from another TM1 model.
-#2/ To eliminate possibility of locking it is sometimes better to export and import when needing to copy data from one cube to another.
+#1. Import data from another TM1 model.
+#2. To eliminate possibility of locking it is sometimes better to export and import when needing to copy data from one cube to another.
 
 # Note:
 # Naturally, a valid target cube name (pCube) is mandatory otherwise the process will abort.
@@ -372,34 +372,33 @@ If( nErrors <> 0 );
 EndIf;
 
 ### Determine dimensions in target cube, we need to know this to test cell type before loading ###
-# For mulit-hierarchy dimensions the Leaves hierarchy is used to preform the tests
-sDim1  = TabDim( pCube, 1 ); If( HierarchyExists(sDim1, 'Leaves') = 1); sDim1 = Expand('%sDim1%:Leaves'); EndIf;
-sDim2  = TabDim( pCube, 2 ); If( HierarchyExists(sDim2, 'Leaves') = 1); sDim2 = Expand('%sDim2%:Leaves'); EndIf;
-sDim3  = TabDim( pCube, 3 ); If( HierarchyExists(sDim3, 'Leaves') = 1); sDim3 = Expand('%sDim3%:Leaves'); EndIf;
-sDim4  = TabDim( pCube, 4 ); If( HierarchyExists(sDim4, 'Leaves') = 1); sDim4 = Expand('%sDim4%:Leaves'); EndIf;
-sDim5  = TabDim( pCube, 5 ); If( HierarchyExists(sDim5, 'Leaves') = 1); sDim5 = Expand('%sDim5%:Leaves'); EndIf;
-sDim6  = TabDim( pCube, 6 ); If( HierarchyExists(sDim6, 'Leaves') = 1); sDim6 = Expand('%sDim6%:Leaves'); EndIf;
-sDim7  = TabDim( pCube, 7 ); If( HierarchyExists(sDim7, 'Leaves') = 1); sDim7 = Expand('%sDim7%:Leaves'); EndIf;
-sDim8  = TabDim( pCube, 8 ); If( HierarchyExists(sDim8, 'Leaves') = 1); sDim8 = Expand('%sDim8%:Leaves'); EndIf;
-sDim9  = TabDim( pCube, 9 ); If( HierarchyExists(sDim9, 'Leaves') = 1); sDim9 = Expand('%sDim9%:Leaves'); EndIf;
-sDim10 = TabDim( pCube, 10 ); If( HierarchyExists(sDim10, 'Leaves') = 1); sDim10 = Expand('%sDim10%:Leaves'); EndIf;
-sDim11 = TabDim( pCube, 11 ); If( HierarchyExists(sDim11, 'Leaves') = 1); sDim11 = Expand('%sDim11%:Leaves'); EndIf;
-sDim12 = TabDim( pCube, 12 ); If( HierarchyExists(sDim12, 'Leaves') = 1); sDim12 = Expand('%sDim12%:Leaves'); EndIf;
-sDim13 = TabDim( pCube, 13 ); If( HierarchyExists(sDim13, 'Leaves') = 1); sDim13 = Expand('%sDim13%:Leaves'); EndIf;
-sDim14 = TabDim( pCube, 14 ); If( HierarchyExists(sDim14, 'Leaves') = 1); sDim14 = Expand('%sDim14%:Leaves'); EndIf;
-sDim15 = TabDim( pCube, 15 ); If( HierarchyExists(sDim15, 'Leaves') = 1); sDim15 = Expand('%sDim15%:Leaves'); EndIf;
-sDim16 = TabDim( pCube, 16 ); If( HierarchyExists(sDim16, 'Leaves') = 1); sDim16 = Expand('%sDim16%:Leaves'); EndIf;
-sDim17 = TabDim( pCube, 17 ); If( HierarchyExists(sDim17, 'Leaves') = 1); sDim17 = Expand('%sDim17%:Leaves'); EndIf;
-sDim18 = TabDim( pCube, 18 ); If( HierarchyExists(sDim18, 'Leaves') = 1); sDim18 = Expand('%sDim18%:Leaves'); EndIf;
-sDim19 = TabDim( pCube, 19 ); If( HierarchyExists(sDim19, 'Leaves') = 1); sDim19 = Expand('%sDim19%:Leaves'); EndIf;
-sDim20 = TabDim( pCube, 20 ); If( HierarchyExists(sDim20, 'Leaves') = 1); sDim20 = Expand('%sDim20%:Leaves'); EndIf;
-sDim21 = TabDim( pCube, 21 ); If( HierarchyExists(sDim21, 'Leaves') = 1); sDim21 = Expand('%sDim21%:Leaves'); EndIf;
-sDim22 = TabDim( pCube, 22 ); If( HierarchyExists(sDim22, 'Leaves') = 1); sDim22 = Expand('%sDim22%:Leaves'); EndIf;
-sDim23 = TabDim( pCube, 23 ); If( HierarchyExists(sDim23, 'Leaves') = 1); sDim23 = Expand('%sDim23%:Leaves'); EndIf;
-sDim24 = TabDim( pCube, 24 ); If( HierarchyExists(sDim24, 'Leaves') = 1); sDim24 = Expand('%sDim24%:Leaves'); EndIf;
-sDim25 = TabDim( pCube, 25 ); If( HierarchyExists(sDim25, 'Leaves') = 1); sDim25 = Expand('%sDim25%:Leaves'); EndIf;
-sDim26 = TabDim( pCube, 26 ); If( HierarchyExists(sDim26, 'Leaves') = 1); sDim26 = Expand('%sDim26%:Leaves'); EndIf;
-sDim27 = TabDim( pCube, 27 ); If( HierarchyExists(sDim27, 'Leaves') = 1); sDim27 = Expand('%sDim27%:Leaves'); EndIf;
+sDim1  = TabDim( pCube, 1 );
+sDim2  = TabDim( pCube, 2 );
+sDim3  = TabDim( pCube, 3 );
+sDim4  = TabDim( pCube, 4 );
+sDim5  = TabDim( pCube, 5 );
+sDim6  = TabDim( pCube, 6 );
+sDim7  = TabDim( pCube, 7 );
+sDim8  = TabDim( pCube, 8 );
+sDim9  = TabDim( pCube, 9 );
+sDim10 = TabDim( pCube, 10 );
+sDim11 = TabDim( pCube, 11 );
+sDim12 = TabDim( pCube, 12 );
+sDim13 = TabDim( pCube, 13 );
+sDim14 = TabDim( pCube, 14 );
+sDim15 = TabDim( pCube, 15 );
+sDim16 = TabDim( pCube, 16 );
+sDim17 = TabDim( pCube, 17 );
+sDim18 = TabDim( pCube, 18 );
+sDim19 = TabDim( pCube, 19 );
+sDim20 = TabDim( pCube, 20 );
+sDim21 = TabDim( pCube, 21 );
+sDim22 = TabDim( pCube, 22 );
+sDim23 = TabDim( pCube, 23 );
+sDim24 = TabDim( pCube, 24 );
+sDim25 = TabDim( pCube, 25 );
+sDim26 = TabDim( pCube, 26 );
+sDim27 = TabDim( pCube, 27 );
 
 ### Placeholders for mappped dimensions and for new dimensions
 
@@ -988,12 +987,6 @@ END;
 #EndRegion ### MAPPING Target DIMENSIONS #####
 ##############################################
 
-#CubeLogging
-If ( pCubeLogging <= 1 );
-  nCubeLogging = CubeGetLogChanges( pCube );
-  CubeSetLogChanges( pCube, pCubeLogging);
-EndIf;
-
 ### Assign Datasource ###
 DataSourceType                  = 'CHARACTERDELIMITED';
 DatasourceNameForServer         = sFile;
@@ -1006,13 +999,11 @@ SetInputCharacterSet (pCharacterSet);
 ### End Prolog ###
 #endregion
 #region Metadata
-
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
 #endregion
 #region Data
-
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
@@ -2119,7 +2110,6 @@ nRecordPostedCount = nRecordPostedCount + 1;
 ### End Data ###
 #endregion
 #region Epilog
-
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
@@ -2127,11 +2117,6 @@ nRecordPostedCount = nRecordPostedCount + 1;
 ##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0~~##
 ################################################################################################# 
 
-#Cube Logging
-If ( pCubeLogging <= 1 );
-  CubeSetLogChanges( pCube, nCubeLogging );
-EndIf;
-    
 ### Delete source file (only if no errors) ###
 If( nErrors = 0 & pFileDelete = 1 );
     ASCIIDelete(sFile);

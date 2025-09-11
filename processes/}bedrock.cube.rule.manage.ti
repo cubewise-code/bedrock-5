@@ -14,17 +14,17 @@ EndIf;
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
-################################################################################################# ####################
-##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0~~##
-################################################################################################# 
+################################################################################################### 
+##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~## 
+################################################################################################### 
 
 #Region @DOC
 # Description:
 # This process will backup & remove **OR** re-attach the rule file to cube.
 
 # Use case: Intended to be used in production.
-# 1/ Remove rule file before data load to speed up data load.
-# 2/ Re-attach rule file after data load.
+# 1. Remove rule file before data load to speed up data load.
+# 2. Re-attach rule file after data load.
 
 # Note:
 # Naturally, a valid cube name (pCube) is mandatory otherwise the process will abort.
@@ -52,7 +52,7 @@ cMsgErrorContent    = 'User:%cUserName% Process:%cThisProcName% ErrorMsg:%sMessa
 cLogInfo            = 'Process:%cThisProcName% run with parameters pCube:%pCube%, pMode:%pMode%, pFileName:%pFileName%, pDelim:%pDelim%, pPath:%pPath%.' ;  
 cDimCubes           = '}Cubes';
 
-## check operating system
+### check operating system
 If( SubSt( GetProcessErrorFileDirectory, 2, 1 ) @= ':' );
   sOS = 'Windows';
   sOSDelim = '\';
@@ -106,7 +106,7 @@ Else;
 Endif;
 
 ## Default files names for storing rule and backups
-IF(pFileName@='');
+IF(pFileName@='' % Scan( pDelim, pCube )<>0);
   sRuleFileName         = '%sCube%.txt';
   sBackupFileName       = '%sCube%.rux.bkp_%cTimeStamp%.txt';
 Else;
@@ -123,11 +123,7 @@ While( nCubeDelimIndex <> 0 );
   If( nCubeDelimIndex = 0 );
     sCube = sCubes;
   Else;
-    If (sOS @= 'Windows');
-      sCube = Trim( SubSt( sCubes, 1, nCubeDelimIndex - 1 ) );
-    Else;
-      sCube = LOWER(Trim( SubSt( sCubes, 1, nCubeDelimIndex - 1 ) ));
-    EndIf;
+    sCube = Trim( SubSt( sCubes, 1, nCubeDelimIndex - 1 ) );
     sCubes = Trim( Subst( sCubes, nCubeDelimIndex + Long(pDelim), Long( sCubes ) ) );
   EndIf;
 
@@ -151,72 +147,17 @@ While( nCubeDelimIndex <> 0 );
     sCube = SubsetGetElementName( cDimCubes, cTempSub, nCube );
     nCube = nCube + 1;
     
-    If( sOS @= 'Windows');
-      cCubeRuleFileName = '.' | sOSDelim | sCube | '.rux';
-    Else;
-      cCubeRuleFileName = '.' | sOSDelim | LOWER(sCube) | '.rux';
-    EndIf;
-    If( sOS @= 'Windows');
-      cStoreDirFile = sPath | Expand(sRuleFileName);
-      cBackupDirFile = sPath | Expand(sBackupFileName); 
-    Else;
-      cStoreDirFile = sPath | LOWER(Expand(sRuleFileName));
-      cBackupDirFile = sPath | LOWER(Expand(sBackupFileName)); 
-    EndIf;
-    # if there already is a rule file
-    If(FileExists(cCubeRuleFileName) <> 0);
-      ##Loading the Rule###
-      If(Upper(pMode) @= 'LOAD');
-        ##Backup the existing rule (saved as .bkp.txt in given path or data directory) 
-        ##and load the new rule file. New Rule file should available in the given path or in data directory
-        If( sOS @= 'Windows');
-          sCmd = 'cmd /c "copy """' | cCubeRuleFileName | '"""  """' | cBackupDirFile |'""" "';          
-        Else;
-          sCmd = 'cp "' | cCubeRuleFileName | '" "' | cBackupDirFile | '"';        
-        EndIf;
-        ExecuteCommand(sCmd,1);
-        ## Check if the backup file exists
-        If( FileExists( cBackupDirFile ) <> 0 );
-          RuleLoadFromFile( sCube, cStoreDirFile);
-        Else;
-          sMessage = Expand('Backup of rule file (%cCubeRuleFileName%) has failed, rule was not loaded.');
-          nErrors = nErrors + 1;
-          LogOutput( cMsgErrorLevel, Expand( cMsgErrorContent ) );
-          If( pStrictErrorHandling = 1 ); 
-              ProcessQuit; 
-          Else;
-              ProcessBreak;
-          EndIf;
-        EndIf;
-      Else;
-        ##Unloading the Rule###
+    cCubeRuleFileName = '.' | sOSDelim | sCube | '.txt';
+    cStoreDirFile = sPath | Expand(sRuleFileName);
+
+      ##Unloading the Rule###
+      If(Upper(pMode) @= 'UNLOAD');
         ##Before unloading, backup the existing rule (saved as .bkp.txt in data directory or with the suffix parameter)
         ##and drop current rule
-        If( sOS @= 'Windows');
-          sCmd = 'cmd /c "copy """' | cCubeRuleFileName | '"""  """' | cBackupDirFile |'""" "';
-        Else;
-          sCmd = 'cp "' | cCubeRuleFileName | '" "' | cBackupDirFile |'"';
-        EndIf;
-        ExecuteCommand(sCmd,1);
-        ## Check if the backup file exists
-        If( FileExists( cBackupDirFile ) = 0 );
-          sMessage = Expand('Backup of rule file (%cCubeRuleFileName%) has failed, rule was not unloaded.');
-          nErrors = nErrors + 1;
-          LogOutput( cMsgErrorLevel, Expand( cMsgErrorContent ) );
-          If( pStrictErrorHandling = 1 ); 
-              ProcessQuit; 
-          Else;
-              ProcessBreak;
-          EndIf;
-        EndIf;
-        If( sOS @= 'Windows');
-          sCmd = 'cmd /c "copy """' | cCubeRuleFileName | '"""  """' | cStoreDirFile |'""" "';
-        Else;
-          sCmd = 'cp "' | cCubeRuleFileName | '"  "' | cStoreDirFile |'"';
-        EndIf;
-        ExecuteCommand(sCmd,1);
+        sRule=CubeRuleGet( sCube );
+        ASCIIOutput(cStoreDirFile, sRule);
         ## Check if the saved rule file exists
-        If( FileExists( cStoreDirFile ) <> 0 );
+        If( sRule@<>'' );
           CubeRuleDestroy( sCube );
         Else;
           sMessage = Expand('Copy of rule file (%cCubeRuleFileName%) has failed, rule was not unloaded.');
@@ -228,20 +169,30 @@ While( nCubeDelimIndex <> 0 );
               ProcessBreak;
           EndIf;
         EndIf;
-      Endif;
-      
-    Else;
-      ###To create a new rule file for the cube (no existing rule)
-      If(Upper(pMode) @= 'LOAD');
-        RuleLoadFromFile( sCube, cStoreDirFile );
-      Else;
-        nErrors = nErrors + 1;
-        sMessage = 'No Rule file found for cube: ' | sCube;
-        LogOutput( cMsgErrorLevel, Expand( cMsgErrorContent ) );
-      Endif;
+
+      ##Loading the Rule###
+      ElseIf(Upper(pMode) @= 'LOAD');
+        ##Backup the existing rule (saved as .bkp.txt in given path or data directory) 
+        ##and load the new rule file. New Rule file should available in the given path or in data directory
+        ## Check if the backup file exists
+        If( FileExists( cCubeRuleFileName ) <> 0 );
+          RuleLoadFromFile( sCube, cCubeRuleFileName);
+        Else;
+          nErrors = nErrors + 1;
+          sMessage = 'No Rule file found for cube: ' | sCube;
+          LogOutput( cMsgErrorLevel, Expand( cMsgErrorContent ) );
+          If( pStrictErrorHandling = 1 ); 
+              ProcessQuit; 
+          Else;
+              ProcessBreak;
+          EndIf;
+        EndIf;
+
     Endif;
   End;
 End;
+
+### end Prolog ###
 #endregion
 #region Metadata
 
@@ -252,8 +203,6 @@ End;
 
 #****Begin: Generated Statements***
 #****End: Generated Statements****
-
-
 #endregion
 #region Epilog
 
@@ -263,7 +212,6 @@ End;
 ################################################################################################# ####################
 ##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0~~##
 ################################################################################################# 
-
 
 ### Return code & final error message handling
 If( nErrors > 0 );

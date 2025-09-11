@@ -11,9 +11,9 @@ EndIf;
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
-################################################################################################# 
-##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0~~##
-################################################################################################# 
+################################################################################################### 
+##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~## 
+################################################################################################### 
 
 #Region @DOC
 # Description:
@@ -169,6 +169,7 @@ DataSourceType = 'SUBSET';
 DatasourceDimensionSubset = cTempSub;
 
 ### END PROLOG
+
 #endregion
 #region Metadata
 
@@ -257,7 +258,6 @@ sDimPrev    = sDim;
 ### END METADATA
 #endregion
 #region Data
-
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 

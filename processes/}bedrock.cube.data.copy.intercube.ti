@@ -20,9 +20,9 @@ EndIf;
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
-################################################################################################# 
-##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0~~##
-################################################################################################# 
+################################################################################################### 
+##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~## 
+################################################################################################### 
 
 #Region @DOC
 # Description:
@@ -85,7 +85,7 @@ cLenASCIICode       = 3;
 
 ## LogOutput parameters
 IF( pLogoutput = 1 );
-    LogOutput('INFO', Expand( cLogInfo ) );   
+  LogOutput('INFO', Expand( cLogInfo ) );   
 ENDIF;
 
 # Make sure pFactor not zero
@@ -1427,7 +1427,7 @@ Else;
     Endif;  
     
     nRet = ExecuteProcess('}bedrock.cube.data.export',
-       'pLogoutput', pLogOutput,
+      'pLogOutput', pLogOutput,
        'pStrictErrorHandling', pStrictErrorHandling,
        'pCube', pSrcCube,
        'pView', sView,
@@ -1466,11 +1466,6 @@ Else;
           EndIf;
     ENDIF;
   ENDIF;
-  
-  If ( pCubeLogging <= 1 );
-    sCubeLogging = CellGetS('}CubeProperties', pTgtCube, 'LOGGING' );
-    CubeSetLogChanges( pTgtCube, pCubeLogging);
-  EndIf;
   
   ### Assign Datasource ###
   If( pFile = 0 );
@@ -1875,24 +1870,12 @@ EndIf;
 
 ## Zero Source
 If( pZeroSource = 1 & nErrors = 0  );
-    If ( pCubeLogging <= 1 );
-        CubeSetLogChanges( pSrcCube, pCubeLogging);
-    EndIf;
-        ViewZeroOut( pSrcCube, sView );
-    If ( pCubeLogging <= 1 );
-        CubeSetLogChanges( pSrcCube, IF(CellGetS('}CubeProperties', pSrcCube, 'LOGGING' ) @= 'YES',1,0) );
-    EndIf;
-EndIf;
-
-## Switch back logging on Tgt Cube
-If ( pCubeLogging <= 1 );
-    CubeSetLogChanges( pTgtCube, IF(sCubeLogging @='YES',1,0) );
+    ViewZeroOut( pSrcCube, sView );
 EndIf;
 
 ### Delete export file if used
 If( pFile = 1 );
-  TM1RunCmd = 'CMD.EXE /C "DEL "' | cFile | '" "';
-  EXECUTECOMMAND ( TM1RunCmd , 0 );
+    ASCIIDelete( cFile );
 EndIf;
 
 ### Return code & final error message handling
@@ -1908,9 +1891,6 @@ Else;
     sProcessAction = Expand( 'Process:%cThisProcName% successfully copied data from %pSrcCube% cube to the %pTgtCube% cube.' );
     sProcessReturnCode = Expand( '%sProcessReturnCode% %sProcessAction%' );
     nProcessReturnCode = 1;
-    If( pLogoutput = 1 );
-        LogOutput('INFO', Expand( sProcessAction ) );   
-    EndIf;
 EndIf;
 
 ### End Epilog ###

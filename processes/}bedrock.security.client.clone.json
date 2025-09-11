@@ -47,10 +47,13 @@
 		},
 		{
 			"Name":"pPassword",
-			"Prompt":"OPTIONAL: Initial Password",
+			"Prompt":"OBSOLETE: This parameter does nothing and is only included for backwards compatability",
 			"Value":"",
 			"Type":"String"
 		}
 	],
-	"Variables":[]
+	"Variables":[],
+	"UID": "17528586580001",
+	"UIData": "_ParameterConstraints=e30=\f",
+	"VariablesUIData": []
 }

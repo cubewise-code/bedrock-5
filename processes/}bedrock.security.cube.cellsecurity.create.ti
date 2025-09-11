@@ -12,9 +12,9 @@ EndIf;
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
-################################################################################################# 
-##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0~~##
-################################################################################################# 
+################################################################################################### 
+##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~## 
+################################################################################################### 
 
 #Region @DOC
 # Description:
@@ -23,7 +23,7 @@ EndIf;
 # process each time in order to create a cell security cube.
 
 # Use case: Intended for development.
-# 1/ Set up cell security cubes
+# 1. Set up cell security cubes
 
 # Note:
 # * Naturally, a valid cube (pCube) is mandatory otherwise the process will abort.

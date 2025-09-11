@@ -76,12 +76,6 @@
 			"Type":"Numeric"
 		},
 		{
-			"Name":"pCubeLogging",
-			"Prompt":"Required: Cube Logging (0 = No transaction logging, 1 = Logging of transactions, 2 = Ignore Cube Logging - No Action Taken)",
-			"Value":0,
-			"Type":"Numeric"
-		},
-		{
 			"Name":"pTemp",
 			"Prompt":"OPTIONAL: Make Views and subsets Temporary (1=Temporary)",
 			"Value":1,
@@ -98,7 +92,16 @@
 			"Prompt":"OPTIONAL: Create N level subset for all dims not mentioned in pFilter",
 			"Value":0,
 			"Type":"Numeric"
+		},
+		{
+			"Name":"pCubeLogging",
+			"Prompt":"OBSOLETE: This parameter does nothing and is only included for backwards compatability",
+			"Value":0,
+			"Type":"Numeric"
 		}
 	],
-	"Variables":[]
+	"Variables":[],
+	"UID": "17528586000001",
+	"UIData": "",
+	"VariablesUIData": []
 }

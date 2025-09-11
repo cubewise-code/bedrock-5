@@ -144,13 +144,6 @@ If( Scan( '*', pDim ) = 0 & Scan( '?', pDim ) = 0 & Scan( pDelim, pDim ) = 0 & S
     If( ElementIndex( pDim, pHier, pConsol ) > 0 );
         pConsol = HierarchyElementPrincipalName( pDim, pHier, pConsol );
     EndIf;
-
-    ### Turn-off Logging in the Attribute cube
-    sAttrCube = '}ElementAttributes_' | pDim;
-    If( CubeExists( sAttrCube ) = 1 );
-        nLogging = CubeGetLogChanges( sAttrCube );
-        CubeSetLogChanges( sAttrCube, 0 );
-    EndIf;
     
     ### Create Temp Descendent Attribute
     AttrDelete( pDim, cHierAttr );
@@ -497,15 +490,6 @@ Else;
     ### Remove Descendent attribute
     IF( Scan( '*', pDim ) = 0 &  Scan( '?', pDim ) = 0 & Scan( pDelim, pDim ) = 0 & Scan( '*', pHier ) = 0 & Scan( '?', pHier ) = 0 & Scan( pDelim, pHier ) = 0 & Scan( '*', pConsol ) = 0 & Scan( '?', pConsol ) = 0 & Scan( pDelim, pConsol ) = 0 );
       AttrDelete( pDim, cHierAttr );
-    EndIf;
-EndIf;
-
-### Reset Logging in the Attribute cube
-IF( Scan( '*', pDim ) = 0 & Scan( '?', pDim ) = 0 & Scan( pDelim, pDim ) = 0 & Scan( '*', pHier ) = 0 & Scan( '?', pHier ) = 0 & Scan( pDelim, pHier ) = 0 & Scan( '*', pConsol ) = 0 & Scan( '?', pConsol ) = 0 & Scan( pDelim, pConsol ) = 0 );
-    If( CubeExists( sAttrCube ) = 1 );
-        If( nLogging = 1 );
-            CubeSetLogChanges( sAttrCube, 1 );
-        EndIf;
     EndIf;
 EndIf;
 

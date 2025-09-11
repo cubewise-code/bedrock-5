@@ -1,7 +1,7 @@
 #region Prolog
-################################################################################################# 
-##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0~~##
-################################################################################################# 
+################################################################################################### 
+##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~## 
+################################################################################################### 
 
 #****Begin: Generated Statements***
 #****End: Generated Statements****
@@ -11,6 +11,8 @@
 ### MODIFICATION DATE 	CHANGED BY 	    COMMENT
 ### YYYY-MM-DD 		    Developer Name 	Creation of Process
 ### YYYY-MM-DD 		    Developer Name 	Reason for modification here
+################################################################################################# 
+
 ################################################################################################# 
 #Region @DOC
 # Description:
@@ -119,12 +121,6 @@ EndIf;
 
 ################################################################################################# 
 #EndRegion Validate Parameters
-
-### If required switch transaction logging off (this should be done AFTER the escape/reject if parameters fail validation and BEFORE the zero out commences)
-nCubeLogChanges = CubeGetLogChanges( cCubeTgt );
-CubeSetLogChanges( cCubeTgt, 0 );
-
-
 ################################################################################################# 
 #Region - ZeroOut
 
@@ -208,9 +204,6 @@ EndIf;
 
 #****Begin: Generated Statements***
 #****End: Generated Statements****
-
-### If required switch transaction logging back on 
-CubeSetLogChanges( cCubeTgt, nCubeLogChanges );
 
 ### Return code & final error message handling
 If( nErrors > 0 );

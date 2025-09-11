@@ -13,16 +13,16 @@ EndIf;
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
-################################################################################################# 
-##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0~~##
-################################################################################################# 
+################################################################################################### 
+##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~## 
+################################################################################################### 
 
 #Region @DOC
 # Description: 
 # This process automatically creates a cube based on a delimited string of dimension names.
 
 # Use case: Intended for development/prototyping.
-# 1/ This can be used to quickly create a cube for a demo or development.
+# 1. This can be used to quickly create a cube for a demo or development.
 
 # Note:
 # The pDims parameter contains the dimenson list and is mandatory.
@@ -56,7 +56,7 @@ cLogInfo          = 'Process:%cThisProcName% run with parameters pCube:%pCube%, 
 
 ## LogOutput parameters
 IF( pLogoutput = 1 );
-    LogOutput('INFO', Expand( cLogInfo ) );   
+  LogOutput('INFO', Expand( cLogInfo ) );   
 ENDIF;
 
 ## Validate the Cube parameter
@@ -687,8 +687,8 @@ Else;
     sProcessAction = Expand( 'Process:%cThisProcName% successfully created %pCube% with %pDims%.' );
     sProcessReturnCode = Expand( '%sProcessReturnCode% %sProcessAction%' );
     nProcessReturnCode = 1;
-    If( pLogoutput = 1 );
-        LogOutput('INFO', Expand( sProcessAction ) );   
+    If( pLogOutput = 1 );
+            LogOutput('INFO', Expand( sProcessAction) );
     EndIf;
 EndIf;
 

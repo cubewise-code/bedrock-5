@@ -15,17 +15,17 @@ EndIf;
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
-################################################################################################# 
-##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0~~##
-################################################################################################# 
+################################################################################################### 
+##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~## 
+################################################################################################### 
 
 #Region @DOC
 # Description:
 # This process could be used extensively by custom TIs in production to clear certain data out of a cube before copying data to that cube.
 
 # Use case: Primarily for production systems.
-# 1/ In production system this is a "workhorse" process called from the prolog of most custom processes prior to querying a data source to refresh cube data.
-# 2/ During development/prototyping can be run manually to clear out a portion of a cube.
+# 1. In production system this is a "workhorse" process called from the prolog of most custom processes prior to querying a data source to refresh cube data.
+# 2. During development/prototyping can be run manually to clear out a portion of a cube.
 
 # Note:
 # Wildcards can be used or a list of cubes specified to clear data out of multiple cubes simultaneouly. 
@@ -301,32 +301,18 @@ While( nCubeDelimiterIndex <> 0 );
 
             ### Zero Out View ###
             If ( nRet = ProcessExitNormal() );
-              If ( pCubeLogging <= 1 );
-                sCubeLogging = CellGetS('}CubeProperties', sCube, 'LOGGING' );
-                CubeSetLogChanges( sCube, pCubeLogging);
-              EndIf;
               ViewZeroOut( sCube, cView );
               sMessage = Expand( 'Succeeded in creating the %cView% view in the %sCube% cube and data has been cleared.' );
-	      IF( pLogoutput = 1 );
+    	      If( pLogoutput = 1 );
               	LogOutput( 'INFO', Expand( 'Process:%cThisProcName% Message:%sMessage%' ) );
-	      ENDIF;
-              If ( pCubeLogging <= 1 );
-                CubeSetLogChanges( sCube, IF(sCubeLogging@='YES',1,0) );  
-              EndIf;
+    	      EndIf;
             Else;
               nErrors = nErrors + 1;
               sMessage = Expand( 'Creating view by %sProc% has failed. Nothing has been cleared in the %sCube% cube.' );
               LogOutput( cMsgErrorLevel, Expand( cMsgErrorContent ) );
             EndIf;
           Else;
-            If ( pCubeLogging <= 1 );
-              sCubeLogging = CellGetS('}CubeProperties', sCube, 'LOGGING' );
-              CubeSetLogChanges( sCube, pCubeLogging);
-            EndIf;
             ViewZeroOut( sCube, cView );
-            If ( pCubeLogging <= 1 );
-              CubeSetLogChanges( sCube, IF(sCubeLogging@='YES',1,0) ); 
-            EndIf;
           Endif;
         Endif;
       EndIf;
@@ -471,32 +457,18 @@ While( nCubeDelimiterIndex <> 0 );
   
               ### Zero Out View ###
               IF ( nRet = ProcessExitNormal() );
-                If ( pCubeLogging <= 1 );
-                  sCubeLogging = CellGetS('}CubeProperties', sCube, 'LOGGING' );
-                  CubeSetLogChanges( sCube, pCubeLogging);
-                EndIf;
                 ViewZeroOut( sCube, cView );
                 sMessage = Expand( 'Succeeded in creating the %cView% view in the %sCube% cube and data has been cleared.' );
-		IF( pLogoutput = 1 );
+        		IF( pLogoutput = 1 );
                     LogOutput( 'INFO', Expand( 'Process:%cThisProcName% Message:%sMessage%' ) );
-		ENDIF;
-                If ( pCubeLogging <= 1 );
-                  CubeSetLogChanges( sCube, IF(sCubeLogging@='YES',1,0) );  
-                EndIf;
+        		ENDIF;
               ELSE;
                 nErrors = nErrors + 1;
                 sMessage = Expand( 'Creating view by %sProc% has failed. Nothing has been cleared in the %sCube% cube.' );
                 LogOutput( cMsgErrorLevel, Expand( cMsgErrorContent ) );
               ENDIF;
             Else;
-              If ( pCubeLogging <= 1 );
-                sCubeLogging = CellGetS('}CubeProperties', sCube, 'LOGGING' );
-                CubeSetLogChanges( sCube, pCubeLogging);
-              EndIf;
               ViewZeroOut( sCube, cView );
-              If ( pCubeLogging <= 1 );
-                CubeSetLogChanges( sCube, IF(sCubeLogging@='YES',1,0) ); 
-              EndIf;
             Endif;
           EndIf;
         EndIf;

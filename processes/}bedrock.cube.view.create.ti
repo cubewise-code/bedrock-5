@@ -15,17 +15,17 @@ EndIf;
 #****Begin: Generated Statements***s
 #****End: Generated Statements****
 
-################################################################################################# 
-##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0.0~~##
-################################################################################################# 
+################################################################################################### 
+##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~## 
+################################################################################################### 
 
 #Region @DOC
 # Description:
 # This process creates a view that can be used for exporting, copying or zeroing out numbers.
 
 # Use case: Intended for development/prototyping or production.
-# 1/ Create a view to zero out data.
-# 2/ Create a view to use as a source for exporting or copying.
+# 1. Create a view to zero out data.
+# 2. Create a view to use as a source for exporting or copying.
 
 # Note:
 # Naturally, a valid cube name (pCube) is mandatory otherwise the process will abort.

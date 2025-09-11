@@ -23,7 +23,7 @@
 		},
 		{
 			"Name":"pCube",
-			"Prompt":"REQUIRED: List of Cubes to Delete (Separated by Delimiter, Accepts Wild card)",
+			"Prompt":"REQUIRED: List of Cubes to Delete (Separated by Delimiter, Accepts wildcard)",
 			"Value":"",
 			"Type":"String"
 		},
@@ -40,5 +40,8 @@
 			"Type":"Numeric"
 		}
 	],
-	"Variables":[]
+	"Variables":[],
+	"UID": "17528586080001",
+	"UIData": "",
+	"VariablesUIData": []
 }

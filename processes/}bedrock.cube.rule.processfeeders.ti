@@ -12,16 +12,16 @@ EndIf;
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
-################################################################################################# ####################
-##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0~~##
-################################################################################################# 
+################################################################################################### 
+##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~## 
+################################################################################################### 
 
 #Region @DOC
 # Description:
 # This process reprocesses feeders when consolidated totals are not adding up.
 
 # Use case: Intended for Deveopment or production.
-#1/ This process would be used any time feeders need to be reprocessed (e.g. when new elements are added to any of the dimensions).
+#1. This process would be used any time feeders need to be reprocessed (e.g. when new elements are added to any of the dimensions).
 
 # Note:
 # Naturally, a valid  cube name (pCube) is mandatory otherwise the process will abort. Wildcards and lists are acceptable.
@@ -134,19 +134,16 @@ End;
 
 #endregion
 #region Metadata
-
 #****Begin: Generated Statements***
 #****End: Generated Statements****
+
+
 #endregion
 #region Data
-
 #****Begin: Generated Statements***
 #****End: Generated Statements****
-
-
 #endregion
 #region Epilog
-
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 

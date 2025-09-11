@@ -12,21 +12,21 @@ EndIf;
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
-################################################################################################# 
-##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0~~##
-################################################################################################# 
+################################################################################################### 
+##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~## 
+################################################################################################### 
 
 #Region @DOC
 # Description:
-# This process will create clients, assign a password and max ports.
+# This process will create clients and max ports.
 
 # Use case: Intended for production.
-# 1/ Create clients for multiple new hires simultaneously.
+# 1. Create clients for multiple new hires simultaneously.
 
 # Note:
 # Naturally, a client (pClient) is mandatory otherwise the process will abort.
 # - Multiple clients can be specified separated by a delimiter.
-# - If client already exists then the process will not attempt to re-create it but will reset password and max ports.
+# - If client already exists then the process will not attempt to re-create it but will reset max ports.
 # - Each client will have to be assigned to a group afterwards.
 #EndRegion @DOC
 
@@ -157,7 +157,6 @@ If( nErrors = 0 );
     EndIf;
     
     If( DimIx( '}Clients', sClient ) > 0 );
-      AssignClientPassword( sClient, pPassword );
       If( sAlias @<> '' );
         AttrPutS( sAlias, '}Clients', sClient, '}TM1_DefaultDisplayValue', 1 );
       EndIf;

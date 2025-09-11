@@ -12,17 +12,17 @@ EndIf;
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
-################################################################################################# 
-##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0~~##
-################################################################################################# 
+################################################################################################### 
+##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~## 
+################################################################################################### 
 
 #Region @DOC
 # Description:
 # This process will create client groups.
 
 # Use case: Intended for development or production.
-# 1/ Create initial security groups.
-# 2/ Add security groups as business needs change.
+# 1. Create initial security groups.
+# 2. Add security groups as business needs change.
 
 # Note:
 # Naturally, a group (pGroup) is mandatory otherwise the process will abort.

@@ -14,16 +14,16 @@ EndIf;
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
-################################################################################################# 
-##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0~~##
-################################################################################################# 
+################################################################################################### 
+##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~## 
+################################################################################################### 
 
 #Region @DOC
 # Description:
 # This process will clone the source dimension Hierarchy.
 
 # Use case: Mostly in Development.
-# 1/ Create a duplicate of an existing hierarchy for testing.
+# 1. Create a duplicate of an existing hierarchy for testing.
 
 # Note:
 # Valid source dimension name (pSrcDim) and target dimension (pTgtDim) names are mandatory otherwise the process will abort.
@@ -178,12 +178,10 @@ If(pSrcDim @=pSrcHier);
  Endif;
   
 ### Set the target Sort Order ###
-sSortElementsType     = CELLGETS( '}DimensionProperties', sDimHier, 'SORTELEMENTSTYPE');
-sSortElementsSense    = CELLGETS( '}DimensionProperties', sDimHier, 'SORTELEMENTSSENSE');
-sSortComponentsType   = CELLGETS( '}DimensionProperties', sDimHier, 'SORTCOMPONENTSTYPE');
-sSortComponentsSense  = CELLGETS( '}DimensionProperties', sDimHier, 'SORTCOMPONENTSSENSE');
+# CellGetS to }DimensionProperties cube removed
+# Placeholder as expecting a TI function to be made available to be able to read these properties
 
-HierarchySortOrder(pTgtDim, pTgtHier, sSortComponentsType, sSortComponentsSense, sSortElementsType , sSortElementsSense);
+#HierarchySortOrder(pTgtDim, pTgtHier, sSortComponentsType, sSortComponentsSense, sSortElementsType , sSortElementsSense);
 
 nSourceHierSize = DimSiz(pSrcDim|':'|pSrcHier);
 
@@ -373,10 +371,8 @@ Else;
 EndIf;
 
 ### Set the target Sort Order ###
-  CELLPUTS( sSortElementsType, '}DimensionProperties', sTargetDimHier, 'SORTELEMENTSTYPE');
-  CELLPUTS( sSortElementsSense, '}DimensionProperties', sTargetDimHier, 'SORTELEMENTSSENSE');
-  CELLPUTS( sSortComponentsType, '}DimensionProperties',sTargetDimHier, 'SORTCOMPONENTSTYPE');
-  CELLPUTS( sSortComponentsSense, '}DimensionProperties', sTargetDimHier, 'SORTCOMPONENTSSENSE');
+# CellPutS to }DimensionProperties cube removed
+# Placeholder as expecting a TI function to be made available to be able to modify these properties
   
 ### If a new dimension has been created, call the process recursively to clone the alternate hierarchy, after the same named hierarchy has been processed
 If( nProcessSameNamedHier = 1 );

@@ -29,7 +29,7 @@
 		},
 		{
 			"Name":"pObjectType",
-			"Prompt":"REQUIRED: Type of Object to Assign Security To (Application/Cube/Dimension/Process/Chore)",
+			"Prompt":"REQUIRED: Type of Object to Assign Security To (Cube/Dimension/Process/Chore)",
 			"Value":"",
 			"Type":"String"
 		},
@@ -58,5 +58,8 @@
 			"Type":"String"
 		}
 	],
-	"Variables":[]
+	"Variables":[],
+	"UID": "17528586670001",
+	"UIData": "",
+	"VariablesUIData": []
 }

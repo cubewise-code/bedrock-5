@@ -12,17 +12,17 @@ EndIf;
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
-################################################################################################# 
-##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0~~##
-################################################################################################# 
+################################################################################################### 
+##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~## 
+################################################################################################### 
 
 #Region @DOC
 # Description:
 # This process will Delete Persistent feeders.
 
 # Use case: Intended for development or production.
-# 1/ Persistent feeders turned off in config file.
-# 2/ Want to reprocess feeders.
+# 1. Persistent feeders turned off in config file.
+# 2. Want to reprocess feeders.
 
 # Note:
 # Reprocessing feeders could take a long time and it may be better to run this overnight.

@@ -108,5 +108,12 @@
 			"StartByte":0,
 			"EndByte":0
 		}
+	],
+	"UID": "17528586290001",
+	"UIData": "",
+	"VariablesUIData": [
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f"
 	]
 }

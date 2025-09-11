@@ -12,17 +12,17 @@ EndIf;
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
-################################################################################################# 
-##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0.0~~##
-################################################################################################# 
+################################################################################################### 
+##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~## 
+################################################################################################### 
 
 #Region @DOC
 # Description:
 # This process deletes public views.
 
 # Use case: Intended for development/prototyping or production.
-# 1/ After a view has been created to zero or as a data source it needs to be deleted.
-# 2/ Clean up public views after Go Live.
+# 1. After a view has been created to zero or as a data source it needs to be deleted.
+# 2. Clean up public views after Go Live.
 
 # Note:
 # This process can work on a single cubes or multiple cubes.

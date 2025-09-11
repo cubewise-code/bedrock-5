@@ -14,16 +14,16 @@ EndIf;
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
-################################################################################################# 
-##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0~~##
-################################################################################################# 
+################################################################################################### 
+##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~## 
+################################################################################################### 
 
 #Region @DOC
 # Description:
 # This process will Create a dynamic subset from an MDX expression that evaluates to a non-empty set in the specified dimension.
 
 # Use case: Intended for Production & Development
-#1/ Create a dynamic subset for use in a view
+#1. Create a dynamic subset for use in a view
 
 # Note:
 # Naturally, valid dimension name (pDim) are mandatory otherwise the process will abort.
