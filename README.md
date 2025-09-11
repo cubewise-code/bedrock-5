@@ -135,4 +135,4 @@ Changes in the Bedrock processes were primarily due to:
 | `}bedrock.security.client.create`           | Removed the `AssignClientPassword` function. Note: Because of this, a client's password cannot be set.                                                    |
 | `}bedrock.security.object.assign`           | The `}ApplicationSecurity` cube has been deprecated, all references have been removed. Note: Because of this, an application's security cannot be set. |
 
-A full list of all process modifications from Bedrock 4 to Bedrock 5 can be found here: [Bedrock Compare Pull Request](https://github.com/bdunleavy22/bedrock-compare/pull/2/files).
+A full list of all process modifications from Bedrock 4 to Bedrock 5 can be found here: [Bedrock Compare Pull Request](https://github.com/cubewise-code/bedrock-5/pull/4/files).
