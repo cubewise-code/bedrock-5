@@ -14,9 +14,9 @@ EndIf;
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
-################################################################################################# 
-##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0~~##
-################################################################################################# 
+################################################################################################### 
+##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~## 
+################################################################################################### 
 
 #Region @DOC
 # Description:
@@ -137,7 +137,7 @@ If( nErrors = 0 );
     EndIf;
 
     # Generate MDX
-    sMDX = '{ TM1FILTERBYLEVEL( { TM1SUBSETALL( [' | pDim|':'|sHier | '] ) }, ' | sLevel | ' ) }';
+    sMDX = '{ TM1FILTERBYLEVEL( { TM1SUBSETALL( [' | pDim|'].['|sHier | '] ) }, ' | sLevel | ' ) }';
     If( pSort = 1 );
       sMDX = '{ TM1SORT( ' | sMDX | ', ASC ) }';
     EndIf;

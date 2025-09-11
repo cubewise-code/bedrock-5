@@ -14,9 +14,9 @@ EndIf;
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
-################################################################################################# 
-##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0~~##
-################################################################################################# 
+################################################################################################### 
+##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~## 
+################################################################################################### 
 
 #Region @DOC
 # Description:
@@ -60,7 +60,6 @@ cTempSub        = cThisProcName |'_'| cTimeStamp |'_'| cRandomInt;
 cMsgErrorLevel  = 'ERROR';
 cMsgErrorContent= 'Process:%cThisProcName% ErrorMsg:%sMessage%';
 cLogInfo        = 'Process:%cThisProcName% run with parameters pDim:%pDim%, pEle:%pEle%, pDelim:%pDelim%, pTgtDir:%pTgtDir%, pTgtFile:%pTgtFile%, pTitleRecord:%pTitleRecord%, pDimInfo:%pDimInfo%, pAttr:%pAttr%, pAttrVal:%pAttrVal%, pSub:%pSub%';
-cCubeS1         = '}DimensionProperties';
 pDelim          = Trim( pDelim );
 cLenASCIICode   = 3;
 cHashLine       = '#################################################################################################';
@@ -310,47 +309,48 @@ If( pDimInfo = 1 );
     TextOutput( sFileName, '' );
     TextOutput( sFileName, cHashLine );
     TextOutput( sFileName, Expand('#Region Dimension Info: %vDim%') );
-    sSORTELEMENTSTYPE   = CellGetS( '}DimensionProperties', vDim, 'SORTELEMENTSTYPE' );
-    sSORTCOMPONENTSTYPE = CellGetS( '}DimensionProperties', vDim, 'SORTCOMPONENTSTYPE' );
-    sSORTELEMENTSSENSE  = CellGetS( '}DimensionProperties', vDim, 'SORTELEMENTSSENSE' );
-    sSORTCOMPONENTSSENSE= CellGetS( '}DimensionProperties', vDim, 'SORTCOMPONENTSSENSE' );
-    sDefHier            = CellGetS( '}DimensionProperties', vDim, 'DEFAULT_HIERARCHY' );
-    sDefMember          = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'defaultMember' );
-    sHierLevels         = NumberToString( CellGetN( '}HierarchyProperties', vDim, 'hierarchy0', 'LevelsToHierarchize' ) );
-    sLevel000           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level000' );
-    sLevel001           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level001' );
-    sLevel002           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level002' );
-    sLevel003           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level003' );
-    sLevel004           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level004' );
-    sLevel005           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level005' );
-    sLevel006           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level006' );
-    sLevel007           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level007' );
-    sLevel008           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level008' );
-    sLevel009           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level009' );
-    sLevel010           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level010' );
-    sLevel011           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level011' );
-    sLevel012           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level012' );
-    sLevel013           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level013' );
-    sLevel014           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level014' );
-    sLevel015           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level015' );
-    sLevel016           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level016' );
-    sLevel017           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level017' );
-    sLevel018           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level018' );
-    sLevel019           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level019' );
-    sLevel020           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level020' );
-    TextOutput( sFileName, Expand('DimensionSortOrder( sDimHier, ''%sSORTCOMPONENTSTYPE%'', ''%sSORTCOMPONENTSSENSE%'', ''%sSORTELEMENTSTYPE%'', ''%sSORTELEMENTSSENSE%'' );') );
-    TextOutput( sFileName, Expand('CellPutS( ''%sDefHier%'', ''}DimensionProperties'', sDimHier, ''DEFAULT_HIERARCHY'' );') );
-    TextOutput( sFileName, Expand('CellPutS( ''%sDefMember%'', ''}HierarchyProperties'', sDimHier, ''hierarchy0'', ''defaultMember'' );') );
-    TextOutput( sFileName, Expand('CellPutN( %sHierLevels%, ''}HierarchyProperties'', sDimHier, ''hierarchy0'', ''LevelsToHierarchize'' );') );
-    nCtr                = 0;
-    While( nCtr         <= 20 );
-        sLvl            = 'Level0' | If( nCtr < 10, '0', '' ) | NumberToString( nCtr ); 
-        sLvlVal         = Expand('%'| Expand('s%sLvl%') |'%');
-        If( sLvlVal     @<> '' );
-            TextOutput( sFileName, Expand('CellPutS( ''%sLvlVal%'', ''}HierarchyProperties'', sDimHier, ''hierarchy0'', ''%sLvl%'' );') );
-        EndIf;
-        nCtr            = nCtr + 1;
-    End;
+# Placeholder as expecting a TI function to be made available to be able to read these properties
+#    sSORTELEMENTSTYPE   = CellGetS( '}DimensionProperties', vDim, 'SORTELEMENTSTYPE' );
+#    sSORTCOMPONENTSTYPE = CellGetS( '}DimensionProperties', vDim, 'SORTCOMPONENTSTYPE' );
+#    sSORTELEMENTSSENSE  = CellGetS( '}DimensionProperties', vDim, 'SORTELEMENTSSENSE' );
+#    sSORTCOMPONENTSSENSE= CellGetS( '}DimensionProperties', vDim, 'SORTCOMPONENTSSENSE' );
+#    sDefHier            = CellGetS( '}DimensionProperties', vDim, 'DEFAULT_HIERARCHY' );
+#    sDefMember          = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'defaultMember' );
+#    sHierLevels         = NumberToString( CellGetN( '}HierarchyProperties', vDim, 'hierarchy0', 'LevelsToHierarchize' ) );
+#    sLevel000           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level000' );
+#    sLevel001           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level001' );
+#    sLevel002           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level002' );
+#    sLevel003           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level003' );
+#    sLevel004           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level004' );
+#    sLevel005           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level005' );
+#    sLevel006           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level006' );
+#    sLevel007           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level007' );
+#    sLevel008           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level008' );
+#    sLevel009           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level009' );
+#    sLevel010           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level010' );
+#    sLevel011           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level011' );
+#    sLevel012           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level012' );
+#    sLevel013           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level013' );
+#    sLevel014           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level014' );
+#    sLevel015           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level015' );
+#    sLevel016           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level016' );
+#    sLevel017           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level017' );
+#    sLevel018           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level018' );
+#    sLevel019           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level019' );
+#    sLevel020           = CellGetS( '}HierarchyProperties', vDim, 'hierarchy0', 'level020' );
+#    TextOutput( sFileName, Expand('DimensionSortOrder( sDimHier, ''%sSORTCOMPONENTSTYPE%'', ''%sSORTCOMPONENTSSENSE%'', ''%sSORTELEMENTSTYPE%'', ''%sSORTELEMENTSSENSE%'' );') );
+#    TextOutput( sFileName, Expand('CellPutS( ''%sDefHier%'', ''}DimensionProperties'', sDimHier, ''DEFAULT_HIERARCHY'' );') );
+#    TextOutput( sFileName, Expand('CellPutS( ''%sDefMember%'', ''}HierarchyProperties'', sDimHier, ''hierarchy0'', ''defaultMember'' );') );
+#    TextOutput( sFileName, Expand('CellPutN( %sHierLevels%, ''}HierarchyProperties'', sDimHier, ''hierarchy0'', ''LevelsToHierarchize'' );') );
+#    nCtr                = 0;
+#    While( nCtr         <= 20 );
+#        sLvl            = 'Level0' | If( nCtr < 10, '0', '' ) | NumberToString( nCtr ); 
+#        sLvlVal         = Expand('%'| Expand('s%sLvl%') |'%');
+#        If( sLvlVal     @<> '' );
+#             TextOutput( sFileName, Expand('CellPutS( ''%sLvlVal%'', ''}HierarchyProperties'', sDimHier, ''hierarchy0'', ''%sLvl%'' );') );
+#        EndIf;
+#        nCtr            = nCtr + 1;
+#    End;
     If( CubeExists( '}DimensionAttributes' ) = 1 );
         nCtr            = 1;
         While( nCtr     <= DimSiz( '}DimensionAttributes' ) );

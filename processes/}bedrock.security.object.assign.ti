@@ -13,9 +13,9 @@ EndIf;
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
-################################################################################################# 
-##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0~~##
-################################################################################################# 
+################################################################################################### 
+##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~## 
+################################################################################################### 
 
 #Region @DOC
 # Description:
@@ -31,7 +31,7 @@ EndIf;
 # - Multiple groups can be specified separated by delimiter.
 # Object names (pObject) can be listed with delimiters but need to be valid as well. 
 # - Before using this process, you must first initialise object security.
-# - For Applications, in Server Explorer go to Applications -> Security Assignments and assign an access security for an Application. 
+# - For Cubes, in Server Explorer, right click Cubes -> Cube Security and assign an access security for a Cube. 
 # - For other object types follow a similar process but for that object type.
 # - Then from the Server Explorer go to your ServerName -> Security -> Refresh Security.
 # - Multiple objects can be specified separated by delimiter.
@@ -69,9 +69,9 @@ If( Trim( pGroup ) @= '' );
 EndIf;
 
 # Validate Object Type
-If( pObjectType @<> 'Application' & pObjectType @<> 'Cube' & pObjectType @<> 'Dimension' & pObjectType @<> 'Process' & pObjectType @<> 'Chore' );
+If(pObjectType @<> 'Cube' & pObjectType @<> 'Dimension' & pObjectType @<> 'Process' & pObjectType @<> 'Chore' );
     nErrors         = 1;
-    sMessage        = 'Invalid object type specified: ' | pObjectType | '. Valid object types are: Application, Cube, Dimension, Process and Chore';
+    sMessage        = 'Invalid object type specified: ' | pObjectType | '. Valid object types are: Cube, Dimension, Process and Chore';
     LogOutput( cMsgErrorLevel, Expand( cMsgErrorContent ) );
 EndIf;
 
@@ -99,9 +99,7 @@ EndIf;
 
 # Set Object Type Dimension
 sObjectTypeDimension = '}' | pObjectType;
-If( pObjectType @= 'Application' );
-    sObjectTypeDimension = sObjectTypeDimension | 'Entries';
-ElseIf( pObjectType @= 'Process' );
+If( pObjectType @= 'Process' );
     sObjectTypeDimension = sObjectTypeDimension | 'es';
 Else;
     sObjectTypeDimension = sObjectTypeDimension | 's';
@@ -111,12 +109,11 @@ EndIf;
 # Allowable Security Levels by Object Type (excluding RESERVE and LOCK):
 #   Cube        : NONE, READ, ADMIN, WRITE
 #   Dimension   : NONE, READ, ADMIN, WRITE
-#   Application : NONE, READ, ADMIN
 #   Process     : NONE, READ
 #   Chore       : NONE, READ
 pSecurityLevel = Upper( pSecurityLevel );
 If( pSecurityLevel @= 'NONE' % pSecurityLevel @= 'READ' % 
-  ( pSecurityLevel @= 'ADMIN' & ( pObjectType @= 'Cube' % pObjectType @= 'Dimension' % pObjectType @= 'Application' ) ) %
+  ( pSecurityLevel @= 'ADMIN' & ( pObjectType @= 'Cube' % pObjectType @= 'Dimension' ) ) %
   ( pSecurityLevel @= 'WRITE' & ( pObjectType @= 'Cube' % pObjectType @= 'Dimension' ) ) );
   # Valid Security Levels
 Else;

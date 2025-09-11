@@ -1,0 +1,65 @@
+{
+	"@type":"Process",
+	"Name":"}bedrock.dim.sort",
+	"HasSecurityAccess":false,
+	"Code@Code.link":"}bedrock.dim.sort.ti",
+	"DataSource":
+	{
+		"Type":"None"
+	},
+	"Parameters":
+	[
+		{
+			"Name":"pCompSortType",
+			"Prompt":"REQUIRED: sort type for components of consolidated elements ​",
+			"Value":"ByName",
+			"Type":"String"
+		},
+		{
+			"Name":"pCompSortSense",
+			"Prompt":"REQUIRED: the sense of order for CompSortType either ‘Ascending’ or ‘Descending’. This applies only when the CompSortType is ByName. ​",
+			"Value":"Ascending",
+			"Type":"String"
+		},
+		{
+			"Name":"pElSortType",
+			"Prompt":"REQUIRED: sort type for all elements​",
+			"Value":"ByHierarchy",
+			"Type":"String"
+		},
+		{
+			"Name":"pElSortSense",
+			"Prompt":"REQUIRED: the sense of order for ElSortType either ‘Ascending’ or ‘Descending’. This applies only when the ElSortType is ByName.​",
+			"Value":"Descending",
+			"Type":"String"
+		},
+		{
+			"Name":"pLogOutput",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pStrictErrorHandling",
+			"Prompt":"OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pDim",
+			"Prompt":"REQUIRED: dimension name, accepts wildcards (if = *, then all the dimensions)",
+			"Value":"",
+			"Type":"String"
+		},
+		{
+			"Name":"pDelim",
+			"Prompt":"OPTIONAL: delimiter character for element list. (default value if blank = '&')",
+			"Value":"&",
+			"Type":"String"
+		}
+	],
+	"Variables":[],
+	"UID": "17528586240001",
+	"UIData": "",
+	"VariablesUIData": []
+}

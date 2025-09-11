@@ -13,16 +13,16 @@ EndIf;
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
-################################################################################################# 
-##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0~~##
-################################################################################################# 
+################################################################################################### 
+##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~## 
+################################################################################################### 
 
 #Region @DOC
 # Description:
 # This process will assign Client and Group Security.
 
 # Use case: Intended for production.
-# 1/ After adding new user(s) using '}bedrock.security.client.create' they must be assigned to groups.
+# 1. After adding new user(s) using '}bedrock.security.client.create' they must be assigned to groups.
 
 # Note:
 # Naturally, valid  client (pClient) is mandatory otherwise the process can't make assignments:

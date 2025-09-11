@@ -14,7 +14,7 @@
 	[
 		{
 			"Name":"pLogOutput",
-			"Prompt":"OPTIONAL: write parameters and action summary to server message log (Boolean True = 1)",
+			"Prompt":"OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
 			"Value":0,
 			"Type":"Numeric"
 		},
@@ -127,12 +127,6 @@
 			"Type":"Numeric"
 		},
 		{
-			"Name":"pCubeLogging",
-			"Prompt":"Required: Cube Logging (0 = No transaction logging, 1 = Logging of transactions, 2 = Ignore Cube Logging - No Action Taken)",
-			"Value":0,
-			"Type":"Numeric"
-		},
-		{
 			"Name":"pSandbox",
 			"Prompt":"OPTIONAL: To use sandbox not base data enter the sandbox name (invalid name will result in process error)",
 			"Value":"",
@@ -177,6 +171,12 @@
 		{
 			"Name":"pThreadMode",
 			"Prompt":"DO NOT USE: Internal parameter only, please do not use",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pCubeLogging",
+			"Prompt":"OBSOLETE: This parameter does nothing and is only included for backwards compatability",
 			"Value":0,
 			"Type":"Numeric"
 		}
@@ -386,5 +386,38 @@
 			"StartByte":0,
 			"EndByte":0
 		}
+	],
+	"UID": "1752858603000",
+	"UIData": "_ParameterConstraints=e30=\f",
+	"VariablesUIData": [
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f"
 	]
 }

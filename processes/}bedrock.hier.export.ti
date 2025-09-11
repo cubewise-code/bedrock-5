@@ -15,9 +15,9 @@ EndIf;
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
-################################################################################################# 
-##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0~~##
-################################################################################################# 
+################################################################################################### 
+##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~## 
+################################################################################################### 
 
 #Region @DOC
 # Description:
@@ -61,7 +61,6 @@ cTempSub        = cThisProcName |'_'| cTimeStamp |'_'| cRandomInt;
 cMsgErrorLevel  = 'ERROR';
 cMsgErrorContent= 'Process:%cThisProcName% ErrorMsg:%sMessage%';
 cLogInfo        = 'Process:%cThisProcName% run with parameters pDim:%pDim%, pHier:%pHier%, pTgtDir:%pTgtDir%, pTgtFile:%pTgtFile%, pTitleRecord:%pTitleRecord%, pDelim:%pDelim%, pQuote:%pQuote%, pLegacy:%pLegacy%.';
-cCubeS1         = '}DimensionProperties';
 cType           = 'Type-';
 cParent         = 'Parent-';
 cIndex          = 'Index-';
@@ -255,15 +254,16 @@ If( nRecordCount = 1 & pTitleRecord = 1 );
     TextOutput( sFilename, pDim, sHier  );
 
 ## Line 3: Sort Order Information
-    sSortElementType    = CELLGETS( cCubeS1, pDim, 'SORTELEMENTSTYPE' );
-    sSortComponentType  = CELLGETS( cCubeS1, pDim, 'SORTCOMPONENTSTYPE' );
-    sSortElementSense   = CELLGETS( cCubeS1, pDim, 'SORTELEMENTSSENSE' );
-    sSortComponentSense = CELLGETS( cCubeS1, pDim, 'SORTCOMPONENTSSENSE' );
-    If( pLegacy = 1 );
-        TextOutput( sFilename, sSortElementType , sSortComponentType , sSortElementSense , sSortComponentSense  );
-    Else;
-        TextOutput( sFilename, 'Sort parameters :', sSortElementType , sSortComponentType , sSortElementSense , sSortComponentSense  );
-    EndIf;
+# Placeholder as expecting a TI function to be made available to be able to read these properties
+#    sSortElementType    = CELLGETS( cCubeS1, pDim, 'SORTELEMENTSTYPE' );
+#    sSortComponentType  = CELLGETS( cCubeS1, pDim, 'SORTCOMPONENTSTYPE' );
+#    sSortElementSense   = CELLGETS( cCubeS1, pDim, 'SORTELEMENTSSENSE' );
+#    sSortComponentSense = CELLGETS( cCubeS1, pDim, 'SORTCOMPONENTSSENSE' );
+#    If( pLegacy = 1 );
+#        TextOutput( sFilename, sSortElementType , sSortComponentType , sSortElementSense , sSortComponentSense  );
+#    Else;
+#        TextOutput( sFilename, 'Sort parameters :', sSortElementType , sSortComponentType , sSortElementSense , sSortComponentSense  );
+#    EndIf;
     
 ## Line 4 (and 5?): Header Information
     If( pLegacy = 1 );
@@ -315,13 +315,18 @@ IF( CubeExists(sAttrDimName) = 1 & DimensionExists(sAttrDimName) = 1 );
         sElName   = DIMNM( sAttrDimName, nIndex );
         sElType   = DTYPE( sAttrDimName, sElName);
         IF( sElType @= 'AN' );
-            sAttrValue = NumberToString( ElementAttrN( pDim , sHier , vEle , sElName ) );
+            nAttrValue = ElementAttrN( pDim , sHier , vEle , sElName );
+            IF( nAttrValue <> 0 );
+              sAttrValue = NumberToString( nAttrValue );
+              TextOutput( sFilename, 'V', vEle, If( pLegacy = 1,'', cAttrName ) | sElName, If( pLegacy = 1,'', cAttrValue ) | sAttrValue );
+            ENDIF;
         ELSE;
-            sAttrValue = ElementAttrS( pDim , sHier , vEle , sElName );
+            sAttrValue = ElementAttrS( pDim , sHier , vEle , sElName );        
+            IF( sAttrValue @<> '' );
+              TextOutput( sFilename, 'V', vEle, If( pLegacy = 1,'', cAttrName ) | sElName, If( pLegacy = 1,'', cAttrValue ) | sAttrValue );
+            ENDIF;
         ENDIF;
-        IF( sAttrValue @<> '' & sAttrValue @<> '0' );
-            TextOutput( sFilename, 'V', vEle, If( pLegacy = 1,'', cAttrName ) | sElName, If( pLegacy = 1,'', cAttrValue ) | sAttrValue );
-        EndIf;
+
         nIndex = nIndex + 1;
     END;
 ENDIF;

@@ -47,6 +47,12 @@
 			"Prompt":"OPTIONAL: Delimiter for dimension list (If blank or not passed then \"&\" will be used as default list delimiter)",
 			"Value":"&",
 			"Type":"String"
+		},
+		{
+			"Name":"pForV12",
+			"Prompt":"OPTIONAL: Some element configurations are valid in V11 but not in V12. If specified, the process will check for those invalid configurations. (Boolean True = 1)",
+			"Value":0,
+			"Type":"Numeric"
 		}
 	],
 	"Variables":
@@ -58,5 +64,10 @@
 			"StartByte":0,
 			"EndByte":0
 		}
+	],
+	"UID": "17528586360001",
+	"UIData": "",
+	"VariablesUIData": [
+		"VarType=32\fColType=827\f"
 	]
 }

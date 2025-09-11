@@ -15,16 +15,16 @@ EndIf;
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
-################################################################################################# 
-##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0~~##
-################################################################################################# 
+################################################################################################### 
+##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~## 
+################################################################################################### 
 
 #Region @DOC
 # Description:
 # This TI deletes a dimension and adds another one to an existing cube with the ability to preserve data.
 
 # Use case: Intended for development/prototyping.
-# 1/ Rebuild existing cube after removal of one dimension and adding anothr one without losing all the data.
+# 1. Rebuild existing cube after removal of one dimension and adding anothr one without losing all the data.
 
 # Note:
 # Naturally, a valid cube name (pCube) is mandatory otherwise the process will abort.
@@ -133,8 +133,8 @@ If( pIncludeData = 1 & DIMIX(pTgtDim, pEle)=0 );
 EndIf;
 
 IF(pIncludeRules = 1 % pIncludeRules = 2);
-  cCubeRuleFileName = '.' | sOSDelim | pCube | '.RUX';
-  If(FileExists(cCubeRuleFileName) = 0);
+  sRule=CubeRuleGet( pCube );
+  If(sRule@= '');
     pIncludeRules = 0;
     LogOutput( 'INFO', Expand( 'No rule found for %pCube%.' ) );
   Endif;
@@ -354,7 +354,7 @@ IF(pIncludeRules = 2);
       nErrors = nErrors + 1;
       LogOutput( cMsgErrorLevel, Expand( cMsgErrorContent ) );
       # Create error rule file 
-      cErrorRuleName = 'ErrorRuleFile.rux';
+      cErrorRuleName = 'ErrorRuleFile.txt';
 
       IF(FileExists( cErrorRuleName ) = 0 );
         sFile = '.' | sOSDelim | cErrorRuleName;

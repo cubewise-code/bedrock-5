@@ -15,9 +15,9 @@ EndIf;
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
-################################################################################################# 
-##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0~~##
-################################################################################################# 
+################################################################################################### 
+##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~## 
+################################################################################################### 
 
 #Region @DOC
 # Description:
@@ -268,7 +268,6 @@ EndIf;
 
 ### CONSTANTS ###
 sAttrDimName    = '}ElementAttributes_' | pDim ;
-cCubeS1         = '}DimensionProperties';
 
 #Processbreak;
 
@@ -313,20 +312,21 @@ sVar3 = If( pLegacy <> 1, Subst( v3 , Scan( '-' , v3 ) + 1 , Long( v3 ) ), v3 );
 sVar4 = If( pLegacy <> 1, Subst( v4 , Scan( '-' , v4 ) + 1 , Long( v4 ) ), v4 );
 sVar5 = If( pLegacy <> 1, Subst( v5 , Scan( '-' , v5 ) + 1 , Long( v5 ) ), v5 );
 
-## Set Dimension Sort Order
-IF( v1 @= 'Sort parameters :' );
-    CELLPUTS( sVar2, cCubeS1 , sDim, 'SORTELEMENTSTYPE' );
-    CELLPUTS( sVar3, cCubeS1 , sDim, 'SORTCOMPONENTSTYPE' );
-    CELLPUTS( sVar4, cCubeS1 , sDim, 'SORTELEMENTSSENSE' );
-    CELLPUTS( sVar5, cCubeS1 , sDim, 'SORTCOMPONENTSSENSE' );
-    DimensionSortOrder( sDim, sVar3, sVar5, sVar2, sVar4 );
-ElseIF( pLegacy = 1 & nDataCount = 3 & ( sVar1 @= 'BYINPUT' % sVar1 @= 'BYNAME' % sVar1 @= 'BYHIERARCHY' % sVar1 @= 'BYLEVEL' ) );
-    CELLPUTS( sVar1, cCubeS1 , sDim, 'SORTELEMENTSTYPE' );
-    CELLPUTS( sVar2, cCubeS1 , sDim, 'SORTCOMPONENTSTYPE' );
-    CELLPUTS( sVar3, cCubeS1 , sDim, 'SORTELEMENTSSENSE' );
-    CELLPUTS( sVar4, cCubeS1 , sDim, 'SORTCOMPONENTSSENSE' );
-    DimensionSortOrder( sDim, sVar2, sVar4, sVar1, sVar3 );
-ENDIF;
+# Placeholder as expecting a TI function to be made available to be able to read & modify these properties
+### Set Dimension Sort Order
+#IF( v1 @= 'Sort parameters :' );
+#    CELLPUTS( sVar2, cCubeS1 , sDim, 'SORTELEMENTSTYPE' );
+#    CELLPUTS( sVar3, cCubeS1 , sDim, 'SORTCOMPONENTSTYPE' );
+#    CELLPUTS( sVar4, cCubeS1 , sDim, 'SORTELEMENTSSENSE' );
+#    CELLPUTS( sVar5, cCubeS1 , sDim, 'SORTCOMPONENTSSENSE' );
+#    DimensionSortOrder( sDim, sVar3, sVar5, sVar2, sVar4 );
+#ElseIF( pLegacy = 1 & nDataCount = 3 & ( sVar1 @= 'BYINPUT' % sVar1 @= 'BYNAME' % sVar1 @= 'BYHIERARCHY' % sVar1 @= 'BYLEVEL' ) );
+#    CELLPUTS( sVar1, cCubeS1 , sDim, 'SORTELEMENTSTYPE' );
+#    CELLPUTS( sVar2, cCubeS1 , sDim, 'SORTCOMPONENTSTYPE' );
+#    CELLPUTS( sVar3, cCubeS1 , sDim, 'SORTELEMENTSSENSE' );
+#    CELLPUTS( sVar4, cCubeS1 , sDim, 'SORTCOMPONENTSSENSE' );
+#    DimensionSortOrder( sDim, sVar2, sVar4, sVar1, sVar3 );
+#ENDIF;
 
 ### Build dimension
 IF( V1 @= 'A' );

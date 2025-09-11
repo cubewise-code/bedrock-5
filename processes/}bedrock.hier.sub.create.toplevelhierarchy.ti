@@ -13,9 +13,9 @@ EndIf;
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
-################################################################################################# 
-##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0~~##
-################################################################################################# 
+################################################################################################### 
+##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~## 
+################################################################################################### 
 
 #Region @DOC
 # Description:
@@ -124,10 +124,9 @@ IF( pTemp <> 0 & pTemp <> 1 );
 EndIf;
 
 ### MDX for creating subset ###
-
-sMDX = '{EXCEPT( {FILTER( {TM1SUBSETALL( [' | pDim|':'|sHier | '] )}, MemberToStr( [' |
+sMDX = '{EXCEPT( {FILTER( {TM1SUBSETALL( [' | pDim|'].['|sHier | '] )}, MemberToStr( [' |
        pDim|':'|sHier | '].CurrentMember.Parent ) = "" )},' |
-       '{TM1FILTERBYLEVEL( {TM1SUBSETALL( [' | pDim|':'|sHier | '] )},0 )} )}';
+       '{TM1FILTERBYLEVEL( {TM1SUBSETALL( [' | pDim|'].['|sHier | '] )},0 )} )}';
 
 
 ### Create Subset ###

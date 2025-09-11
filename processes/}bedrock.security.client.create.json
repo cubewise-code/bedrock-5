@@ -34,17 +34,20 @@
 			"Type":"String"
 		},
 		{
-			"Name":"pPassword",
-			"Prompt":"OPTIONAL: Initial Password",
-			"Value":"",
-			"Type":"String"
-		},
-		{
 			"Name":"pDelim",
 			"Prompt":"OPTIONAL: Delimiter (Blank = &)",
 			"Value":"&",
 			"Type":"String"
+		},
+		{
+			"Name":"pPassword",
+			"Prompt":"OBSOLETE: This parameter does nothing and is only included for backwards compatability",
+			"Value":"",
+			"Type":"String"
 		}
 	],
-	"Variables":[]
+	"Variables":[],
+	"UID": "17528586590001",
+	"UIData": "_ParameterConstraints=e30=\f",
+	"VariablesUIData": []
 }

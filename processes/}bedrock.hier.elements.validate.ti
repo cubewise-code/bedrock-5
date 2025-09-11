@@ -13,9 +13,9 @@ EndIf;
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
-################################################################################################# 
-##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0~~##
-################################################################################################# 
+################################################################################################### 
+##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~## 
+################################################################################################### 
 
 #Region @DOC
 # Description:
@@ -98,7 +98,7 @@ IF( Trim( pDim ) @= '*' );
 ElseIf( Trim( pHier ) @= '*' );
     IF( Scan( pDelim , pDim )>0 );
         # delimiter in pDim. Seperate and add MDX for each part separately
-        sMDX            = '{ ';
+        sMDX            = '';
         sDims           = Trim( pDim );
         nDelimiterIndex = 1;
         While( nDelimiterIndex <> 0 );    
@@ -110,18 +110,18 @@ ElseIf( Trim( pHier ) @= '*' );
                 sDims           = Trim( Subst( sDims, nDelimiterIndex + Long(pDelim), Long( sDims ) ) );
             ENDIF;
             IF(DimensionExists(sDim)=1 );
-                sMDX            = Expand('{TM1FILTERBYPATTERN( TM1SUBSETALL( [}Dimensions] ) ,"%sDim%*")}');
+                sMDX            = Expand('TM1FILTERBYPATTERN( TM1SUBSETALL( [}Dimensions] ) ,"%sDim%*")');
             ELSEIF(Scan( '*', sDim )=0 & Scan( '?', sDim )=0 );
                 #nErrors = 1;
                 sMessage= Expand('Dimension %sDim% does not exist.');
                 LogOutput( cMsgErrorLevel, Expand( cMsgErrorContent ) );
             ELSE;
-                sMDX            = sMDX | IF(Long(sMDX)>4,
+                sMDX            = sMDX | IF( sMDX @<> '',
                                             Expand(',TM1FILTERBYPATTERN( TM1SUBSETALL( [}Dimensions] ) ,"%sDim%")'),
                                             Expand(' TM1FILTERBYPATTERN( TM1SUBSETALL( [}Dimensions] ) ,"%sDim%")')); 
             ENDIF;
         END;
-        sMDX                    = sMDX | ' }';
+        sMDX                    ='{ ' | sMDX | ' }';
     ELSE;
         IF(DimensionExists(pDim)=1 );
             sMDX                = Expand('{TM1FILTERBYPATTERN( TM1SUBSETALL( [}Dimensions] ) ,"%pDim%*")}');
@@ -138,8 +138,8 @@ ElseIf( HierarchyExists( pDim , pHier ) = 1 & Trim( pHier ) @<>'' );
     sMDX = Expand('{TM1FILTERBYPATTERN( TM1SUBSETALL( [}Dimensions] ) ,"%pDim%:%pHier%")}');
     
 ElseIf( Scan( pDelim  , pHier )>0 % Scan( '*'     , pHier )>0 % Scan( '?'     , pHier )>0);
-    sMDX            = '{ ';
     IF( Scan( pDelim  , pHier )>0 );
+        sMDX            = '';
         # delimiter in pHier. Seperate and add MDX for each part separately
         sHiers           = Trim( pHier );
         nDelimiterIndex = 1;
@@ -152,7 +152,7 @@ ElseIf( Scan( pDelim  , pHier )>0 % Scan( '*'     , pHier )>0 % Scan( '?'     , 
                 sHiers           = Trim( Subst( sHiers, nDelimiterIndex + Long(pDelim), Long( sHiers ) ) );
             ENDIF;
             IF(HierarchyExists( pDim, sHier )=1 );
-                sMDX            = sMDX | IF(Long(sMDX)>4,
+                sMDX            = sMDX | IF(sMDX @<> '',
                                             Expand(',TM1FILTERBYPATTERN( TM1SUBSETALL( [}Dimensions] ) ,"%pDim%:%sHier%")'),
                                             Expand(' TM1FILTERBYPATTERN( TM1SUBSETALL( [}Dimensions] ) ,"%pDim%:%sHier%")')); 
             ELSEIF(Scan( '*', sHier )=0 & Scan( '?', sHier )=0 );
@@ -160,13 +160,13 @@ ElseIf( Scan( pDelim  , pHier )>0 % Scan( '*'     , pHier )>0 % Scan( '?'     , 
                 sMessage= Expand('Dimension:Hierarchy %pDim%:%sHier% does not exist.');
                 LogOutput( cMsgErrorLevel, Expand( cMsgErrorContent ) );
             ELSE;
-                sMDX            = sMDX | IF(Long(sMDX)>4,
+                sMDX            = sMDX | IF(sMDX @<> '',
                                             Expand(',TM1FILTERBYPATTERN( TM1SUBSETALL( [}Dimensions] ) ,"%pDim%:%sHier%")'),
                                             Expand(' TM1FILTERBYPATTERN( TM1SUBSETALL( [}Dimensions] ) ,"%pDim%:%sHier%")')); 
             ENDIF;
                 
         END;
-        sMDX                    = sMDX | ' }';
+        sMDX                    ='{ ' | sMDX | ' }';
     ELSE;
         # No delimiters but with wildcards in hierachy
         IF(HierarchyExists( pDim, pHier )=1 );
@@ -184,9 +184,9 @@ ElseIf( Scan( pDelim  , pHier )>0 % Scan( '*'     , pHier )>0 % Scan( '?'     , 
 ElseIf( Trim( pHier ) @='' );
     ## Use main hierarchy for each dimension processed
     pHier = Trim( pDim );
-    sMDX            = '{ ';
     IF( Scan( pDelim  , pHier )>0 );
         # delimiter in pHier. Seperate and add MDX for each part separately
+        sMDX            = '';
         sHiers           = Trim( pHier );
         nDelimiterIndex = 1;
         While( nDelimiterIndex <> 0 );    
@@ -198,7 +198,7 @@ ElseIf( Trim( pHier ) @='' );
                 sHiers           = Trim( Subst( sHiers, nDelimiterIndex + Long(pDelim), Long( sHiers ) ) );
             ENDIF;
             IF(HierarchyExists( sHier, sHier )=1 );
-                sMDX            = sMDX | IF(Long(sMDX)>4,
+                sMDX            = sMDX | IF(sMDX @<> '',
                                             Expand(',TM1FILTERBYPATTERN( EXCEPT( TM1SUBSETALL( [}Dimensions] ) , TM1FILTERBYPATTERN( TM1SUBSETALL( [}Dimensions] ) , "*:*") ) ,"%sHier%")'),
                                             Expand(' TM1FILTERBYPATTERN( EXCEPT( TM1SUBSETALL( [}Dimensions] ) , TM1FILTERBYPATTERN( TM1SUBSETALL( [}Dimensions] ) , "*:*") ) ,"%sHier%")')); 
             ELSEIF(Scan( '*', sHier )=0 & Scan( '?', sHier )=0 );
@@ -206,13 +206,13 @@ ElseIf( Trim( pHier ) @='' );
                 sMessage= Expand('Dimension:Hierarchy %sHier%:%sHier% does not exist.');
                 LogOutput( cMsgErrorLevel, Expand( cMsgErrorContent ) );
             ELSE;
-                sMDX            = sMDX | IF(Long(sMDX)>4,
+                sMDX            = sMDX | IF(sMDX @<> '',
                                             Expand(',TM1FILTERBYPATTERN( EXCEPT( TM1SUBSETALL( [}Dimensions] ) , TM1FILTERBYPATTERN( TM1SUBSETALL( [}Dimensions] ) , "*:*") ) ,"%sHier%")'),
                                             Expand(' TM1FILTERBYPATTERN( EXCEPT( TM1SUBSETALL( [}Dimensions] ) , TM1FILTERBYPATTERN( TM1SUBSETALL( [}Dimensions] ) , "*:*") ) ,"%sHier%")')); 
             ENDIF;
                 
         END;
-        sMDX                    = sMDX | ' }';
+        sMDX                    ='{ ' | sMDX | ' }';
     ELSE;
         # No delimiters but with wildcards in hierachy
         IF(HierarchyExists( pDim, pHier )=1 );
@@ -241,6 +241,7 @@ EndIf;
 
 # Create temporary subset
 SubsetCreatebyMDX(cSubset, sMDX , 1 );
+TextOutput( 'INFO.txt', sMDX );
 
 ### Set data source for process ### 
 DatasourceType              = 'SUBSET';
@@ -291,6 +292,7 @@ While( nCount <= nDimSize );
     sEleType    = ElementType( sDim , sHier , sEle );
     sEleNew     = '';
     nEleSiz     = Long(sEle);
+    nParentCount= ElementParentCount( sDim, sHier, sEle );
     nChar       = 1;
     While( nChar <= nEleSiz & ElementIndex( sDim , sHier , sEle ) > 0 );
         sChar       = NumberToString( nChar );
@@ -321,6 +323,25 @@ While( nCount <= nDimSize );
 
         nChar       = nChar + 1;
     End;
+    
+    # V12 Check
+    IF( pForV12 <> 0 );
+        # Check if S Type element is part of a consolidation
+        IF( sEleType @= 'S' & nParentCount <> 0 );
+            sParentCount = NumberToString( nParentCount );
+            sOutput = Expand('%vDim%" , %sEle% , %sEleType%, is part of %sParentCount% consolidations, which is forbidden in V12.');
+            TextOutput ( cFile , sOutput );
+        ENDIF;
+        
+        # Check if Element has different type in Leaves hierarchy
+        IF( HierarchyExists( sDim, 'Leaves' ) = 1 & sHier @<> 'Leaves' );
+            sEleTypeInLeaves = ElementType( sDim , sHier , sEle );
+            IF( sEleTypeInLeaves @<> sEleType );
+                sOutput = Expand('%vDim%" , %sHier%, %sEle% , %sEleType%, has a different type in the Leaves hierarchy, "%sEleTypeInLeaves%", which is forbidden in V12.');
+                TextOutput ( cFile , sOutput );
+            ENDIF;
+        ENDIF;
+    ENDIF;
     
     nCount      = nCount + 1;
 End;

@@ -6,8 +6,8 @@
 	"DataSource":
 	{
 		"Type":"ASCII",
-		"dataSourceNameForServer":"D:\\TM1Models\\Bedrock.v4\\Data\\Attribute.csv",
-		"dataSourceNameForClient":"D:\\TM1Models\\Bedrock.v4\\Data\\Attribute.csv",
+		"dataSourceNameForServer":"D:/TM1Models/Bedrock.v4/Data/Attribute.csv",
+		"dataSourceNameForClient":"D:/TM1Models/Bedrock.v4/Data/Attribute.csv",
 		"asciiHeaderRecords":1,
 		"asciiQuoteCharacter":"\"",
 		"asciiDecimalSeparator":".",
@@ -82,5 +82,11 @@
 			"StartByte":0,
 			"EndByte":0
 		}
+	],
+	"UID": "17528586200001",
+	"UIData": "",
+	"VariablesUIData": [
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f"
 	]
 }

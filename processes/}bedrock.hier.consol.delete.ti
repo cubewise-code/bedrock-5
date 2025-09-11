@@ -13,16 +13,16 @@ EndIf;
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
-################################################################################################# 
-##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0~~##
-################################################################################################# 
+################################################################################################### 
+##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~## 
+################################################################################################### 
 
 #Region @DOC
 # Description:
 # This process will delete a specified C-Level item **or** ALL consolidations in the dimension hierarchy. 
 
 # Use case: Could be used during development or in production.
-# 1/ Delete a specific or all C-Level items in a hierarchy.
+# 1. Delete a specific or all C-Level items in a hierarchy.
 
 # Note:
 # Valid dimension name (pDim) is mandatory otherwise the process will abort. Control dimensions are excluded.
@@ -151,7 +151,7 @@ While( nDelimiterIndex <> 0 );
         # Wildcard search string
         sEle    = '"'|sEle|'"';
         sProc   = '}bedrock.hier.sub.create.bymdx';
-        sMdx    = '{TM1FILTERBYPATTERN( {TM1SUBSETALL([ ' |pDim|':'|sHier |' ])},'| sEle| ')}';
+        sMdx    = '{TM1FILTERBYPATTERN( {TM1SUBSETALL([ ' |pDim|'].['|sHier |' ])},'| sEle| ')}';
         ExecuteProcess('}bedrock.hier.sub.create.bymdx',
           'pLogOutput', pLogOutput,
           'pStrictErrorHandling', pStrictErrorHandling,

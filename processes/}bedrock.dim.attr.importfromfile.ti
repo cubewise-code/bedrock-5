@@ -13,16 +13,16 @@ EndIf;
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
-################################################################################################# 
-##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0~~##
-################################################################################################# 
+################################################################################################### 
+##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~## 
+################################################################################################### 
 
 #Region @DOC
 # Description:
 # This process will create Attributes of the dimension from a file.
 
 # Use case: Intended for development/prototyping. 
-#1/ Add multiple dimension attributes of different types.
+#1. Add multiple dimension attributes of different types.
 
 # Note:
 # The file format is as per the dimension export file applied to an }ElementsAttributes dimension.

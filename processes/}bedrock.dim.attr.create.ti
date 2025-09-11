@@ -14,16 +14,16 @@ EndIf;
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
-################################################################################################# 
-##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0~~##
-################################################################################################# 
+################################################################################################### 
+##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~## 
+################################################################################################### 
 
 #Region @DOC
 # Description:
 # This process can insert one or more attributes in one or more specified dimensions. 
 
 # Use case: Intended for development/prototyping.
-# 1/ Add multiple dimension attributes.
+# 1. Add multiple dimension attributes.
 
 # Note:
 # Delimited lists and/or wild card(*) are acceptable for pDim & pAttr.
@@ -69,6 +69,10 @@ IF( Trim( pAttr ) @= '' );
 EndIf;
 
 # Validate attribute type
+IF( Trim( pAttrType ) @= '' );
+  pAttrType = 'S';
+ENDIF;
+
 pAttrType           = Upper( SubSt( pAttrType, 1, 1 ) );
 If( pAttrType @<> 'A' & pAttrType @<> 'S' & pAttrType @<> 'N' );
     nErrors         = 1;

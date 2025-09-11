@@ -15,17 +15,17 @@ EndIf;
 
 ### Start Prolog ###
 
-################################################################################################# 
-##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0~~##
-################################################################################################# 
+################################################################################################### 
+##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~## 
+################################################################################################### 
 
 #Region @DOC
 # Description:
 # This process will add consolidated element pTgtConsol in the dimension hierarchy. 
 
 # Use case: Intended for Development but could be used in production too.
-# 1/ Create a new hierarchy for testing.
-# 2/ Create a new hierarchy to reflect new business needs.
+# 1. Create a new hierarchy for testing.
+# 2. Create a new hierarchy to reflect new business needs.
 
 # Note:
 # If source parent element (pSrcConsol) is defined then all its leaf elements will be copied to target

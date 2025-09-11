@@ -13,16 +13,16 @@ EndIf;
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
-################################################################################################# 
-##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0~~##
-################################################################################################# 
+################################################################################################### 
+##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~## 
+################################################################################################### 
 
 #Region @DOC
 # Description:
 # This process will copy security from one user to another. Target client(s) will be created if it doesn't exist.
 
 # Use case: Intended for production.
-# 1/ When a company hires new employees their profile can be set up by cloning an existing employee.
+# 1. When a company hires new employees their profile can be set up by cloning an existing employee.
 
 # Note:
 # Naturally, a valid source client (pSrcClient) is mandatory otherwise the process will abort.
@@ -166,12 +166,6 @@ While( nDelimiterIndex <> 0 );
         sClients    = Trim( Subst( sClients, nDelimiterIndex + Long(pDelim), Long( sClients ) ) );
     EndIf;
     If( DimIx( '}Clients', sClient ) >= 1 );
-        IF (pPassword @<>'');
-          sPassExists = CellGetS('}ClientProperties', sClient, 'PASSWORD');
-          IF (sPassExists @='');
-            AssignClientPassword( sClient, pPassword );
-          EndIf;  
-        EndIf;
         sClient     = DimensionElementPrincipalName( '}Clients', sClient );
         # loop all security groups
         nGroupIndex = 1;

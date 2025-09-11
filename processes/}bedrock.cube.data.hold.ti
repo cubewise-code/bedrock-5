@@ -1,4 +1,6 @@
 #region Prolog
+#****Begin: Generated Statements***
+#****End: Generated Statements****
 
 # A snippet of code provided as an example how to call this process should the developer be working on a system without access to an editor with auto-complete.
 If( 1 = 0 );
@@ -6,9 +8,9 @@ If( 1 = 0 );
     'pMode', 'C / D / R / X / M', 'pCube', '', 'pClient', '', 'pGroup', '', 'pDelim', '&', 'pDir', '', 'pSkipNonExistentHoldsCubes', 1 );
 EndIf;
 
-#################################################################################################
-##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0~~##
-#################################################################################################
+################################################################################################### 
+##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~## 
+###################################################################################################
 
 # Description:
 # This TI process can manage TM1 cube holds. Holds are a personal tool for a TM1 user in any TM1 client.
@@ -620,7 +622,19 @@ While( nCountCubes <= nFoundCubesCount );
    nCountCubes = nCountCubes + 1;
 End;
 #endregion
+#region Metadata
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+#endregion
+#region Data
+#****Begin: Generated Statements***
+#****End: Generated Statements****
+
+#endregion
 #region Epilog
+#****Begin: Generated Statements***
+#****End: Generated Statements****
 
 #################################################################################################
 ##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0~~##

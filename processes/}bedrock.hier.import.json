@@ -6,7 +6,7 @@
 	"DataSource":
 	{
 		"Type":"ASCII",
-		"dataSourceNameForServer":"D:\\TM1Models\\Bedrock.v4\\Log\\Currency Currency 2_Export.csv",
+		"dataSourceNameForServer":"D:/TM1Models/Bedrock.v4/Log/Currency Currency 2_Export.csv",
 		"dataSourceNameForClient":"D:\\TM1Models\\Bedrock.v4\\Log\\Currency Currency 2_Export.csv",
 		"asciiHeaderRecords":0,
 		"asciiQuoteCharacter":"\"",
@@ -128,5 +128,15 @@
 			"StartByte":0,
 			"EndByte":0
 		}
+	],
+	"UID": "17528586400001",
+	"UIData": "_ParameterConstraints=e30=\f",
+	"VariablesUIData": [
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f"
 	]
 }

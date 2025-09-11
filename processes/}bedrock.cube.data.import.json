@@ -6,8 +6,8 @@
 	"DataSource":
 	{
 		"Type":"ASCII",
-		"dataSourceNameForServer":"C:\\TM1\\Bedrock\\Data\\Bedrock.Z.Cube.Placeholder.csv",
-		"dataSourceNameForClient":"C:\\TM1\\Bedrock\\Data\\Bedrock.Z.Cube.Placeholder.csv",
+		"dataSourceNameForServer":"C:/TM1/Bedrock/Data/Bedrock.Z.Cube.Placeholder.csv",
+		"dataSourceNameForClient":"C:/TM1/Bedrock/Data/Bedrock.Z.Cube.Placeholder.csv",
 		"asciiHeaderRecords":2,
 		"asciiQuoteCharacter":"\"",
 		"asciiDecimalSeparator":".",
@@ -102,12 +102,6 @@
 			"Type":"Numeric"
 		},
 		{
-			"Name":"pCubeLogging",
-			"Prompt":"Required: Cube Logging (0 = No transaction logging, 1 = Logging of transactions, 2 = Ignore Cube Logging - No Action Taken)",
-			"Value":0,
-			"Type":"Numeric"
-		},
-		{
 			"Name":"pSandbox",
 			"Prompt":"OPTIONAL: To use sandbox not base data enter the sandbox name (invalid name will result in process error)",
 			"Value":"",
@@ -158,6 +152,12 @@
 		{
 			"Name":"pSkipInvalidRecords",
 			"Prompt":"OPTIONAL: Skip records with invalid elements rather than creating error log",
+			"Value":0,
+			"Type":"Numeric"
+		},
+		{
+			"Name":"pCubeLogging",
+			"Prompt":"OBSOLETE: This parameter does nothing and is only included for backwards compatability",
 			"Value":0,
 			"Type":"Numeric"
 		}
@@ -374,5 +374,39 @@
 			"StartByte":0,
 			"EndByte":0
 		}
+	],
+	"UID": "17528586060001",
+	"UIData": "_ParameterConstraints=e30=\f",
+	"VariablesUIData": [
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f",
+		"VarType=32\fColType=827\f"
 	]
 }

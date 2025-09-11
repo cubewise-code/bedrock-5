@@ -161,13 +161,6 @@ DatasourceDimensionSubset = cSubset;
 AttrDelete( pSrcDim, cHierAttr );
 AttrInsert( pSrcDim, '', cHierAttr, 'S' );
 
-# Disable excessive transaction logging of the attributes cube if it is logged
-sAttrCube = '}ElementAttributes_' | pSrcDim;
-nAttrCubeLogChanges = CubeGetLogChanges(sAttrCube);
-If( nAttrCubeLogChanges = 1 );
-   CubeSetLogChanges( sAttrCube, 0 );
-EndIf;
-
 nIndex = 1;
 nLimit = HierarchySubsetGetSize( pSrcDim, pSrcHier, pSubset );
 WHILE( nIndex <= nLimit);
@@ -178,22 +171,18 @@ WHILE( nIndex <= nLimit);
     nIndex = nIndex + 1;
 END;
 
-# Re-enable transaction logging setting of the attributes cube if required
-If( nAttrCubeLogChanges = 1 );
-   CubeSetLogChanges( sAttrCube, 1 );
-EndIf;
-
 ### Replicate Attributes ###
 # Note: DType on Attr dim returns "AS", "AN" or "AA" need to strip off leading "A"
- 
-sAttrDim = '}ElementAttributes_' | pSrcDim;
+
+sTgtAttrDim = '}ElementAttributes_' | pTgtDim;
+sSrcAttrDim = '}ElementAttributes_' | pSrcDim;
 sLastAttr = '';
-If( pAttr = 1 & DimensionExists( sAttrDim ) = 1 );
-    nNumAttrs = DimSiz( sAttrDim );
+If( pAttr = 1 & DimensionExists( sSrcAttrDim ) = 1 );
+    nNumAttrs = DimSiz( sSrcAttrDim );
     nCount = 1;
     While( nCount <= nNumAttrs );
-        sAttrName = DimNm( sAttrDim, nCount );
-        sAttrType = SubSt(DType( sAttrDim, sAttrName ), 2, 1 );
+        sAttrName = DimNm( sSrcAttrDim, nCount );
+        sAttrType = SubSt(DType( sSrcAttrDim, sAttrName ), 2, 1 );
         AttrInsert( pTgtDim, sLastAttr, sAttrName, sAttrType );
         sLastAttr = sAttrName;
         nCount = nCount + 1;
@@ -278,12 +267,12 @@ If( pAttr = 1 );
 
     nCount = 1;
     While( nCount <= nNumAttrs );
-        sAttrName = DimNm( sAttrDim, nCount );
-        sAttrType = SubSt( DTYPE( sAttrDim, sAttrName ), 2, 1 );
+        sAttrName = DimNm( sSrcAttrDim, nCount );
+        sAttrType = SubSt( DTYPE( sSrcAttrDim, sAttrName ), 2, 1 );
         If( sAttrType @= 'S' % sAttrType @= 'A' );
             sAttrVal = ElementAttrS(pSrcDim, pSrcHier, vElement, sAttrName);
             If( sAttrVal @<> '' );
-                If( pStrictErrorHandling = 0 & CellIsUpdateable(sAttrDim, pTgtHier:vElement, sAttrName) = 0 );
+                If( pStrictErrorHandling = 0 & CellIsUpdateable(sTgtAttrDim, pTgtHier:vElement, sAttrName) = 0 );
                     #skip
                 ElseIf( sAttrType @= 'A' );
                     ElementAttrPutS( sAttrVal, pTgtDim, pTgtHier, vElement, sAttrName, 1 );
@@ -294,7 +283,7 @@ If( pAttr = 1 );
         Else;
             nAttrVal = ElementAttrN(pSrcDim, pSrcHier, vElement, sAttrName);
             If( nAttrVal <> 0 );
-                If( pStrictErrorHandling = 0 & CellIsUpdateable(sAttrDim, pTgtHier:vElement, sAttrName) = 0 );
+                If( pStrictErrorHandling = 0 & CellIsUpdateable(sTgtAttrDim, pTgtHier:vElement, sAttrName) = 0 );
                     #skip
                 Else;
                     ElementAttrPutN( nAttrVal, pTgtDim, pTgtHier, vElement, sAttrName );
@@ -326,54 +315,7 @@ Else;
     sTargetElement = pTgtDim|':'|pTgtHier;
 Endif;
 
-sCube = '}DimensionProperties';
-IF(CubeExists ( sCube ) = 1 );
-  sEleMapping = '}Dimensions' |'¦'|sSourceElement|'->'|sTargetElement;
-  ExecuteProcess( '}bedrock.cube.data.copy',
-  'pLogOutput', pLogOutput,
-  'pStrictErrorHandling', pStrictErrorHandling,
-  'pCube', sCube,
-  'pSrcView', '',
-  'pTgtView', '',
-  'pFilter',  '',
-  'pEleMapping', sEleMapping,
-  'pMappingDelim','->',
-  'pFactor', 1,
-  'pDimDelim', '&',
-  'pEleStartDelim', '¦',
-  'pEleDelim', '+',
-  'pSuppressRules', 0 ,
-  'pCumulate', 0 ,
-  'pZeroSource', 0, 
-  'pZeroTarget', 1,
-  'pTemp', 1
-   );
-ENDIF;
-  
-sCube = '}HierarchyProperties';
-IF(CubeExists ( sCube ) = 1 );
-  sEleMapping = '}Dimensions' |'¦'|sSourceElement|'->'|sTargetElement;
-  ExecuteProcess( '}bedrock.cube.data.copy',
-  'pLogOutput', pLogOutput,
-  'pStrictErrorHandling', pStrictErrorHandling,
-  'pCube', sCube,
-  'pSrcView', '',
-  'pTgtView', '',
-  'pFilter',  '',
-  'pEleMapping', sEleMapping,
-  'pMappingDelim','->',
-  'pFactor', 1,
-  'pDimDelim', '&',
-  'pEleStartDelim', '¦',
-  'pEleDelim', '+',
-  'pSuppressRules', 0 ,
-  'pCumulate', 0 ,
-  'pZeroSource', 0, 
-  'pZeroTarget', 1,
-  'pTemp', 1
-   );
-ENDIF;
-
+# Placeholder for copying dimension order and captions from source to target as expecting a TI function to be made available to be able to read & modify these properties
 
 ### Set Descendent attribute value
 AttrDelete( pSrcDim, cHierAttr );

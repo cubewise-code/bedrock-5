@@ -12,17 +12,17 @@ EndIf;
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
-################################################################################################# 
-##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0~~##
-################################################################################################# 
+################################################################################################### 
+##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~## 
+################################################################################################### 
 
 #Region @DOC
 # Description:
 # This process will delete client groups.
 
 # Use case: Intended for development or production.
-# 1/ Clean up security groups after go live.
-# 2/ Delete obsolete security groups as business needs change.
+# 1. Clean up security groups after go live.
+# 2. Delete obsolete security groups as business needs change.
 
 # Note:
 # Naturally, a group (pGroup) is mandatory otherwise the process will abort:
@@ -46,6 +46,7 @@ cGroupDim               = '}Groups';
 cGroupHier              = cGroupDim;
 cUserName               = TM1User();
 cMsgErrorLevel          = 'ERROR';
+cMsgInfoLevel           = 'INFO';
 cMsgErrorContent        = 'User:%cUserName% Process:%cThisProcName% ErrorMsg:%sMessage%';
 cLogInfo                = 'Process:%cThisProcName% run with parameters pGroup:%pGroup%, pDelim:%pDelim%.';
 cBuiltInGroups          = 'ADMIN&SecurityAdmin&DataAdmin&OperationsAdmin&';
@@ -84,136 +85,203 @@ If( DimensionExists('}ElementAttributes_'|cGroupDim) = 0 % DimIx('}ElementAttrib
 EndIf;
 
 ### Split pGroups into individual groups and delete ###
-sGroups                 = pGroup;
-nDelimiterIndex         = 1;
-While( nDelimiterIndex <> 0 );
-  nDelimiterIndex = Scan( pDelim, sGroups );
-  If( nDelimiterIndex = 0 );
-        sGroup          = sGroups;
-  Else;
-        sGroup          = Trim( SubSt( sGroups, 1, nDelimiterIndex - 1 ) );
-        sGroups         = Trim( Subst( sGroups, nDelimiterIndex + Long(pDelim), Long( sGroups ) ) );
-  EndIf;
-  
-  If( Scan( '*', sGroup ) = 0);
-    # Don't attempt to delete a blank group
-    If( sGroup @<> '' );
-        If( DimIx( '}Groups', sGroup ) > 0 );
-            If( nErrors = 0 );
-                If( Scan( Upper( sGroup ) |'&', Upper( cBuiltInGroups ) ) = 0 );
-                    DeleteGroup( sGroup );
-                Else;
-                    nErrors = 1;
-                    sMessage= Expand('Attempt to delete built-in group %sGroup%.');
-                    LogOutput( cMsgErrorLevel, Expand( cMsgErrorContent ) );
-                EndIf;
-            EndIf;
-            If( nErrors > 0 );
-                ItemReject( Expand( cMsgErrorContent ) );
-            EndIf;
-        EndIf;
-    EndIf;
-  Else;
-    # Wildcard search string
-    iCount = 0;
-    iCheck = 1;
-    sChar = sGroup;
-    While (iCheck > 0);
-      iCheck = Scan('*',sChar);
-      If( iCheck > 0 );
-        iCount = iCount + 1;
-        sChar = Subst(sChar,iCheck+1,(long(sChar)-iCheck));
-      Endif;
-    End;
-    If(iCount = 1);
-      ##If the wilcardsearch is *String, below code will get executed
-      if(Subst(sGroup,iCount,1) @= '*');
-        sGroup1 = '"'| Subst(sGroup,iCount+1,(Long(sGroup)- iCount))|'"';
-        sTempCount = NumbertoString(Long(sGroup)-iCount);
-        sMdx = '{FILTER({TM1SUBSETALL(['|cGroupDim|'].['|cGroupHier|'])},
-                (Right( ['|cGroupDim|'].['|cGroupHier|'].[}TM1_DefaultDisplayValue],'| sTempCount|') ='|sGroup1|'))}+
-                {FILTER({TM1SUBSETALL(['|cGroupDim|'].['|cGroupHier|'])},
-                (Right( ['|cGroupDim|'].['|cGroupHier|'].CurrentMember.Name,'| sTempCount|') ='|sGroup1|'))}';
-        If( SubsetExists( cGroupDim, cTempSub ) = 1 );
-            # If a delimited list of Groups includes wildcards then we may have to re-use the subset multiple times
-            SubsetMDXSet( cGroupDim, cTempSub, sMDX );
-        Else;
-            # temp subset, therefore no need to destroy in epilog
-            SubsetCreatebyMDX( cTempSub, sMDX, cGroupDim, 1 );
-        EndIf;
+#sGroups                 = pGroup;
+#nDelimiterIndex         = 1;
+#While( nDelimiterIndex <> 0 );
+#  nDelimiterIndex = Scan( pDelim, sGroups );
+#  If( nDelimiterIndex = 0 );
+#        sGroup          = sGroups;
+#  Else;
+#        sGroup          = Trim( SubSt( sGroups, 1, nDelimiterIndex - 1 ) );
+#        sGroups         = Trim( Subst( sGroups, nDelimiterIndex + Long(pDelim), Long( sGroups ) ) );
+#  EndIf;
+#  
+#  If( Scan( '*', sGroup ) = 0);
+#    # Don't attempt to delete a blank group
+#    If( sGroup @<> '' );
+#        If( DimIx( '}Groups', sGroup ) > 0 );
+#            If( nErrors = 0 );
+#                If( Scan( Upper( sGroup ) |'&', Upper( cBuiltInGroups ) ) = 0 );
+#                    DeleteGroup( sGroup );
+#                Else;
+#                    nErrors = 1;
+#                    sMessage= Expand('Attempt to delete built-in group %sGroup%.');
+#                    LogOutput( cMsgErrorLevel, Expand( cMsgErrorContent ) );
+#                EndIf;
+#            EndIf;
+#            If( nErrors > 0 );
+#                ItemReject( Expand( cMsgErrorContent ) );
+#            EndIf;
+#        EndIf;
+#    EndIf;
+#  Else;
+#    # Wildcard search string
+#    iCount = 0;
+#    iCheck = 1;
+#    sChar = sGroup;
+#    While (iCheck > 0);
+#      iCheck = Scan('*',sChar);
+#      If( iCheck > 0 );
+#        iCount = iCount + 1;
+#        sChar = Subst(sChar,iCheck+1,(long(sChar)-iCheck));
+#      Endif;
+#    End;
+#    If(iCount = 1);
+#      ##If the wilcardsearch is *String, below code will get executed
+#      if(Subst(sGroup,iCount,1) @= '*');
+#        sGroup1 = '"'| Subst(sGroup,iCount+1,(Long(sGroup)- iCount))|'"';
+#        sTempCount = NumbertoString(Long(sGroup)-iCount);
+#        sMdx = '{FILTER({TM1SUBSETALL(['|cGroupDim|'].['|cGroupHier|'])},
+#                (Right( ['|cGroupDim|'].['|cGroupHier|'].[}TM1_DefaultDisplayValue],'| sTempCount|') ='|sGroup1|'))}+
+#                {FILTER({TM1SUBSETALL(['|cGroupDim|'].['|cGroupHier|'])},
+#                (Right( ['|cGroupDim|'].['|cGroupHier|'].CurrentMember.Name,'| sTempCount|') ='|sGroup1|'))}';
+#        If( SubsetExists( cGroupDim, cTempSub ) = 1 );
+#            # If a delimited list of Groups includes wildcards then we may have to re-use the subset multiple times
+#            SubsetMDXSet( cGroupDim, cTempSub, sMDX );
+#        Else;
+#            # temp subset, therefore no need to destroy in epilog
+#            SubsetCreatebyMDX( cTempSub, sMDX, cGroupDim, 1 );
+#        EndIf;
+#
+#        nHier_Sub_Size = HierarchySubsetGetSize(cGroupDim, cGroupHier, cTempSub);
+#        nCount = nHier_Sub_Size;
+#        While (nCount >= 1);
+#          sTemp = HierarchySubsetElementGetIndex (cGroupDim, cGroupHier, cTempSub, '', 1);
+#          sElement = HierarchySubsetGetElementName(cGroupDim, cGroupHier, cTempSub, nCount);
+#          If( Scan( Upper( sElement ) |'&', Upper( cBuiltInGroups ) ) = 0 );
+#            DeleteGroup( sElement );
+#          Else;
+#            sMessage= 'Attempt to delete built-in group %sGroup%.';
+#            LogOutput( 'WARN', Expand( cMsgErrorContent ) );
+#          EndIF;
+#          nCount = nCount -1;
+#        End;
+#        ##If the wilcardsearch is String*, below code will get executed
+#        ElseIf(Subst(sGroup,Long(sGroup),1) @= '*');
+#        sGroup1 = '"'| Subst(sGroup,iCount,(Long(sGroup)- iCount))|'"';
+#        sMdx = '{FILTER({TM1SUBSETALL(['|cGroupDim|'].['|cGroupHier|'])},
+#                (INSTR('| NumbertoString(iCount)|', ['|cGroupDim|'].['|cGroupHier|'].[}TM1_DefaultDisplayValue],'|sGroup1|') ='| NumbertoString(iCount)|'))}+
+#                {FILTER({TM1SUBSETALL(['|cGroupDim|'].['|cGroupHier|'])},
+#                (INSTR('| NumbertoString(iCount)|', ['|cGroupDim|'].['|cGroupHier|'].CurrentMember.Name,'|sGroup1|') ='| NumbertoString(iCount)|'))}';
+#        If( SubsetExists( cGroupDim, cTempSub ) = 1 );
+#            # If a delimited list of Groups includes wildcards then we may have to re-use the subset multiple times
+#            SubsetMDXSet( cGroupDim, cTempSub, sMDX );
+#        Else;
+#            # temp subset, therefore no need to destroy in epilog
+#            SubsetCreatebyMDX( cTempSub, sMDX, cGroupDim, 1 );
+#        EndIf;
+#
+#        nHier_Sub_Size = HierarchySubsetGetSize(cGroupDim, cGroupHier, cTempSub);
+#        nCount = nHier_Sub_Size;
+#        While (nCount >= 1);
+#          sTemp = HierarchySubsetElementGetIndex (cGroupDim, cGroupHier, cTempSub, '', 1);
+#          sElement = HierarchySubsetGetElementName(cGroupDim, cGroupHier, cTempSub, nCount);
+#          If( Scan( Upper( sElement ) |'&', Upper( cBuiltInGroups ) ) = 0 );
+#            DeleteGroup( sElement );
+#          Else;
+#            sMessage= 'Attempt to delete built-in group %sGroup%.';
+#            LogOutput( 'WARN', Expand( cMsgErrorContent ) );
+#          EndIF;
+#          nCount = nCount -1;
+#        End;
+#      Endif;
+#    Else;
+#      ##If the wilcardsearch is *String*, below code will get executed
+#      sGroup1 = '"'| Subst(sGroup,iCount,(Long(sGroup)- iCount))|'"';
+#      sMdx = '{FILTER({TM1SUBSETALL(['|cGroupDim|'].['|cGroupHier|'])},
+#              (INSTR(1,['|cGroupDim|'].['|cGroupHier|'].[}TM1_DefaultDisplayValue],'|sGroup1|') <> 0))}+
+#              {FILTER({TM1SUBSETALL(['|cGroupDim|'].['|cGroupHier|'])},
+#              (INSTR(1,['|cGroupDim|'].['|cGroupHier|'].CurrentMember.Name,'|sGroup1|') <> 0))}';
+#      If( SubsetExists( cGroupDim, cTempSub ) = 1 );
+#            # If a delimited list of Groups includes wildcards then we may have to re-use the subset multiple times
+#            SubsetMDXSet( cGroupDim, cTempSub, sMDX );
+#        Else;
+#            # temp subset, therefore no need to destroy in epilog
+#            SubsetCreatebyMDX( cTempSub, sMDX, cGroupDim, 1 );
+#        EndIf;
+#
+#      nHier_Sub_Size = HierarchySubsetGetSize(cGroupDim, cGroupHier, cTempSub);
+#      nCount = nHier_Sub_Size;
+#      While (nCount >= 1);
+#        sTemp = HierarchySubsetElementGetIndex (cGroupDim, cGroupHier, cTempSub, '', 1);
+#        sElement = HierarchySubsetGetElementName(cGroupDim, cGroupHier, cTempSub, nCount);
+#          If( Scan( Upper( sElement ) |'&', Upper( cBuiltInGroups ) ) = 0 );
+#            DeleteGroup( sElement );
+#          Else;
+#            sMessage= 'Attempt to delete built-in group %sGroup%.';
+#            LogOutput( 'WARN', Expand( cMsgErrorContent ) );
+#          EndIF;
+#        nCount = nCount -1;
+#      End;
+#    Endif;
+#  EndIf;
+#End;
 
-        nHier_Sub_Size = HierarchySubsetGetSize(cGroupDim, cGroupHier, cTempSub);
-        nCount = nHier_Sub_Size;
-        While (nCount >= 1);
-          sTemp = HierarchySubsetElementGetIndex (cGroupDim, cGroupHier, cTempSub, '', 1);
-          sElement = HierarchySubsetGetElementName(cGroupDim, cGroupHier, cTempSub, nCount);
-          If( Scan( Upper( sElement ) |'&', Upper( cBuiltInGroups ) ) = 0 );
-            DeleteGroup( sElement );
-          Else;
-            sMessage= 'Attempt to delete built-in group %sGroup%.';
-            LogOutput( 'WARN', Expand( cMsgErrorContent ) );
-          EndIF;
-          nCount = nCount -1;
-        End;
-        ##If the wilcardsearch is String*, below code will get executed
-        ElseIf(Subst(sGroup,Long(sGroup),1) @= '*');
-        sGroup1 = '"'| Subst(sGroup,iCount,(Long(sGroup)- iCount))|'"';
-        sMdx = '{FILTER({TM1SUBSETALL(['|cGroupDim|'].['|cGroupHier|'])},
-                (INSTR('| NumbertoString(iCount)|', ['|cGroupDim|'].['|cGroupHier|'].[}TM1_DefaultDisplayValue],'|sGroup1|') ='| NumbertoString(iCount)|'))}+
-                {FILTER({TM1SUBSETALL(['|cGroupDim|'].['|cGroupHier|'])},
-                (INSTR('| NumbertoString(iCount)|', ['|cGroupDim|'].['|cGroupHier|'].CurrentMember.Name,'|sGroup1|') ='| NumbertoString(iCount)|'))}';
-        If( SubsetExists( cGroupDim, cTempSub ) = 1 );
-            # If a delimited list of Groups includes wildcards then we may have to re-use the subset multiple times
-            SubsetMDXSet( cGroupDim, cTempSub, sMDX );
-        Else;
-            # temp subset, therefore no need to destroy in epilog
-            SubsetCreatebyMDX( cTempSub, sMDX, cGroupDim, 1 );
-        EndIf;
-
-        nHier_Sub_Size = HierarchySubsetGetSize(cGroupDim, cGroupHier, cTempSub);
-        nCount = nHier_Sub_Size;
-        While (nCount >= 1);
-          sTemp = HierarchySubsetElementGetIndex (cGroupDim, cGroupHier, cTempSub, '', 1);
-          sElement = HierarchySubsetGetElementName(cGroupDim, cGroupHier, cTempSub, nCount);
-          If( Scan( Upper( sElement ) |'&', Upper( cBuiltInGroups ) ) = 0 );
-            DeleteGroup( sElement );
-          Else;
-            sMessage= 'Attempt to delete built-in group %sGroup%.';
-            LogOutput( 'WARN', Expand( cMsgErrorContent ) );
-          EndIF;
-          nCount = nCount -1;
-        End;
-      Endif;
+sDim = cGroupDim;
+sCurrHierName = cGroupHier;
+sEles = pGroup;
+nDelimiterIndexB = 1;
+While( nDelimiterIndexB <> 0 );
+    
+    nDelimiterIndexB = Scan( pDelim, sEles );
+    If( nDelimiterIndexB = 0 );
+        sEle = sEles;
     Else;
-      ##If the wilcardsearch is *String*, below code will get executed
-      sGroup1 = '"'| Subst(sGroup,iCount,(Long(sGroup)- iCount))|'"';
-      sMdx = '{FILTER({TM1SUBSETALL(['|cGroupDim|'].['|cGroupHier|'])},
-              (INSTR(1,['|cGroupDim|'].['|cGroupHier|'].[}TM1_DefaultDisplayValue],'|sGroup1|') <> 0))}+
-              {FILTER({TM1SUBSETALL(['|cGroupDim|'].['|cGroupHier|'])},
-              (INSTR(1,['|cGroupDim|'].['|cGroupHier|'].CurrentMember.Name,'|sGroup1|') <> 0))}';
-      If( SubsetExists( cGroupDim, cTempSub ) = 1 );
-            # If a delimited list of Groups includes wildcards then we may have to re-use the subset multiple times
-            SubsetMDXSet( cGroupDim, cTempSub, sMDX );
+        sEle = Trim( SubSt( sEles, 1, nDelimiterIndexB - 1 ) );
+        sEles = Trim( Subst( sEles, nDelimiterIndexB + Long(pDelim), Long( sEles ) ) );
+    EndIf;
+    
+    # Check if a wildcard has been used to specify the Element name.
+    # If it hasn't then just delete the Element if it exists
+    If( Scan( '*', sEle ) = 0 & Scan( '?', sEle ) = 0);
+        If( HierarchyElementExists( sDim,sCurrHierName, sEle ) = 1 );
+            If( Scan( Upper( sEle ) |'&', Upper( cBuiltInGroups ) ) = 0 );
+              DeleteGroup( sEle );
+            Else;
+              cMsgErrorContent = 'Attempt to delete built-in group %sEle%.';
+              LogOutput( 'WARN', Expand( cMsgErrorContent ) );
+            EndIF;
+            If( pLogOutput = 1 );
+                cMsgInfoContent = Expand( 'Attempted to delete Element %sEle% from hierarchy %sCurrHierName% in dimension %sDim%.' );
+                LogOutput( cMsgInfoLevel, Expand( cMsgInfoContent ) );
+            EndIf;
+        Else;
+            If( pLogOutput >= 1 );
+                cMsgInfoContent = Expand('The Hierarchy %sCurrHierName% does not contain element %sEle%.');
+                LogOutput( cMsgInfoLevel, Expand( cMsgInfoContent ) );
+            EndIf;
+        Endif;
+    Else;
+        # Wildcard search string
+        sEle = '"'|sEle|'"';
+        sMdxEle = '{TM1FILTERBYPATTERN( {TM1SUBSETALL([ ' | sCurrHierName |' ])},'| sEle| ')}';
+
+        If( HierarchySubsetExists( sDim, sCurrHierName, cTempSub ) = 1 );
+            # If a delimited list of ele names includes wildcards then we may have to re-use the subset multiple times
+            HierarchySubsetMDXSet( sDim, sCurrHierName, cTempSub, sMDXEle );
         Else;
             # temp subset, therefore no need to destroy in epilog
-            SubsetCreatebyMDX( cTempSub, sMDX, cGroupDim, 1 );
+            SubsetCreatebyMDX( cTempSub, sMDXEle, sCurrHierName, 1 );
         EndIf;
 
-      nHier_Sub_Size = HierarchySubsetGetSize(cGroupDim, cGroupHier, cTempSub);
-      nCount = nHier_Sub_Size;
-      While (nCount >= 1);
-        sTemp = HierarchySubsetElementGetIndex (cGroupDim, cGroupHier, cTempSub, '', 1);
-        sElement = HierarchySubsetGetElementName(cGroupDim, cGroupHier, cTempSub, nCount);
-          If( Scan( Upper( sElement ) |'&', Upper( cBuiltInGroups ) ) = 0 );
-            DeleteGroup( sElement );
-          Else;
-            sMessage= 'Attempt to delete built-in group %sGroup%.';
-            LogOutput( 'WARN', Expand( cMsgErrorContent ) );
-          EndIF;
-        nCount = nCount -1;
-      End;
-    Endif;
-  EndIf;
+        # Loop through subset of hierarchy elements created based on wildcard
+        nCountElems = HierarchySubsetGetSize(sDim, sCurrHierName, cTempSub);
+        While( nCountElems >= 1 );
+            sElement = HierarchySubsetGetElementName(sDim, sCurrHierName, cTempSub, nCountElems);
+            If( Scan( Upper( sElement ) |'&', Upper( cBuiltInGroups ) ) = 0 );
+              DeleteGroup( sElement );
+            Else;
+              sMessage= 'Attempt to delete built-in group %sElement%.';
+              LogOutput( 'WARN', Expand( cMsgErrorContent ) );
+            EndIF;
+            If( pLogOutput = 1 );
+                sMessage = Expand( 'Attempted to delete Element %sElement% from hierarchy %sCurrHierName% in dimension %sDim%.' );
+                LogOutput( cMsgInfoLevel, Expand( cMsgInfoContent ) );
+            EndIf;
+            nCountElems = nCountElems - 1;
+        End;
+    EndIf;
+
 End;
 
 If( nErrors = 0 );

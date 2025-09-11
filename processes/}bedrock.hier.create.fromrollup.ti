@@ -23,8 +23,8 @@ EndIf;
 # This process will make an aternative hierarchy from a consolidated element and its children in default hierarchy.
 
 # Use case: Intended for Development but could be used in production too.
-# 1/ Create a new hierarchy for testing.
-# 2/ Create a new hierarchy to reflect new business needs.
+# 1. Create a new hierarchy for testing.
+# 2. Create a new hierarchy to reflect new business needs.
 
 # Note:
 # Valid source dimension name (pSrcDim) and source subset (pSubset) are mandatory, otherwise the process will abort.

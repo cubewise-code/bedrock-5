@@ -6,7 +6,7 @@
 	"DataSource":
 	{
 		"Type":"ASCII",
-		"dataSourceNameForServer":"Admin\\store}subs\\Euros.sub",
+		"dataSourceNameForServer":"Admin/store}subs/Euros.sub",
 		"dataSourceNameForClient":"Admin\\store}subs\\Euros.sub",
 		"asciiHeaderRecords":1,
 		"asciiQuoteCharacter":"\"",
@@ -93,5 +93,8 @@
 			"StartByte":0,
 			"EndByte":0
 		}
-	]
+	],
+	"UID": "1752858665000",
+	"UIData": "",
+	"VariablesUIData": []
 }

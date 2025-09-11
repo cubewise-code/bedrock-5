@@ -13,9 +13,9 @@ EndIf;
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
-################################################################################################# 
-##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0~~##
-################################################################################################# 
+################################################################################################### 
+##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~## 
+################################################################################################### 
 
 #Region @DOC
 # Description:
@@ -164,7 +164,7 @@ If(nErrors = 0);
         sExclusion = '"'|sExclusion|'"';
         stempSub = cThisProcName| cRandomInt;
         sProc = '}bedrock.hier.sub.create.bymdx';
-        sMdx = '{TM1FILTERBYPATTERN( {TM1SUBSETALL([ ' |pDim|':'|sHier |' ])},'| sExclusion| ')}';
+        sMdx = '{TM1FILTERBYPATTERN( {TM1SUBSETALL([ ' |pDim|'].['|sHier |' ])},'| sExclusion| ')}';
         ExecuteProcess(sProc,
                       'pStrictErrorHandling', pStrictErrorHandling,
                     	'pDim',pDim,

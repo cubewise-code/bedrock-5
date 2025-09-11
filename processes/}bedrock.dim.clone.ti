@@ -13,16 +13,16 @@ EndIf;
 #****Begin: Generated Statements***
 #****End: Generated Statements****
 
-################################################################################################# 
-##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0~~##
-################################################################################################# 
+################################################################################################### 
+##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~## 
+################################################################################################### 
 
 #Region @DOC
 # Description:
 # This process can clone a source dimension and all the Hierarchies.
 
 # Use case: Intended for development/prototyping.
-# 1/ Replicate a dimension with it's hierarchies for testing.
+# 1. Replicate a dimension with it's hierarchies for testing.
 
 # Note:
 # If the target dimension:hierarchy already exists then it will be overwritten.
@@ -125,12 +125,13 @@ Else;
 EndIf;
 
 ### Set the target Sort Order ###
-sSortElementsType     = CELLGETS( '}DimensionProperties', pSrcDim, 'SORTELEMENTSTYPE');
-sSortElementsSense    = CELLGETS( '}DimensionProperties', pSrcDim, 'SORTELEMENTSSENSE');
-sSortComponentsType   = CELLGETS( '}DimensionProperties', pSrcDim, 'SORTCOMPONENTSTYPE');
-sSortComponentsSense  = CELLGETS( '}DimensionProperties', pSrcDim, 'SORTCOMPONENTSSENSE');
+# CellGetS to }DimensionProperties cube removed. Placeholder as expecting a TI function to be made available to be able to read these properties
+#sSortElementsType     = CELLGETS( '}DimensionProperties', pSrcDim, 'SORTELEMENTSTYPE');
+#sSortElementsSense    = CELLGETS( '}DimensionProperties', pSrcDim, 'SORTELEMENTSSENSE');
+#sSortComponentsType   = CELLGETS( '}DimensionProperties', pSrcDim, 'SORTCOMPONENTSTYPE');
+#sSortComponentsSense  = CELLGETS( '}DimensionProperties', pSrcDim, 'SORTCOMPONENTSSENSE');
 
-DimensionSortOrder( pTgtDim, sSortComponentsType, sSortComponentsSense, sSortElementsType , sSortElementsSense);
+# DimensionSortOrder( pTgtDim, sSortComponentsType, sSortComponentsSense, sSortElementsType , sSortElementsSense);
 
 
 nSourceDimSize = DIMSIZ( pSrcDim );
@@ -334,10 +335,11 @@ EndIf;
 
 
 ### Set the target Sort Order ###
-  CELLPUTS( sSortElementsType, '}DimensionProperties', pTgtDim, 'SORTELEMENTSTYPE');
-  CELLPUTS( sSortElementsSense, '}DimensionProperties', pTgtDim, 'SORTELEMENTSSENSE');
-  CELLPUTS( sSortComponentsType, '}DimensionProperties', pTgtDim, 'SORTCOMPONENTSTYPE');
-  CELLPUTS( sSortComponentsSense, '}DimensionProperties', pTgtDim, 'SORTCOMPONENTSSENSE');
+# CellPutS to }DimensionProperties cube removed. Placeholder as expecting a TI function to be made available to be able to modify these properties
+#  CELLPUTS( sSortElementsType, '}DimensionProperties', pTgtDim, 'SORTELEMENTSTYPE');
+#  CELLPUTS( sSortElementsSense, '}DimensionProperties', pTgtDim, 'SORTELEMENTSSENSE');
+#  CELLPUTS( sSortComponentsType, '}DimensionProperties', pTgtDim, 'SORTCOMPONENTSTYPE');
+#  CELLPUTS( sSortComponentsSense, '}DimensionProperties', pTgtDim, 'SORTCOMPONENTSSENSE');
 
 ### Destroy Source Subset ###
 
