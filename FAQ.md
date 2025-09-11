@@ -49,13 +49,13 @@ Bedrock 5 is currently under development and will be **released on September 30t
 
 ## ❓ Why should I use Bedrock?
 
-Using Bedrock ensures **standardization and scalability** in Planning Analytics projects:
+Using Bedrock ensures **standardization and scalability** in IBM Planning Analytics projects:
 
-- Reusable, modular TI codebase  
-- Faster development cycles  
-- Reduced learning curve for new developers  
-- Transparent, auditable processes  
-- Improved scalability for large datasets and concurrent users  
+- Reusable, modular TI codebase.  
+- Faster development cycles.  
+- Reduced learning curve for new developers.  
+- Transparent, auditable processes.  
+- Improved scalability for large datasets and concurrent users.  
 
 ---
 
@@ -74,7 +74,7 @@ Using Bedrock ensures **standardization and scalability** in Planning Analytics 
 
 ## ❓ What functions have been deprecated in Bedrock 5?
 
-Some Bedrock processes are no longer supported due to TM1 v12 deprecations.  
+Some Bedrock processes are no longer supported due to IBM Planning Anayltics TM1 Database 12 deprecations.  
 Examples include:
 
 - `}bedrock.cube.data.save` → `CubeSaveData` deprecated  
