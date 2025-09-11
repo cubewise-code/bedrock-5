@@ -7,7 +7,7 @@ This document provides quick answers to common questions about Bedrock 5, its co
 
 ## ❓ What is Bedrock?
 
-Bedrock is a **community-driven Planning Analytics best practice framework**.  
+Bedrock is a **community-driven IBM Planning Analytics best practice framework**.  
 It provides modular, reusable TurboIntegrator (TI) processes, tools, documentation, and training resources designed to:
 
 - Accelerate model development  
@@ -15,21 +15,21 @@ It provides modular, reusable TurboIntegrator (TI) processes, tools, documentati
 - Improve auditability  
 - Reduce administration and support overhead  
 
-Bedrock has been widely adopted in **enterprise-level Planning Analytics environments**.
+Bedrock has been widely adopted in **enterprise-level IBM Planning Analytics environments**.
 
 ---
 
 ## ❓ What is new in Bedrock 5?
 
-Bedrock 5 has been **refactored and optimized** for compatibility with **IBM® Planning Analytics TM1 Database 12.4+**.  
+Bedrock 5 has been **refactored and optimized** for compatibility with **IBM Planning Analytics TM1 Database 12.4+**.  
 Key updates include:
 
-- ✅ **Compatibility fixes** for new Planning Analytics behaviors  
-- 🚫 **Deprecated processes** removed due to TM1 v12 changes  
-- 🔄 **Modified processes** updated to maintain functionality under new syntax and rules  
-- 📘 **Updated installation guide** for smooth deployment  
+- ✅ **Compatibility fixes** for new IBM Planning Analytics behaviors.  
+- 🚫 **Deprecated processes** removed due to IBM Planning Analytics TM1 Database v12 changes.  
+- 🔄 **Modified processes** updated to maintain functionality under new syntax and rules.  
+- 📘 **Updated installation guide** for smooth deployment.  
 
-> ⚠️ Note: Bedrock 5 supports **only TM1 Database 12.4+**. For TM1 11.x or PA 2.0.x, use [Bedrock 4](https://github.com/cubewise-code/bedrock).
+> ⚠️ Note: Bedrock 5 supports **only IBM Planning Analytics TM1 Database 12.4+**. For TM1 11.x or IBM Planning Analytics 2.0.x, use [Bedrock 4](https://github.com/cubewise-code/bedrock).
 
 ---
 
@@ -42,7 +42,7 @@ Bedrock 5 is currently under development and will be **released on September 30t
 
 ## ❓ Which TM1 versions are supported?
 
-- **Supported:** IBM® Planning Analytics TM1 Database **12.4+**  
+- **Supported:** IBM Planning Analytics TM1 Database **12.4+**  
 - **Not supported:** TM1 11.x (use [Bedrock 4](https://github.com/cubewise-code/bedrock))  
 
 ---
@@ -155,7 +155,7 @@ See the dedicated sections below:
 
 # 🔄 Modified Functions
 
-Due to deprecations in TM1 v12, the following Bedrock processes were modified (functionality unchanged):  
+Due to deprecations in IBM Planning Analytics TM1 Database 12, the following Bedrock processes were modified (functionality unchanged):  
 
 - Removal of `CubeSetLogChanges`  
 - Replacing `.rux` file reads with `CubeRuleGet`  
@@ -169,7 +169,7 @@ Due to deprecations in TM1 v12, the following Bedrock processes were modified (f
 
 ## ✅ Summary
 
-- Bedrock 5 supports **TM1 Database 12.4+ only**  
+- Bedrock 5 supports **IBM Planning Analytics TM1 Database 12.4+ only**  
 - Bedrock 4 remains the option for older TM1 versions  
 - Deprecations and modifications align Bedrock with the **latest TM1 standards**  
 - Fully open-source, community-driven, and available on GitHub  
