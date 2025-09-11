@@ -3,7 +3,7 @@
   <a href="https://github.com/cubewise-code/bedrock-5"><img width="9149" height="2224" alt="bedrock5_logogray" src="https://github.com/user-attachments/assets/bdb178a3-7463-4c0b-a74b-f2c1a5059532" />
 </h1>
 
-# Bedrock 5 is fully compatible with IBM® Planning Analytics TM1 Database 12.4+
+# Bedrock 5 is fully compatible with IBM Planning Analytics TM1 Database 12.4+
 
 <p align="center">
   <a href="https://www.ibm.com/docs/en/planning-analytics/2.0.0?topic=12-welcome-tm1-database"><img src="https://img.shields.io/badge/TM1_Database-v12.4+-blue" alt="TM1 versions"></a>
@@ -13,9 +13,9 @@
 
 ### ⚠️ Bedrock 5 is still under development and will be released on the 30th of September, [click here for the upcoming webinar](https://events.teams.microsoft.com/event/f7564ab5-78aa-4c30-a93f-b880451f2de2@0635d657-0279-4110-9c8f-2ee27b1e065b). Please wait for the upcoming official release to use it in your projects. ⚠️ 
 
-### This next-generation release of Bedrock has been refactored and rigorously tested to support IBM® Planning Analytics TM1 Database 12.4+, the next-generation IBM® Planning Analytics database, available on the IBM Cloud Pak® for Data and IBM Planning Analytics as a Service platforms. Bedrock 5 does not support earlier versions of the TM1 Database. These versions (11.x) are supported by [Bedrock 4](https://github.com/cubewise-code/bedrock)
+### This next-generation release of Bedrock has been refactored and rigorously tested to support IBM Planning Analytics TM1 Database 12.4+. Bedrock 5 does not support earlier versions of the TM1 Database (e.g. 11.x). These versions are supported by [Bedrock 4](https://github.com/cubewise-code/bedrock)
 
-<b>Bedrock 5</b> is the latest evolution of the Bedrock library, specifically updated for compatibility with IBM® Planning Analytics TM1 Database 12.4+. This release reflects the ongoing commitment to maintaining best practices for Planning Analytics development, providing optimized, standardized, and scalable TurboIntegrator (TI) code assets that align with changes introduced in the IBM® Planning Analytics TM1 Database 12.
+<b>Bedrock 5</b> is the latest evolution of the Bedrock library, specifically updated for compatibility with IBM Planning Analytics TM1 Database 12.4+. This release reflects the ongoing commitment to maintaining best practices for IBM Planning Analytics development, providing optimized, standardized, and scalable TurboIntegrator (TI) code assets that align with changes introduced in the IBM Planning Analytics TM1 Database 12.
 
 In this article:
 - [What is Bedrock?](#what-is-bedrock)
@@ -24,31 +24,31 @@ In this article:
 - [Installation Guide](https://github.com/cubewise-code/bedrock-5/wiki/Installation-Guide#installation-guide-for-ibm-planning-analytics-as-a-service-on-aws-or-azure-)
 
 ## What is Bedrock?
-Bedrock is a community-driven Planning Analytics best practice framework. It provides modular, reusable TI processes, tools, documentation, and training resources designed to:
+Bedrock is a community-driven IBM Planning Analytics best practice framework. It provides modular, reusable TI processes, tools, documentation, and training resources designed to:
 - Accelerate model development
 - Increase maintainability
 - Improve auditability
 - Reduce administration and support overhead
 
-The Bedrock library is built on years of global Planning Analytics implementation experience and is widely adopted in complex, enterprise-level Planning Analytics environments.
+The Bedrock library is built on years of global IBM Planning Analytics implementation experience and is widely adopted in complex, enterprise-level IBM Planning Analytics environments.
 
 ## What's New in Bedrock 5?
 
-Bedrock 5 brings targeted updates to support IBM® Planning Analytics TM1 Database 12.4+, including:
-- <b>Compatibility Fixes</b>: Adjustments for updated Planning Analytics system behavior and function changes.
-- <b>Deprecated Processes</b>: Clear documentation of processes no longer required or supported in the latest version of Planning Analytics.
-- <b>Modified Processes</b>: Existing processes updated to maintain their original functionality while aligning with new Planning Analytics features and syntax.
-- <b>Updated Installation Guide</b>: Step-by-step instructions for deploying Bedrock 5 into your Planning Analytics environment.
+Bedrock 5 brings targeted updates to support IBM Planning Analytics TM1 Database 12.4+, including:
+- <b>Compatibility Fixes</b>: Adjustments for updated IBM Planning Analytics system behavior and function changes.
+- <b>Deprecated Processes</b>: Clear documentation of processes no longer required or supported in the latest version of IBM Planning Analytics.
+- <b>Modified Processes</b>: Existing processes updated to maintain their original functionality while aligning with new IBM Planning Analytics features and syntax.
+- <b>Updated Installation Guide</b>: Step-by-step instructions for deploying Bedrock 5 into your IBM Planning Analytics environment.
 
-Note: Bedrock 5 is intended only for the IBM® Planning Analytics TM1 Database 12.4+. For TM1 11.x or PA 2.0.x, use [Bedrock 4](https://github.com/cubewise-code/bedrock)
+Note: Bedrock 5 is intended only for the IBM Planning Analytics TM1 Database 12.4+. For TM1 11.x or IBM Planning Analytics 2.0.x, use [Bedrock 4](https://github.com/cubewise-code/bedrock)
 
 ## Why Bedrock?
-With growing Planning Analytics adoption, standardization is critical. Bedrock provides:
-- A standardized TI codebase for reuse across models and teams
-- Faster development cycles through proven, modular processes
-- Lower learning curve for new developers
-- Reduced black-box risk through increased transparency and logging
-- Improved scalability to handle complex business models with large datasets and high concurrency
+With growing IBM Planning Analytics adoption, standardization is critical. Bedrock provides:
+- A standardized TI codebase for reuse across models and teams.
+- Faster development cycles through proven, modular processes.
+- Lower learning curve for new developers.
+- Reduced black-box risk through increased transparency and logging.
+- Improved scalability to handle complex business models with large datasets and high concurrency.
 
 ## Where can I get more information?
 
@@ -82,8 +82,8 @@ The source code is hosted at [github.com/cubewise-code/bedrock-5](https://github
 
 
 # Deprecated Functions
-IBM® Planning Analytics TM1 Database 12 has deprecated functions when compared to the earlier versions of the TM1 Database. Because of this, the following Bedrock processes have now been deprecated:
-| Bedrock Process                                   | TM1 Deprecated Function         |
+IBM Planning Analytics TM1 Database 12 has several deprecated functions when compared to the earlier versions of the TM1 Database (e.g. 11.x) . Because of this, the following Bedrock processes have now been deprecated:
+| Bedrock Process                                   | TM1 Database Deprecated Function         |
 |---------------------------------------------------|---------------------------------|
 | `}bedrock.cube.data.save`                         | `CubeSaveData`                  |
 | `}bedrock.dim.attr.swapalias`                     | `SwapAliasWithPrincipalName`    |
@@ -98,7 +98,7 @@ IBM® Planning Analytics TM1 Database 12 has deprecated functions when compared 
 | `}bedrock.server.savedataall`                     | `SaveDataAll`                   |
 
 # Modified Functions
-Due to the deprecation of the above functions in the IBM® Planning Analytics TM1 Database 12, the following Bedrock processes have been modified to ensure compatibility with the IBM® Planning Analytics TM1 Database 12.4+. **The functionality of these processes has not changed.**
+Due to the deprecation of the above functions in the IBM Planning Analytics TM1 Database 12, the following Bedrock processes have been modified to ensure compatibility with the IBM Planning Analytics TM1 Database 12.4+. **The functionality of these processes has not changed.**
 ## Overview
 Changes in the Bedrock processes were primarily due to:
 - Deprecation of `CubeSetLogChanges`.
