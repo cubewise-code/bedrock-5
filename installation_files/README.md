@@ -2,13 +2,24 @@
 
 This folder contains all necessary files and documentation for installing Bedrock 5, a comprehensive library of TurboIntegrator (TI) processes for IBM Planning Analytics / TM1.
 
+## Before You Install
+
+### ⚠️ Important Warnings
+
+1. **Backup First**: Always backup your existing processes before installation
+2. **Customizations**: If you've modified existing Bedrock processes, use the [upgrade procedure](manual_upgrade.md) to preserve changes
+3. **Permissions**: Ensure you have appropriate administrative access to your TM1 instance
+4. **API Key**: For PAW installation, you'll need to [generate an API key](https://github.com/cubewise-code/bedrock-5/wiki/Generate-an-API-Key-Guide)
+
+---
+
 ## Quick Start: Choose Your Installation Method
 
 | Method | Best For | Complexity | Customization |
 |--------|----------|------------|---------------|
-| **Arc Installation** | Cubewise Arc users | Easy | None |
-| **Script Installation** | Python or Windows users wanting automated setup with compare capabilities| Easy | Full |
-| **PAW Installation** | Users needing full control or customizations | Medium | Full |
+| **[Arc Installation](#1-arc-installation-recommended-for-arc-users)** | Cubewise Arc users | Easy | None |
+| **[Script Installation](#2-script-installation-automated-setup)** | Python or Windows users wanting automated setup with compare capabilities| Easy | Full |
+| **[PAW Installation](#3-paw-installation-full-control)** | Users needing full control or customizations | Medium | Full |
 
 ---
 
@@ -40,7 +51,7 @@ This folder contains all necessary files and documentation for installing Bedroc
 
 #### Option B: Python Script
 **Prerequisites:**
-- Python 3.7 or higher
+- Python 3.9 or higher
 - pip (Python package manager)
 - Network access to your TM1 server
 
@@ -88,19 +99,6 @@ If you have modified Bedrock processes, use: [Manual Upgrade Guide](manual_upgra
 2. Identify modified processes
 3. Selectively update processes
 4. Preserve customizations
-
----
-
-
-## Before You Install
-
-### ⚠️ Important Warnings
-
-1. **Backup First**: Always backup your existing processes before installation
-2. **Customizations**: If you've modified existing Bedrock processes, use the [upgrade procedure](manual_upgrade.md) to preserve changes
-3. **Permissions**: Ensure you have appropriate administrative access to your TM1 instance
-4. **API Key**: For PAW installation, you'll need to [generate an API key](https://github.com/cubewise-code/bedrock-5/wiki/Generate-an-API-Key-Guide)
-
 
 ---
 
