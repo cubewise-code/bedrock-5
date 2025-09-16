@@ -19,9 +19,9 @@
 
 In this article:
 - [What is Bedrock?](#what-is-bedrock)
-- [Deprecated Functions](#deprecated-functions)
-- [Modified Functions](#modified-functions)
-- [Installation Guide](https://github.com/cubewise-code/bedrock-5/wiki/Installation-Guide#installation-guide-for-ibm-planning-analytics-as-a-service-on-aws-or-azure-)
+- [Deprecated Functions](RELEASE_NOTES.md#deprecated-functions)
+- [Modified Functions](RELEASE_NOTES.md#modified-functions)
+- [Installation Guide](installation_files/README.md)
 
 ## What is Bedrock?
 Bedrock is a community-driven IBM Planning Analytics best practice framework. It provides modular, reusable TI processes, tools, documentation, and training resources designed to:
