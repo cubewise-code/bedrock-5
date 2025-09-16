@@ -80,59 +80,9 @@ All of the code, documents and information in Bedrock for TM1 are to be deemed w
 
 The source code is hosted at [github.com/cubewise-code/bedrock-5](https://github.com/cubewise-code/bedrock-5). If you find a bug or feel like you can contribute please [fork](https://help.github.com/articles/fork-a-repo/) the repository, update the code and then create a [pull request](https://help.github.com/articles/about-pull-requests/) so we can merge in the changes.
 
+## Additional Resources
 
-# Deprecated Functions
-IBM Planning Analytics TM1 Database 12 has several deprecated functions when compared to the earlier versions of the TM1 Database. Because of this, the following Bedrock processes have now been deprecated:
-| Bedrock Process                                   | TM1 Deprecated Function         |
-|---------------------------------------------------|---------------------------------|
-| `}bedrock.cube.data.save`                         | `CubeSaveData`                  |
-| `}bedrock.dim.attr.swapalias`                     | `SwapAliasWithPrincipalName`    |
-| `}bedrock.hier.create.fromrollup.aliasswap`       | `SwapAliasWithPrincipalName`    |
-| `}bedrock.security.client.password.reset`         | `AssignClientPassword`          |
-| `}bedrock.server.dir.backup`                      | `ExecuteCommand`                |
-| `}bedrock.server.dir.listcontents`                | `ExecuteCommand`                |
-| `}bedrock.server.encrypt.directory`               | `ExecuteCommand`                |
-| `}bedrock.server.encrypt.file`                    | `ExecuteCommand`                |
-| `}bedrock.server.executecommand`                  | `ExecuteCommand`                |
-| `}bedrock.server.logfile.delete`                  | `ExecuteCommand`                |
-| `}bedrock.server.savedataall`                     | `SaveDataAll`                   |
-
-# Modified Functions
-Due to the deprecation of the above functions in the IBM Planning Analytics TM1 Database 12, the following Bedrock processes have been modified to ensure compatibility with the IBM Planning Analytics TM1 Database 12.4+. **The functionality of these processes has not changed.**
-## Overview
-Changes in the Bedrock processes were primarily due to:
-- Deprecation of `CubeSetLogChanges`.
-- Inability to access the `.rux` file.
-- Deprecation of `ExecuteCommand` when used to delete a file (replaced with `ASCIIDelete`).
-- Deprecation of the `}DimensionProperties` cube.
-- Deprecation of `AssignClientPassword`.
-- Deprecation of the `}ApplicationSecurity` cube.
-  
-## List of Changes
-| Process Name                                 | Change Description                                                                                                                                       |
-|---------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `}bedrock.cube.clone`                        | Replaced the attempt to read rules from the .rux file with the `CubeRuleGet` function.                                                                                  |
-| `}bedrock.cube.data.clear`                  | Removed the `CubeSetLogChanges` function.                                                                                                                 |
-| `}bedrock.cube.data.copy.intercube`         | Removed the `CubeSetLogChanges` function. Replaced the use of `ExecuteCommand` to delete a file with `ASCIIDelete`.                                       |
-| `}bedrock.cube.data.copy`                   | Removed the `CubeSetLogChanges` function. Replaced the use of `ExecuteCommand` to delete a file with `ASCIIDelete`.                                       |
-| `}bedrock.cube.data.export`                 | Removed the `CubeSetLogChanges` function.                                                                                                                 |
-| `}bedrock.cube.data.import`                 | Removed the `CubeSetLogChanges` function.                                                                                                                 |
-| `}bedrock.cube.dimension.add`               | Replaced the attempt to read rules from the `.rux` file with the `CubeRuleGet` function.                                                                                  |
-| `}bedrock.cube.dimension.delete`            | Replaced the attempt to read rules from the `.rux` file with the `CubeRuleGet` function.                                                                                  |
-| `}bedrock.cube.dimension.replace`           | Replaced the attempt to read rules from the `.rux` file with the `CubeRuleGet` function.                                                                                 |
-| `}bedrock.cube.rule.manage`                 | Replaced the attempt to read rules from the `.rux` file with the `CubeRuleGet` function. Replaced the use of `ExecuteCommand` to delete a file with `ASCIIDelete`.         |
-| `}bedrock.dim.attr.create`                  | Bug fix: The process parameters indicated that the default value for `pAttrType` was 'S', but this was not the case. The default has now been added.                                |
-| `}bedrock.dim.clone`                        | The `}DimensionProperties` cube has been deprecated, and all references to it have been removed. Note: As a result, a dimension’s sort order can no longer be cloned. |
-| `}bedrock.dim.create`                       | Implemented the `}bedrock.dim.create` function.                                                                                                                                  |
-| `}bedrock.hier.clone`                       | The `}DimensionProperties` cube has been deprecated, and all references have been removed. Note: Because of this, the hierarchy's sort order cannot be cloned. |
-| `}bedrock.hier.create.fromsubset`           | The `}DimensionProperties` cube has been deprecated, and all references have been removed. Note: Because of this, the hierarchy's sort order cannot be cloned. <br>Removal of `CubeSetLogChanges` function. |
-| `}bedrock.hier.export.script`               | The `}DimensionProperties` cube has been deprecated, and all references have been removed. Note: Because of this, the dimension's sort order cannot be exported. |
-| `}bedrock.hier.export`                      | The `}DimensionProperties` cube has been deprecated, and all references have been removed. Note: Because of this, the dimension's sort order cannot be exported. >Bug fix: String attribute values of "0" would not be exported. |
-| `}bedrock.hier.import`                      | The `}DimensionProperties` cube has been deprecated, and all references have been removed. Note: Because of this, the dimension's sort order cannot be imported. |
-| `}bedrock.hier.unwind`                      | Removed the `CubeSetLogChanges` function.                                                                                                                |
-| `}bedrock.process.template`                 | Removed the `CubeSetLogChanges` function.                                                                                                               |
-| `}bedrock.security.client.clone`            | Removed the `AssignClientPassword` function. Note: Because of this, a client's password cannot be set.                                                    |
-| `}bedrock.security.client.create`           | Removed the `AssignClientPassword` function. Note: Because of this, a client's password cannot be set.                                                    |
-| `}bedrock.security.object.assign`           | The `}ApplicationSecurity` cube has been deprecated, all references have been removed. Note: Because of this, an application's security cannot be set. |
-
-A full list of all process modifications from Bedrock 4 to Bedrock 5 can be found here: [Bedrock Compare Pull Request](https://github.com/cubewise-code/bedrock-5/pull/4/files).
+- [Full Comparison of Changes](https://github.com/bdunleavy22/bedrock-compare/pull/2/files)
+- [Migration Guide](https://github.com/cubewise-code/bedrock-5/wiki/Migration-Guide)
+- [Installation Guide](https://github.com/cubewise-code/bedrock-5/wiki/Installation-Guide)
+- [Process Documentation](https://github.com/cubewise-code/bedrock-5/wiki/Process-Documentation)
