@@ -1,4 +1,4 @@
-Follow these steps to upgrade Bedrock 5.
+# Follow these steps to upgrade Bedrock 5.
 
 ---
 
@@ -181,4 +181,4 @@ TextOutput( 'bedrock_process_comparison.txt', '' );
 ---
 
 ## Step 5: Continue installation
-Return to **Step 3** in the [Installation Guide](https://github.com/cubewise-code/bedrock-5/wiki/Installation-Guide#step-3) and proceed with the standard installation steps.
+Return to **Step 3** in the [Installation Guide](installation_files/manual_installation.md#step-3) and proceed with the standard installation steps.

@@ -13,7 +13,7 @@ Bedrock 5 is a major release specifically designed for IBM Planning Analytics TM
 - **Required**: IBM Planning Analytics TM1 Database 12.4 or higher
 - **Not Compatible**: TM1 11.x or Planning Analytics 2.0.x (use Bedrock 4 for these versions)
 
-### Deprecated Processes
+### Deprecated Functions
 
 IBM Planning Analytics TM1 Database 12 has several deprecated functions when compared to the earlier versions of the TM1 Database. Because of this, the following Bedrock processes have now been deprecated:
 | Bedrock Process | TM1 Deprecated Function |
@@ -30,7 +30,7 @@ IBM Planning Analytics TM1 Database 12 has several deprecated functions when com
 | `}bedrock.server.logfile.delete` | `ExecuteCommand` |
 | `}bedrock.server.savedataall` | `SaveDataAll` |
 
-## Modified Functions
+## Modified Processes
 
 ### Summary of Changes
 

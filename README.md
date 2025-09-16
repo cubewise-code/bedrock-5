@@ -11,20 +11,23 @@
 </p>
 <h1></h1>
 
-### ⚠️ Bedrock 5 is still under development and will be released on the 30th of September, [click here for the upcoming webinar](https://events.teams.microsoft.com/event/f7564ab5-78aa-4c30-a93f-b880451f2de2@0635d657-0279-4110-9c8f-2ee27b1e065b). Please wait for the upcoming official release to use it in your projects. ⚠️ 
+### ⚠️ Bedrock 5 is still under development and will be released on the 30th of September, [click here for the upcoming webinar](https://events.teams.microsoft.com/event/f7564ab5-78aa-4c30-a93f-b880451f2de2@0635d657-0279-4110-9c8f-2ee27b1e065b). Please wait for the upcoming official release to use it in your projects. ⚠️
 
 ### This next-generation release of Bedrock has been refactored and tested to support IBM Planning Analytics TM1 Database 12.4+. Bedrock 5 does not support earlier versions of the TM1 Database. These versions are supported by [Bedrock 4](https://github.com/cubewise-code/bedrock)
 
 <b>Bedrock 5</b> is the latest evolution of the Bedrock library, specifically updated for compatibility with IBM Planning Analytics TM1 Database 12.4+. This release reflects the ongoing commitment to maintaining best practices for IBM Planning Analytics development, providing optimized, standardized, and scalable TurboIntegrator (TI) code assets that align with changes introduced in the IBM Planning Analytics TM1 Database 12.
 
 In this article:
+
 - [What is Bedrock?](#what-is-bedrock)
 - [Deprecated Functions](RELEASE_NOTES.md#deprecated-functions)
-- [Modified Functions](RELEASE_NOTES.md#modified-functions)
+- [Modified Processes](RELEASE_NOTES.md#modified-processes)
 - [Installation Guide](installation_files/README.md)
 
 ## What is Bedrock?
+
 Bedrock is a community-driven IBM Planning Analytics best practice framework. It provides modular, reusable TI processes, tools, documentation, and training resources designed to:
+
 - Accelerate model development
 - Increase maintainability
 - Improve auditability
@@ -35,15 +38,18 @@ The Bedrock library is built on years of global IBM Planning Analytics implement
 ## What's New in Bedrock 5?
 
 Bedrock 5 brings targeted updates to support IBM Planning Analytics TM1 Database 12.4+, including:
+
 - <b>Compatibility Fixes</b>: Adjustments for updated IBM Planning Analytics system behavior and function changes.
-- <b>Deprecated Processes</b>: Clear documentation of processes no longer required or supported in the latest version of IBM Planning Analytics.
+- <b>Deprecated Functions</b>: Clear documentation of processes no longer required or supported in the latest version of IBM Planning Analytics.
 - <b>Modified Processes</b>: Existing processes updated to maintain their original functionality while aligning with new IBM Planning Analytics features and syntax.
 - <b>Updated Installation Guide</b>: Step-by-step instructions for deploying Bedrock 5 into your IBM Planning Analytics environment.
 
 Note: Bedrock 5 is intended only for the IBM Planning Analytics TM1 Database 12.4+. For TM1 11.x or IBM Planning Analytics 2.0.x, use [Bedrock 4](https://github.com/cubewise-code/bedrock)
 
 ## Why Bedrock?
+
 With growing IBM Planning Analytics adoption, standardization is critical. Bedrock provides:
+
 - A standardized TI codebase for reuse across models and teams.
 - Faster development cycles through proven, modular processes.
 - Lower learning curve for new developers.
@@ -52,17 +58,19 @@ With growing IBM Planning Analytics adoption, standardization is critical. Bedro
 
 ## Where can I get more information?
 
-The first place for further information is the [code.cubewise.com/bedrock](https://code.cubewise.com/bedrock) website. 
+The first place for further information is the [code.cubewise.com/bedrock](https://code.cubewise.com/bedrock) website.
 
 **Key resources**:
-* Check out the [What's New](https://github.com/cubewise-code/bedrock-5/wiki#whats-new-in-bedrock-5) page to familiarize yourself with what is different versus the previous version. 
-* [Bedrock Wiki](https://github.com/cubewise-code/bedrock-5/wiki). Each process has a full documentation of what it does, the intended purpose, needed parameters, and dependencies within the library.
+
+- Check out the [What's New](https://github.com/cubewise-code/bedrock-5/wiki#whats-new-in-bedrock-5) page to familiarize yourself with what is different versus the previous version.
+- [Bedrock Wiki](https://github.com/cubewise-code/bedrock-5/wiki). Each process has a full documentation of what it does, the intended purpose, needed parameters, and dependencies within the library.
 
 **White Papers**:
-* [Bedrock Modular Approach](https://downloads.cubewise.com/Bedrock/whitepapers/White_Paper_Modular_Approach.pdf)
-* [Best Practice Turbo Integrator](https://downloads.cubewise.com/Bedrock/whitepapers/White_Paper_Best_Practice_Turbo_Integrator.pdf)
-* [Best Practice Cube Design](https://downloads.cubewise.com/Bedrock/whitepapers/White_Paper_Best_Practice_Cube_Design.pdf)
-* [Best Practice Rules](https://downloads.cubewise.com/Bedrock/whitepapers/White_Paper_Best_Practice_Rules.pdf)
+
+- [Bedrock Modular Approach](https://downloads.cubewise.com/Bedrock/whitepapers/White_Paper_Modular_Approach.pdf)
+- [Best Practice Turbo Integrator](https://downloads.cubewise.com/Bedrock/whitepapers/White_Paper_Best_Practice_Turbo_Integrator.pdf)
+- [Best Practice Cube Design](https://downloads.cubewise.com/Bedrock/whitepapers/White_Paper_Best_Practice_Cube_Design.pdf)
+- [Best Practice Rules](https://downloads.cubewise.com/Bedrock/whitepapers/White_Paper_Best_Practice_Rules.pdf)
 
 ## How to License
 
@@ -82,6 +90,6 @@ The source code is hosted at [github.com/cubewise-code/bedrock-5](https://github
 
 ## Additional Resources
 
-- [Full Comparison of Changes](https://github.com/bdunleavy22/bedrock-compare/pull/2/files)
+- [Full Comparison of Changes](https://github.com/bdunleavy22/bedrock-compare/pull/2/files) --> NOT RENDERING, PLUS IT SHOULD NOT BE LINKED TO A NON-CUBEWISE REPO
 - [Installation Guide](installation_files/README.md)
-- [Process Documentation](https://github.com/cubewise-code/bedrock-5/wiki/Process-Documentation)
+- [Process Documentation](https://github.com/cubewise-code/bedrock-5/wiki/Process-Documentation) SHOULDN'T THIS GO TO [Bedrock Processes](https://github.com/cubewise-code/bedrock-5/wiki/Bedrock-Processes) INSTEAD?
