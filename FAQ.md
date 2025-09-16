@@ -93,8 +93,7 @@ For example:
 - `}bedrock.cube.clone` → Uses `CubeRuleGet` instead of reading `.rux` files  
 - `}bedrock.cube.data.copy` → Uses `ASCIIDelete` instead of `ExecuteCommand`  
 - `}bedrock.security.client.create` → Passwords can no longer be set due to `AssignClientPassword` deprecation  
-
-👉 [Full list of modified functions here](#modified-functions).  
+👉 [Full list of modified functions here](RELEASE_NOTES.md#modified-functions).  
 👉 [Compare changes from Bedrock 4 → 5](https://github.com/bdunleavy22/bedrock-compare/pull/2/files).
 
 ---
@@ -130,8 +129,8 @@ All code, documents, and information in Bedrock are provided **without warranty*
 
 See the dedicated sections below:
 
-- [Deprecated Functions](#deprecated-functions)  
-- [Modified Functions](#modified-functions)  
+- [Deprecated Functions](RELEASE_NOTES.md#deprecated-functions)
+- [Modified Functions](RELEASE_NOTES.md#modified-functions)
 
 ---
 
@@ -163,7 +162,7 @@ Due to deprecations in IBM Planning Analytics TM1 Database 12, the following Bed
 - Removal of references to deprecated cubes such as `}DimensionProperties` and `}ApplicationSecurity`  
 - Removal of `AssignClientPassword` support  
 
-👉 See the full [list of modified processes here](#modified-functions).  
+👉 See the full [list of modified processes here](RELEASE_NOTES.md#modified-functions).  
 
 ---
 

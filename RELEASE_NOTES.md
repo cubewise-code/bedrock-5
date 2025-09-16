@@ -81,8 +81,7 @@ Changes in the Bedrock processes were primarily due to:
 ## Additional Resources
 
 - [Full Comparison of Changes](https://github.com/bdunleavy22/bedrock-compare/pull/2/files)
-- [Migration Guide](https://github.com/cubewise-code/bedrock-5/wiki/Migration-Guide)
-- [Installation Guide](https://github.com/cubewise-code/bedrock-5/wiki/Installation-Guide)
+- [Installation Guide](installation_files/README.md)
 - [Process Documentation](https://github.com/cubewise-code/bedrock-5/wiki/Process-Documentation)
 
 ## Support
