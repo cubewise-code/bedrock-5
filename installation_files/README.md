@@ -60,7 +60,7 @@ This folder contains all necessary files and documentation for installing Bedroc
 2. Open a command prompt in the extracted folder
 3. Install dependencies:
    ```bash
-   pip install -r requirements.txt
+   pip install --force-reinstall --upgrade -r requirements.txt
    ```
 4. Run the installer:
    ```bash
