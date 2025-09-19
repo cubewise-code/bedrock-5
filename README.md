@@ -90,6 +90,6 @@ The source code is hosted at [github.com/cubewise-code/bedrock-5](https://github
 
 ## Additional Resources
 
-- [Full Comparison of Changes](https://github.com/bdunleavy22/bedrock-compare/pull/2/files) --> NOT RENDERING, PLUS IT SHOULD NOT BE LINKED TO A NON-CUBEWISE REPO
+- [Full Comparison of Changes](https://github.com/cubewise-code/bedrock-5/pull/4/files)
 - [Installation Guide](installation_files/README.md)
-- [Process Documentation](https://github.com/cubewise-code/bedrock-5/wiki/Process-Documentation) SHOULDN'T THIS GO TO [Bedrock Processes](https://github.com/cubewise-code/bedrock-5/wiki/Bedrock-Processes) INSTEAD?
+- [Process Documentation](https://github.com/cubewise-code/bedrock-5/wiki/Bedrock-Processes)
