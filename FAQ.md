@@ -47,6 +47,11 @@ Bedrock 5 is currently under development and will be **released on September 30t
 
 ---
 
+## ❓ What version of Arc supports Bedrock 5?
+Arc 5.1+ has direct integration for Bedrock 5, meaning you can install it directly from Arc!  You can find out more information [here](https://code.cubewise.com/software/products/arc/).
+
+---
+
 ## ❓ Why should I use Bedrock?
 
 Using Bedrock ensures **standardization and scalability** in IBM Planning Analytics projects:
