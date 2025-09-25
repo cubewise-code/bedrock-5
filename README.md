@@ -11,7 +11,7 @@
 </p>
 <h1></h1>
 
-### ⚠️ Bedrock 5 is still under development and will be released on the 30th of September, [click here for the upcoming webinar](https://events.teams.microsoft.com/event/f7564ab5-78aa-4c30-a93f-b880451f2de2@0635d657-0279-4110-9c8f-2ee27b1e065b). Please wait for the upcoming official release to use it in your projects. ⚠️
+### Bedrock 5 will be released on the 30th of September, [click here for the upcoming webinar](https://events.teams.microsoft.com/event/f7564ab5-78aa-4c30-a93f-b880451f2de2@0635d657-0279-4110-9c8f-2ee27b1e065b).
 
 ### This next-generation release of Bedrock has been refactored and tested to support IBM Planning Analytics TM1 Database 12.4+. Bedrock 5 does not support earlier versions of the TM1 Database. These versions are supported by [Bedrock 4](https://github.com/cubewise-code/bedrock)
 
