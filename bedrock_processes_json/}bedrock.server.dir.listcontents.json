@@ -11,21 +11,27 @@
   },
   "Parameters": [
     {
+      "Name": "pSrcDir",
+      "Prompt": "OPTIONAL: File directory (Default = GetProcessErrorFileDirectory)",
+      "Value": "",
+      "Type": "String"
+    },
+    {
       "Name": "pLogOutput",
-      "Prompt": "OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
+      "Prompt": "OPTIONAL: Write parameters and action summary to server message log (Boolean. Default = 0)",
       "Value": 0,
       "Type": "Numeric"
     },
     {
       "Name": "pStrictErrorHandling",
-      "Prompt": "OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+      "Prompt": "OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean. Default = 0)",
       "Value": 0,
       "Type": "Numeric"
     },
     {
-      "Name": "pSrcDir",
-      "Prompt": "OPTIONAL: Data Directory (Leave Blank to use TM1 Settings)",
-      "Value": "",
+      "Name": "pJson",
+      "Prompt": "OPTIONAL: JSON Object with process parameter values. This will overwrite user passed parameters.",
+      "Value": "{}",
       "Type": "String"
     }
   ],

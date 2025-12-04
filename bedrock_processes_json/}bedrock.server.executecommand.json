@@ -11,34 +11,40 @@
   },
   "Parameters": [
     {
-      "Name": "pLogOutput",
-      "Prompt": "Optional: write parameters and action summary to server message log (Boolean True = 1)",
-      "Value": 0,
-      "Type": "Numeric"
-    },
-    {
-      "Name": "pStrictErrorHandling",
-      "Prompt": "OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
-      "Value": 0,
-      "Type": "Numeric"
-    },
-    {
       "Name": "pCommand",
-      "Prompt": "The full command line string to execute",
+      "Prompt": "REQUIRED: The full command line string to execute",
       "Value": "",
       "Type": "String"
     },
     {
       "Name": "pWait",
-      "Prompt": "Wait for command to finish 0=false 1=true",
+      "Prompt": "OPTIONAL: Wait for command to finish executing (Boolean. Default = 0)",
       "Value": 0,
       "Type": "Numeric"
     },
     {
       "Name": "pPowerShell",
-      "Prompt": "Execute a PowerShell script 0=false 1=true",
+      "Prompt": "OPTIONAL: Execute a PowerShell script (Boolean. Default = 0)",
       "Value": 0,
       "Type": "Numeric"
+    },
+    {
+      "Name": "pLogOutput",
+      "Prompt": "OPTIONAL: Write parameters and action summary to server message log (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pStrictErrorHandling",
+      "Prompt": "OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pJson",
+      "Prompt": "OPTIONAL: JSON Object with process parameter values. This will overwrite user passed parameters.",
+      "Value": "{}",
+      "Type": "String"
     }
   ],
   "Variables": [

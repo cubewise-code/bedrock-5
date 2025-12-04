@@ -11,62 +11,50 @@
   },
   "Parameters": [
     {
-      "Name": "pLogOutput",
-      "Prompt": "OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
-      "Value": 0,
-      "Type": "Numeric"
-    },
-    {
-      "Name": "pStrictErrorHandling",
-      "Prompt": "OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
-      "Value": 0,
-      "Type": "Numeric"
-    },
-    {
       "Name": "pSrcDim",
-      "Prompt": "REQUIRED: Source Dimension",
+      "Prompt": "REQUIRED: Source dimension name",
       "Value": "",
       "Type": "String"
     },
     {
       "Name": "pSrcHier",
-      "Prompt": "OPTIONAL: Source Hierarchy (blank = same name as source dimension)",
+      "Prompt": "OPTIONAL: Source hierarchy name (Default = pSrcDim)",
       "Value": "",
       "Type": "String"
     },
     {
       "Name": "pConsol",
-      "Prompt": "REQUIRED: Cons element in source dim to create root element in target",
+      "Prompt": "REQUIRED: Consolidated element name used as source",
       "Value": "",
       "Type": "String"
     },
     {
       "Name": "pTgtDim",
-      "Prompt": "OPTIONAL: Target Dimension (blank = same name as source dimension)",
+      "Prompt": "OPTIONAL: Target dimension name (Default = pSrcDim)",
       "Value": "",
       "Type": "String"
     },
     {
       "Name": "pTgtHier",
-      "Prompt": "OPTIONAL: Target Hierarchy (blank = same name as target dimension)",
+      "Prompt": "OPTIONAL: Target hierarchy name (Default = pTgtDim)",
       "Value": "",
       "Type": "String"
     },
     {
       "Name": "pAttr",
-      "Prompt": "OPTIONAL: Include Attributes? (Boolean 1=True)",
+      "Prompt": "OPTIONAL: Include attributes (Boolean. Default = 1)",
       "Value": 1,
       "Type": "Numeric"
     },
     {
       "Name": "pUnwind",
-      "Prompt": "OPTIONAL: 0 = Delete all Elements, 1 = Unwind Existing Elements, 2 = Do not change Existing Elements",
-      "Value": 2,
+      "Prompt": "OPTIONAL: Unwind target hierarchy before process (0 = Delete all elements, 1 = Unwind existing elements, 2 = Do not change existing elements. Default = 0)",
+      "Value": 0,
       "Type": "Numeric"
     },
     {
       "Name": "pRemove",
-      "Prompt": "OPTIONAL: Remove cons elements from source? (1 = Yes, 0 = No)",
+      "Prompt": "OPTIONAL: Remove consolidated elements from source (Boolean. Default = 0)",
       "Value": 0,
       "Type": "Numeric"
     },
@@ -74,6 +62,24 @@
       "Name": "pAliasSwap",
       "Prompt": "REQUIRED: Name of the attribute with names to be swapped",
       "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pLogOutput",
+      "Prompt": "OPTIONAL: Write parameters and action summary to server message log (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pStrictErrorHandling",
+      "Prompt": "OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pJson",
+      "Prompt": "OPTIONAL: JSON Object with process parameter values. This will overwrite user passed parameters.",
+      "Value": "{}",
       "Type": "String"
     }
   ],
