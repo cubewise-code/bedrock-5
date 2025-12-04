@@ -11,52 +11,58 @@
   },
   "Parameters": [
     {
-      "Name": "pLogOutput",
-      "Prompt": "OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
-      "Value": 0,
-      "Type": "Numeric"
-    },
-    {
-      "Name": "pStrictErrorHandling",
-      "Prompt": "OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
-      "Value": 0,
-      "Type": "Numeric"
-    },
-    {
       "Name": "pSrcDir",
-      "Prompt": "REQUIRED: Source Directory to Backup",
-      "Value": ".",
+      "Prompt": "OPTIONAL: File directory (Default = GetProcessErrorFileDirectory)",
+      "Value": "",
       "Type": "String"
     },
     {
       "Name": "pTgtDir",
-      "Prompt": "REQUIRED: Destination Directory for Backup",
+      "Prompt": "OPTIONAL: Target file directory (Default = GetProcessErrorFileDirectory)",
       "Value": "",
       "Type": "String"
     },
     {
       "Name": "pExcludeFilter",
-      "Prompt": "OPTIONAL: Exclude filter (To include all files use pFilterExclude = \"\")",
+      "Prompt": "OPTIONAL: Delimited list of exclusion filters (Default = '.log & .cfg & .csv & .cmal & .txt & .feeders')",
       "Value": ".log & .cfg & .csv & .cmal & .txt & .feeders",
       "Type": "String"
     },
     {
       "Name": "pDelim",
-      "Prompt": "OPTIONAL: Delimiter",
+      "Prompt": "OPTIONAL: Delimiter for list parameters (Default = '&')",
       "Value": "&",
       "Type": "String"
     },
     {
       "Name": "pSubDirCopy",
-      "Prompt": "OPTIONAL: Include subdirectories? (Boolean True = 1)",
+      "Prompt": "OPTIONAL: Include subdirectories (Boolean. Default = 1)",
       "Value": 1,
       "Type": "Numeric"
     },
     {
       "Name": "pRobocopy",
-      "Prompt": "OPTIONAL: Use robocopy? (Boolean True = 1), WIN only",
+      "Prompt": "OPTIONAL: Use Robocopy (WIN Only. Boolean. Default = 0)",
       "Value": 0,
       "Type": "Numeric"
+    },
+    {
+      "Name": "pLogOutput",
+      "Prompt": "OPTIONAL: Write parameters and action summary to server message log (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pStrictErrorHandling",
+      "Prompt": "OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pJson",
+      "Prompt": "OPTIONAL: JSON Object with process parameter values. This will overwrite user passed parameters.",
+      "Value": "{}",
+      "Type": "String"
     }
   ],
   "Variables": [],

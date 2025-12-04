@@ -11,18 +11,6 @@
   },
   "Parameters": [
     {
-      "Name": "pLogOutput",
-      "Prompt": "OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
-      "Value": 0,
-      "Type": "Numeric"
-    },
-    {
-      "Name": "pStrictErrorHandling",
-      "Prompt": "OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
-      "Value": 0,
-      "Type": "Numeric"
-    },
-    {
       "Name": "pType",
       "Prompt": "REQUIRED: .rux, .dim, .pro, .cub",
       "Value": "",
@@ -36,13 +24,13 @@
     },
     {
       "Name": "pDestPath",
-      "Prompt": "REQUIRED: Directory where to store encrypted files, blank = logging directory",
+      "Prompt": "OPTIONAL: Directory where to store encrypted files (Default = GetProcessLogFileDirectory)",
       "Value": "",
       "Type": "String"
     },
     {
       "Name": "pConfigLocation",
-      "Prompt": "REQUIRED: Path to tm1crypt.config file",
+      "Prompt": "REQUIRED: Path to tm1crypt.config",
       "Value": "",
       "Type": "String"
     },
@@ -54,8 +42,26 @@
     },
     {
       "Name": "pAction",
-      "Prompt": "REQUIRED: 5 = unencrypt, 4 = encrypt",
+      "Prompt": "OPTIONAL: (5 = unencrypt, 4 = encrypt. Default = 5)",
       "Value": "5",
+      "Type": "String"
+    },
+    {
+      "Name": "pLogOutput",
+      "Prompt": "OPTIONAL: Write parameters and action summary to server message log (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pStrictErrorHandling",
+      "Prompt": "OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pJson",
+      "Prompt": "OPTIONAL: JSON Object with process parameter values. This will overwrite user passed parameters.",
+      "Value": "{}",
       "Type": "String"
     }
   ],

@@ -11,52 +11,58 @@
   },
   "Parameters": [
     {
-      "Name": "pLogOutput",
-      "Prompt": "OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
-      "Value": 0,
-      "Type": "Numeric"
-    },
-    {
-      "Name": "pStrictErrorHandling",
-      "Prompt": "OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
-      "Value": 0,
-      "Type": "Numeric"
-    },
-    {
       "Name": "pTgtDir",
-      "Prompt": "OPTIONAL: Log file directory. (Blank = from TM1 configuration file)",
+      "Prompt": "OPTIONAL: Target file directory (Default = GetProcessErrorFileDirectory)",
       "Value": "",
       "Type": "String"
     },
     {
       "Name": "pLogDays",
-      "Prompt": "REQUIRED: The number of days to retain log Files",
+      "Prompt": "REQUIRED: The number of days to retain log files",
       "Value": 0,
       "Type": "Numeric"
     },
     {
       "Name": "pErrorDays",
-      "Prompt": "REQUIRED: The number of day to retain TM1 Error Logs",
+      "Prompt": "REQUIRED: The number of days to retain error files",
       "Value": 0,
       "Type": "Numeric"
     },
     {
       "Name": "pBedrockDays",
-      "Prompt": "REQUIRED: The number of days to retain Bedrock Debug Files",
+      "Prompt": "REQUIRED: The number of days to retain bedrock debug files",
       "Value": 0,
       "Type": "Numeric"
     },
     {
       "Name": "pCSVDays",
-      "Prompt": "REQUIRED: The number of days to retain CSV files",
+      "Prompt": "REQUIRED: The number of days to retain .csv files",
       "Value": 0,
       "Type": "Numeric"
     },
     {
       "Name": "pFileSize",
-      "Prompt": "OPTIONAL: The file size of log files (in MB) to exceed before removal (Default=0). Note: for tm1s*.log transaction logs only",
+      "Prompt": "OPTIONAL: The file size of log files (in MB) to exceed before removal (Default = 0)",
       "Value": 0,
       "Type": "Numeric"
+    },
+    {
+      "Name": "pLogOutput",
+      "Prompt": "OPTIONAL: Write parameters and action summary to server message log (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pStrictErrorHandling",
+      "Prompt": "OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pJson",
+      "Prompt": "OPTIONAL: JSON Object with process parameter values. This will overwrite user passed parameters.",
+      "Value": "{}",
+      "Type": "String"
     }
   ],
   "Variables": [],

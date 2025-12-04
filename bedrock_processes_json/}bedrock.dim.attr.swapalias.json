@@ -11,27 +11,33 @@
   },
   "Parameters": [
     {
-      "Name": "pLogOutput",
-      "Prompt": "REQUIRED: True or False (Boolean True = 1)",
-      "Value": 0,
-      "Type": "Numeric"
-    },
-    {
-      "Name": "pStrictErrorHandling",
-      "Prompt": "OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
-      "Value": 0,
-      "Type": "Numeric"
-    },
-    {
       "Name": "pDim",
-      "Prompt": "REQUIRED: Dimension name",
+      "Prompt": "REQUIRED: Delimited list of dimensions",
       "Value": "",
       "Type": "String"
     },
     {
       "Name": "pAlias",
-      "Prompt": "REQUIRED: Alias",
+      "Prompt": "REQUIRED: Alias name",
       "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pLogOutput",
+      "Prompt": "OPTIONAL: Write parameters and action summary to server message log (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pStrictErrorHandling",
+      "Prompt": "OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pJson",
+      "Prompt": "OPTIONAL: JSON Object with process parameter values. This will overwrite user passed parameters.",
+      "Value": "{}",
       "Type": "String"
     }
   ],

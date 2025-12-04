@@ -11,21 +11,21 @@
   },
   "Parameters": [
     {
+      "Name": "pTemp",
+      "Prompt": "OPTIONAL: Delete/create temporary objects (0 = Do not delete, 1 = Delete, 2 = if view and subsets are created, keep only subsets)",
+      "Value": 1,
+      "Type": "Numeric"
+    },
+    {
       "Name": "pLogOutput",
-      "Prompt": "Write status messages to tm1server.log file?",
+      "Prompt": "OPTIONAL: Write parameters and action summary to server message log (Boolean. Default = 0)",
       "Value": 0,
       "Type": "Numeric"
     },
     {
       "Name": "pStrictErrorHandling",
-      "Prompt": "OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
+      "Prompt": "OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean. Default = 0)",
       "Value": 0,
-      "Type": "Numeric"
-    },
-    {
-      "Name": "pTemp",
-      "Prompt": "Use temporary objects for views & subsets?",
-      "Value": 1,
       "Type": "Numeric"
     }
   ],

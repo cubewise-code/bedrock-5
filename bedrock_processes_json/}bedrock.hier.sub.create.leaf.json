@@ -1,6 +1,6 @@
 {
   "Name": "}bedrock.hier.sub.create.leaf",
-  "PrologProcedure": "#Region CallThisProcess\r\n# A snippet of code provided as an example how to call this process should the developer be working on a system without access to an editor with auto-complete.\r\nIf( 1 = 0 );\r\n    ExecuteProcess( '}bedrock.hier.sub.create.leaf', 'pLogOutput', pLogOutput,\r\n      'pStrictErrorHandling', pStrictErrorHandling,\r\n    \t'pDim', '', 'pHier', '', 'pSub', '',\r\n    \t'pAddToSubset', 0, 'pExclusions', '',\r\n    \t'pDelim', '&', 'pAlias', '', 'pTemp', 1\r\n\t);\r\nEndIf;\r\n#EndRegion CallThisProcess\r\n\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n################################################################################################# \r\n##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~##\r\n################################################################################################# \r\n\r\n#Region @DOC\r\n# Description:\r\n# This process will create a static subset in Hierarchy of a Dimension that consists of all leaf\r\n# elements.\r\n\r\n# Note:\r\n# This process uses modification parameters to determine what to include in the subset:\r\n# - pExclusions: If pExclusions is specified then the elements (separated by a delimiter) will be\r\n#                excluded from the subset. Wildcards characters `*` and `?` are accepted.\r\n# - pAddToSubset: If the specified subset already exists then this parameter will control whether elements will\r\n#                 be added to the existing subset (value 1) or a new subset will be created (value 0).\r\n#EndRegion @DOC\r\n\r\n### Global Variables\r\nStringGlobalVariable('sProcessReturnCode');\r\nNumericGlobalVariable('nProcessReturnCode');\r\nnProcessReturnCode= 0;\r\nnErrors = 0;\r\n\r\n### Constants ###\r\ncThisProcName       = GetProcessName();\r\ncUserName           = TM1User();\r\ncTimeStamp          = TimSt( Now, '\\Y\\m\\d\\h\\i\\s' );\r\ncRandomInt          = NumberToString( INT( RAND( ) * 1000 ));\r\ncTempSub            = cThisProcName |'_'| cTimeStamp |'_'| cRandomInt;\r\ncMsgErrorLevel      = 'ERROR';\r\ncMsgErrorContent    = 'User:%cUserName% Process:%cThisProcName% ErrorMsg:%sMessage%';\r\ncLogInfo            = 'Process:%cThisProcName% run with parameters pDim:%pDim%, pHier:%pHier%, pSub:%pSub%, pExclusions:%pExclusions%, pDelim:%pDelim%, pAddToSubset:%pAddToSubset%, pAlias:%pAlias%, pTemp:%pTemp%.';\r\ncAttributeDim       = '}ElementAttributes_' | pDim;\r\n\r\n\r\n## LogOutput parameters\r\nIF ( pLogoutput = 1 );\r\n    LogOutput('INFO', Expand( cLogInfo ) );   \r\nENDIF;\r\n\r\nnErrors = 0;\r\n\r\n## Validate pTemp\r\nIF( pTemp <> 0 & pTemp <> 1 );\r\n    nErrors = 1;\r\n    sMessage = 'Wrong parameter pTemp value (only 0 or 1 accepted).';\r\n    LogOutput( cMsgErrorLevel, Expand( cMsgErrorContent ) );\r\nEndIf;\r\n\r\nnRet = \r\nExecuteProcess( '}bedrock.hier.sub.create', 'pLogOutput', pLogOutput,\r\n    'pStrictErrorHandling', pStrictErrorHandling,\r\n    'pDim', pDim, 'pHier',pHier, 'pSub', pSub,\r\n    'pLevelFrom', 0, 'pLevelTo', 0,\r\n    'pExclusions', pExclusions, 'pAddToSubset', pAddToSubset,\r\n    'pDelim', pDelim, 'pAlias', pAlias, 'pTemp', pTemp\r\n);\r\n\r\n### End Prolog ###",
+  "PrologProcedure": "#Region CallThisProcess\r\n# A snippet of code provided as an example how to call this process should the developer be working on a system without access to an editor with auto-complete.\r\nIf( 1 = 0 );\r\n    ExecuteProcess( '}bedrock.hier.sub.create.leaf', 'pLogOutput', pLogOutput,\r\n      'pStrictErrorHandling', pStrictErrorHandling,\r\n    \t'pDim', '', 'pHier', '', 'pSub', '',\r\n    \t'pAddToSubset', 0, 'pExclusions', '',\r\n    \t'pDelim', '&', 'pAlias', '', 'pTemp', 1\r\n\t);\r\nEndIf;\r\n#EndRegion CallThisProcess\r\n\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n################################################################################################# \r\n##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~##\r\n################################################################################################# \r\n\r\n#Region @DOC\r\n# Description:\r\n# This process will create a static subset in Hierarchy of a Dimension that consists of all leaf\r\n# elements.\r\n\r\n# Note:\r\n# This process uses modification parameters to determine what to include in the subset:\r\n# - pExclusions: If pExclusions is specified then the elements (separated by a delimiter) will be\r\n#                excluded from the subset. Wildcards characters `*` and `?` are accepted.\r\n# - pAddToSubset: If the specified subset already exists then this parameter will control whether elements will\r\n#                 be added to the existing subset (value 1) or a new subset will be created (value 0).\r\n#EndRegion @DOC\r\n\r\n### Global Variables\r\nStringGlobalVariable('sProcessReturnCode');\r\nNumericGlobalVariable('nProcessReturnCode');\r\nnProcessReturnCode= 0;\r\nnErrors = 0;\r\n\r\n### Constants ###\r\ncThisProcName       = GetProcessName();\r\ncUserName           = TM1User();\r\ncTimeStamp          = TimSt( Now, '\\Y\\m\\d\\h\\i\\s' );\r\ncRandomInt          = NumberToString( INT( RAND( ) * 1000 ));\r\ncTempSub            = cThisProcName |'_'| cTimeStamp |'_'| cRandomInt;\r\ncMsgErrorLevel      = 'ERROR';\r\ncMsgErrorContent    = 'User:%cUserName% Process:%cThisProcName% ErrorMsg:%sMessage%';\r\ncLogInfo            = 'Process:%cThisProcName% run with parameters pDim:%pDim%, pHier:%pHier%, pSub:%pSub%, pExclusions:%pExclusions%, pDelim:%pDelim%, pAddToSubset:%pAddToSubset%, pAlias:%pAlias%, pTemp:%pTemp%.';\r\ncAttributeDim       = '}ElementAttributes_' | pDim;\r\n\r\n\r\n#################################################################################################\r\n#Region - Process Parameters\r\n\r\npJson = IF( JsonType( pJson ) @<> 'object', '{}', pJson );\r\nsMessages = '{\"Process\": \"'|GetProcessName()|'\", \"User\": \"'|TM1User()|'\", \"Info\": [\"Process: '''|GetProcessName()|''' run by User: '''|TM1User()|'''.\"], \"Error\": []}';\r\npDefaultParameters = '{\r\n  \"pAlias\":               \"\",\r\n  \"pDelim\":               \"&\",\r\n  \"pDim\":                 null,\r\n  \"pExclusions\":          \"\",\r\n  \"pHier\":                \"\",\r\n  \"pSub\":                 null,\r\n  \"pAddToSubset\":         0,\r\n  \"pLogOutput\":           0,\r\n  \"pStrictErrorHandling\": 0,\r\n  \"pTemp\":                1\r\n}';\r\n\r\npPassedParameters = '{\r\n  \"pAlias\":               '|StringToJson  ( pAlias               )|',\r\n  \"pDelim\":               '|StringToJson  ( pDelim               )|',\r\n  \"pDim\":                 '|StringToJson  ( pDim                 )|',\r\n  \"pExclusions\":          '|StringToJson  ( pExclusions          )|',\r\n  \"pHier\":                '|StringToJson  ( pHier                )|',\r\n  \"pSub\":                 '|StringToJson  ( pSub                 )|',\r\n  \"pAddToSubset\":         '|NumberToString( pAddToSubset         )|',\r\n  \"pLogOutput\":           '|NumberToString( pLogOutput           )|',\r\n  \"pStrictErrorHandling\": '|NumberToString( pStrictErrorHandling )|',\r\n  \"pTemp\":                '|NumberToString( pTemp                )|'\r\n}';\r\n\r\npJson = JsonMergePatch( pPassedParameters, pJson );\r\n# String Parameters\r\npAlias               =                 JsonToString( JsonGet( pJson, 'pAlias'             ) );\r\npDelim               =                 JsonToString( JsonGet( pJson, 'pDelim'             ) );\r\npDim                 =                 JsonToString( JsonGet( pJson, 'pDim'               ) );\r\npExclusions          =                 JsonToString( JsonGet( pJson, 'pExclusions'        ) );\r\npHier                =                 JsonToString( JsonGet( pJson, 'pHier'              ) );\r\npSub                 =                 JsonToString( JsonGet( pJson, 'pSub'               ) );\r\n# Numeric Parameters\r\npAddToSubset         = StringToNumber( JsonToString( JsonGet( pJson, 'pAddToSubset'       ) ) );\r\npLogOutput           = StringToNumber( JsonToString( JsonGet( pJson, 'pLogOutput'         ) ) );\r\npStrictErrorHandling = StringToNumber( JsonToString( JsonGet( pJson, 'pStrictErrorHandling' ) ) );\r\npTemp                = StringToNumber( JsonToString( JsonGet( pJson, 'pTemp'              ) ) );\r\n\r\n### Get the parameters that differ from the default\r\npDiffer = JsonDiff( pDefaultParameters, pJson );\r\nnSize = JsonSize( pDiffer );\r\nWHILE( nSize > 0 );\r\n  nSize = nSize - 1;\r\n  pDiffer = JsonReplace( pDiffer, '/'|NumberToString( nSize )|'/op', '\"add\"' );\r\nEND;\r\npJson = JsonPatch( '{}', pDiffer );\r\n\r\n### LogOutput parameters\r\nsMessages = JsonAdd( sMessages, '/Info/-', pJson );\r\nIF( pLogOutput = 1 );\r\n  LogOutput('INFO', JsonToString( sMessages, '/Info/0', 0, ' ' ) );\r\nENDIF;\r\n\r\n#EndRegion - Process Parameters\r\n#################################################################################################\r\n\r\n## LogOutput parameters\r\nIF ( pLogoutput = 1 );\r\n    LogOutput('INFO', Expand( cLogInfo ) );   \r\nENDIF;\r\n\r\nnErrors = 0;\r\n\r\n## Validate pTemp\r\nIF( pTemp <> 0 & pTemp <> 1 );\r\n    nErrors = 1;\r\n    sMessage = 'Wrong parameter pTemp value (only 0 or 1 accepted).';\r\n    LogOutput( cMsgErrorLevel, Expand( cMsgErrorContent ) );\r\nEndIf;\r\n\r\nnRet = \r\nExecuteProcess( '}bedrock.hier.sub.create', 'pLogOutput', pLogOutput,\r\n    'pStrictErrorHandling', pStrictErrorHandling,\r\n    'pDim', pDim, 'pHier',pHier, 'pSub', pSub,\r\n    'pLevelFrom', 0, 'pLevelTo', 0,\r\n    'pExclusions', pExclusions, 'pAddToSubset', pAddToSubset,\r\n    'pDelim', pDelim, 'pAlias', pAlias, 'pTemp', pTemp\r\n);\r\n\r\n### End Prolog ###",
   "MetadataProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n",
   "DataProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n",
   "EpilogProcedure": "\r\n#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n################################################################################################# \r\n##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~##\r\n################################################################################################# \r\n\r\n### Return code & final error message handling\r\nIf( nErrors > 0 );\r\n    sMessage = 'the process incurred at least 1 error. Please see above lines in this file for more details.';\r\n    nProcessReturnCode = 0;\r\n    LogOutput( cMsgErrorLevel, Expand( cMsgErrorContent ) );\r\n    sProcessReturnCode = Expand( '%sProcessReturnCode% Process:%cThisProcName% completed with errors. Check tm1server.log for details.' );\r\n    If( pStrictErrorHandling = 1 ); \r\n        ProcessQuit; \r\n    EndIf;\r\nElse;\r\n    sProcessAction = Expand( 'Process:%cThisProcName% successfully created subset %pSub% from dimension %pDim%.' );\r\n    sProcessReturnCode = Expand( '%sProcessReturnCode% %sProcessAction%' );\r\n    nProcessReturnCode = 1;\r\n    If( pLogoutput = 1 );\r\n        LogOutput('INFO', Expand( sProcessAction ) );   \r\n    EndIf;\r\nEndIf;\r\n\r\n### End Epilog ###",
@@ -11,26 +11,14 @@
   },
   "Parameters": [
     {
-      "Name": "pLogOutput",
-      "Prompt": "OPTIONAL: Write parameters and action summary to server message log (Boolean True = 1)",
-      "Value": 0,
-      "Type": "Numeric"
-    },
-    {
-      "Name": "pStrictErrorHandling",
-      "Prompt": "OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean True = 1)",
-      "Value": 0,
-      "Type": "Numeric"
-    },
-    {
       "Name": "pDim",
-      "Prompt": "REQUIRED: Dimension name",
+      "Prompt": "REQUIRED: Delimited list of dimensions",
       "Value": "",
       "Type": "String"
     },
     {
       "Name": "pHier",
-      "Prompt": "OPTIONAL: Hierarchy name (default if blank = same named hierarchy)",
+      "Prompt": "OPTIONAL: Hierarchy name (Default = pDim)",
       "Value": "",
       "Type": "String"
     },
@@ -42,33 +30,51 @@
     },
     {
       "Name": "pAddToSubset",
-      "Prompt": "OPTIONAL: Add to Subset if it Already Exists (0=No 1=Yes)",
+      "Prompt": "OPTIONAL: Add to subset if it already exists (Boolean. Default = 0)",
       "Value": 0,
       "Type": "Numeric"
     },
     {
       "Name": "pExclusions",
-      "Prompt": "OPTIONAL: Elements to Exclude From Subset (Separated by Delimiter, Accepts Wild card)",
+      "Prompt": "OPTIONAL: Delimited list of elements to exclude",
       "Value": "",
       "Type": "String"
     },
     {
       "Name": "pDelim",
-      "Prompt": "OPTIONAL: Delimiter character",
+      "Prompt": "OPTIONAL: Delimiter for list parameters (Default = '&')",
       "Value": "&",
       "Type": "String"
     },
     {
       "Name": "pAlias",
-      "Prompt": "OPTIONAL: Set Alias for Subset",
+      "Prompt": "OPTIONAL: Set alias for subset",
       "Value": "",
       "Type": "String"
     },
     {
       "Name": "pTemp",
-      "Prompt": "OPTIONAL: Use temporary objects? (Boolean 1=True)",
+      "Prompt": "OPTIONAL: Delete/create temporary objects (0 = Do not delete, 1 = Delete, 2 = if view and subsets are created, keep only subsets)",
       "Value": 1,
       "Type": "Numeric"
+    },
+    {
+      "Name": "pLogOutput",
+      "Prompt": "OPTIONAL: Write parameters and action summary to server message log (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pStrictErrorHandling",
+      "Prompt": "OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pJson",
+      "Prompt": "OPTIONAL: JSON Object with process parameter values. This will overwrite user passed parameters for all included parameters.",
+      "Value": "{}",
+      "Type": "String"
     }
   ],
   "Variables": [],
