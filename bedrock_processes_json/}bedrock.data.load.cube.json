@@ -1,0 +1,401 @@
+{
+  "Name": "}bedrock.data.load.cube",
+  "PrologProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n###################################################################################################\r\n##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.3~~##\r\n###################################################################################################\r\n\r\n#Region @DOC\r\n#### Description:\r\n#This process copies data from a source into a target cube. It is designed for use in production environments where data needs to be moved, transformed, or archived between cubes \u2014 even when those cubes have different structures, dimension counts, or dimension orderings. Common uses include populating a reporting cube from a planning cube, and archiving data from one cube to another.\r\n#\r\n#### How to Use:\r\n#`pDatasource` defines the source of data to load from. It can be passed as either a plain string or a JSON Object.\r\n#\r\n#If passed as a plain string, the process will check whether a cube with that name exists. If it does, it will be used as a cube view datasource. If it does not, it will be assumed to be a CSV file path.\r\n#\r\n#To be more explicit, pass a JSON Object with datasource properties as keys:\r\n#```json\r\n#{\r\n#  \"datasourcenameforserver\": \"Sales Cube\",\r\n#  \"datasourcecubeview\": \"My View\"\r\n#}\r\n#```\r\n#\r\n#`pTargetCube` is the name of the cube to write data into.\r\n#\r\n#The process automatically maps dimensions that exist in both the source and target cube by name, regardless of their index position in each cube. For dimensions in the source that do not exist in the target, their values will be accumulated (all N-level elements summed) unless constrained by `pFilter`.\r\n#\r\n#`pDimMap` is required when the target cube contains dimensions that do not appear in the source cube. It assigns a fixed element for each such dimension. It must be either a JSON Object or JSON Array.\r\n#\r\n#If `pDimMap` is a JSON Object, the keys are the dimension names and the values are the elements to use:\r\n#```json\r\n#{\r\n#  \"Account\": \"9999\",\r\n#  \"Scenario\": \"Actual\"\r\n#}\r\n#```\r\n#If `pDimMap` is a JSON Array, the index of each item corresponds to the index of the dimension in the target cube:\r\n#```json\r\n#[null, null, \"9999\", null, \"Actual\"]\r\n#```\r\n#\r\n#> [!NOTE]\r\n#> Elements specified in `pDimMap` must be N-level elements unless `pSuppressConsol` is set to `0`.\r\n#>\r\n#> If a dimension in `pDimMap` is given more than one element, the process will execute recursively \u2014 once per element \u2014 accumulating results.\r\n#\r\n#`pFilter` defines which elements from the source cube to include in the load. It is interpreted in the same way as in other Bedrock processes \u2014 as either a JSON Object (dimension name \u2192 element or array of elements) or a JSON Array (index-aligned to source cube dimensions). Elements can be element names, subset names, MDX expressions, or a JSON Array of any mix of the three.\r\n#\r\n#For example, to copy only Actual data for 2023 from a Sales cube into a General Ledger cube, writing to Account `9999`:\r\n#```json\r\n#{\r\n#  \"pDatasource\": \"Sales Cube\",\r\n#  \"pTargetCube\": \"General Ledger\",\r\n#  \"pFilter\":     {\"Year\": \"2023\", \"Version\": \"Actual\"},\r\n#  \"pDimMap\":     {\"Account\": \"9999\"},\r\n#  \"pZeroTarget\": 1\r\n#}\r\n#```\r\n#\r\n#To parallelise the same load across the Region dimension using 4 threads:\r\n#```json\r\n#{\r\n#  \"pDatasource\":            \"Sales Cube\",\r\n#  \"pTargetCube\":            \"General Ledger\",\r\n#  \"pFilter\":                {\"Year\": \"2023\", \"Version\": \"Actual\"},\r\n#  \"pDimMap\":                {\"Account\": \"9999\"},\r\n#  \"pMultithreadDimensions\": [\"Region\"],\r\n#  \"pMaxThreads\":            4\r\n#}\r\n#```\r\n#\r\n#> [!NOTE]\r\n#> Any dimension listed in `pMultithreadDimensions` must not also appear in `pFilter`. The process uses that dimension as a parallelisation slicer, splitting it into individual recursive calls \u2014 one per element.\r\n#\r\n#When `pZeroTarget` is `1` (the default), the target cube is cleared before loading begins. The scope of the clear is determined by the intersection of `pFilter` and `pDimMap` values for dimensions that exist in the target. Set `pZeroTarget` to `0` to add source values on top of existing target values instead.\r\n#\r\n#`pFactor` and `pIncrement` allow values to be transformed during the copy. `pFactor` multiplies every source value before it is written. `pIncrement`, when set to `1`, adds the source value to the existing target cell value rather than replacing it. These only apply to numeric cells \u2014 string cells are passed through as-is.\r\n#\r\n#- `pDatasource` - Source cube name, CSV file path, or JSON Object with full datasource specification.\r\n#- `pTargetCube` - Name of the cube to write data into.\r\n#- `pFilter` - JSON Object or Array specifying which source elements to include. See above.\r\n#- `pExcept` - Interpreted the same way as `pFilter`, but any element specified here will be excluded from the source view.\r\n#- `pDimMap` - JSON Object or Array mapping target-only dimensions to fixed element values. Required when the target has dimensions not present in the source.\r\n#- `pMultithreadDimensions` - JSON Array of dimension names to parallelise execution across. Each element in the dimension becomes a separate recursive call. Must not overlap with `pFilter`.\r\n#- `pMaxThreads` - Maximum number of concurrent threads when `pMultithreadDimensions` is in use. Default = `1`.\r\n#- `pZeroTarget` - Clear the target before loading (`1` = yes, `0` = no). Default = `1`.\r\n#- `pFactor` - Multiply all source values by this number before writing. Default = `1`.\r\n#- `pIncrement` - If `1`, add source values to existing target values rather than replacing them. Default = `0`.\r\n#- `pSuppressConsol` - Skip consolidated source elements (`1` = yes). Default = `1`.\r\n#- `pSuppressConsolStrings` - Skip consolidated string cells (`1` = yes). Default = `1`.\r\n#- `pSuppressRules` - Suppress rule-derived values in the source view (`1` = yes). Default = `1`.\r\n#- `pSuppressZero` - Skip zero-value source cells (`1` = yes). Default = `1`.\r\n#- `pMappingOverride` - Directly override the internal dimension index mapping array. Replaces the auto-generated mapping entirely. Use with caution.\r\n#- `pSandbox` - Name of a sandbox to direct writes into. The sandbox must exist and be valid for the current user.\r\n#- `pTemp` - Whether to delete temporary views and subsets after execution. `0` = keep all, `1` = delete all, `2` = keep subsets only. Default = `1`.\r\n#- `pUseFile` - Copy via an intermediate file export/import to reduce cube locking. `0` = no file, `1` = use file and delete it, `2` = use file and retain it. Default = `0`.\r\n#- `pDecimalSeparator` - Decimal separator used for string-to-number conversion. Default = `.`.\r\n#- `pThousandSeparator` - Thousand separator used for string-to-number conversion. Default = `,`.\r\n#- `pLogOutput` - Write parameters and action summary to the server message log (`0` = off, `1` = on). Default = `0`.\r\n#- `pStrictErrorHandling` - If `1`, exit with major error status via `ProcessQuit` on any error. Default = `0`.\r\n#- `pJson` - JSON Object to pass all parameters at once. Overrides individually passed parameters for any keys included.\r\n#EndRegion @DOC\r\n\r\n### Global Variables\r\nStringGlobalVariable('sProcessReturnCode');\r\nNumericGlobalVariable('nProcessReturnCode');\r\n\r\n\r\n### Constants ###\r\ncThisProcName   = GetProcessName();\r\ncUserName       = TM1User();\r\ncTimeStamp      = TimSt( Now, '\\Y\\m\\d\\h\\i\\s' );\r\ncRandomInt      = NumberToString( INT( RAND( ) * 1000 ));\r\ncTemp           = cThisProcName |'_'| cTimeStamp |'_'| cRandomInt;\r\nsMessages       = JsonAdd( '{\"Info\": [], \"Error\": []}', '/Info/0', StringToJson( 'Process: '''|cThisProcName|''' run by User: '''|cUsername|'''.' ) );\r\n\r\n#################################################################################################\r\n#Region - Process Parameters\r\n\r\npJson = IF( JsonType( pJson ) @<> 'object', '{}', pJson );\r\nsMessages = '{\"Process\": \"'|GetProcessName()|'\", \"User\": \"'|TM1User()|'\", \"Info\": [\"Process: '''|GetProcessName()|''' run by User: '''|TM1User()|'''.\"], \"Error\": []}';\r\npDefaultParameters = '{\r\n  \"pDatasource\":            null,\r\n  \"pDecimalSeparator\":      \".\",\r\n  \"pDimMap\":                \"\",\r\n  \"pExcept\":                \"\",\r\n  \"pFilter\":                \"\",\r\n  \"pMappingOverride\":       \"\",\r\n  \"pMultithreadDimensions\": \"\",\r\n  \"pSandbox\":               \"\",\r\n  \"pTargetCube\":            null,\r\n  \"pThousandSeparator\":     \",\",\r\n  \"pFactor\":                1,\r\n  \"pIncrement\":             0,\r\n  \"pLogOutput\":             0,\r\n  \"pMaxThreads\":            0,\r\n  \"pStrictErrorHandling\":   0,\r\n  \"pSuppressConsol\":        1,\r\n  \"pSuppressConsolStrings\": 1,\r\n  \"pSuppressRules\":         1,\r\n  \"pSuppressZero\":          1,\r\n  \"pTemp\":                  1,\r\n  \"pZeroTarget\":            1\r\n}';\r\n\r\npPassedParameters = '{\r\n  \"pDatasource\":            '|StringToJson  ( pDatasource            )|',\r\n  \"pDecimalSeparator\":      '|StringToJson  ( pDecimalSeparator      )|',\r\n  \"pFilter\":                '|StringToJson  ( pFilter                )|',\r\n  \"pDimMap\":                '|StringToJson  ( pDimMap                )|',\r\n  \"pExcept\":                '|StringToJson  ( pExcept                )|',\r\n  \"pMappingOverride\":       '|StringToJson  ( pMappingOverride       )|',\r\n  \"pMultithreadDimensions\": '|StringToJson  ( pMultithreadDimensions )|',\r\n  \"pSandbox\":               '|StringToJson  ( pSandbox               )|',\r\n  \"pTargetCube\":            '|StringToJson  ( pTargetCube            )|',\r\n  \"pThousandSeparator\":     '|StringToJson  ( pThousandSeparator     )|',\r\n  \"pFactor\":                '|NumberToString( pFactor                )|',\r\n  \"pIncrement\":             '|NumberToString( pIncrement             )|',\r\n  \"pLogOutput\":             '|NumberToString( pLogOutput             )|',\r\n  \"pMaxThreads\":            '|NumberToString( pMaxThreads        )|',\r\n  \"pStrictErrorHandling\":   '|NumberToString( pStrictErrorHandling   )|',\r\n  \"pSuppressConsol\":        '|NumberToString( pSuppressConsol        )|',\r\n  \"pSuppressConsolStrings\": '|NumberToString( pSuppressConsolStrings )|',\r\n  \"pSuppressRules\":         '|NumberToString( pSuppressRules         )|',\r\n  \"pSuppressZero\":          '|NumberToString( pSuppressZero          )|',\r\n  \"pTemp\":                  '|NumberToString( pTemp                  )|',\r\n  \"pZeroTarget\":            '|NumberToString( pZeroTarget            )|'\r\n}';\r\n\r\npJson = JsonMergePatch( pPassedParameters, pJson );\r\n# String Parameters\r\npDatasource            =                 JsonToString( pJson, '/pDatasource'            );\r\npDecimalSeparator      =                 JsonToString( pJson, '/pDecimalSeparator'      );\r\npDimMap                =                 JsonToString( pJson, '/pDimMap'                );\r\npExcept                =                 JsonToString( pJson, '/pExcept'                );\r\npFilter                =                 JsonToString( pJson, '/pFilter'                );\r\npMappingOverride       =                 JsonToString( pJson, '/pMappingOverride'       );\r\npMultithreadDimensions =                 JsonToString( pJson, '/pMultithreadDimensions' );\r\npSandbox               =                 JsonToString( pJson, '/pSandbox'               );\r\npTargetCube            =                 JsonToString( pJson, '/pTargetCube'            );\r\npThousandSeparator     =                 JsonToString( pJson, '/pThousandSeparator'     );\r\n# Numeric Parameters\r\npFactor                = StringToNumber( JsonToString( pJson, '/pFactor'                ) );\r\npIncrement             = StringToNumber( JsonToString( pJson, '/pIncrement'             ) );\r\npLogOutput             = StringToNumber( JsonToString( pJson, '/pLogOutput'             ) );\r\npMaxThreads            = StringToNumber( JsonToString( pJson, '/pMaxThreads'        ) );\r\npStrictErrorHandling   = StringToNumber( JsonToString( pJson, '/pStrictErrorHandling'   ) );\r\npSuppressConsol        = StringToNumber( JsonToString( pJson, '/pSuppressConsol'        ) );\r\npSuppressConsolStrings = StringToNumber( JsonToString( pJson, '/pSuppressConsolStrings' ) );\r\npSuppressRules         = StringToNumber( JsonToString( pJson, '/pSuppressRules'         ) );\r\npSuppressZero          = StringToNumber( JsonToString( pJson, '/pSuppressZero'          ) );\r\npTemp                  = StringToNumber( JsonToString( pJson, '/pTemp'                  ) );\r\npZeroTarget            = StringToNumber( JsonToString( pJson, '/pZeroTarget'            ) );\r\n\r\n### Get the parameters that differ from the default\r\npDiffer = JsonDiff( pDefaultParameters, pJson );\r\nnSize = JsonSize( pDiffer );\r\nWHILE( nSize > 0 );\r\n  nSize = nSize - 1;\r\n  pDiffer = JsonReplace( pDiffer, '/'|NumberToString( nSize )|'/op', '\"add\"' );\r\nEND;\r\npJson = JsonPatch( '{}', pDiffer );\r\n\r\n### LogOutput parameters\r\nnSize = JsonSize( pJson );\r\nWHILE( nSize > 0 );\r\n  nSize = nSize - 1;\r\n  sKey = JsonGetKey( pJson, nSize );\r\n  sVal = JsonGet( pJson, sKey );\r\n  sValType = JsonType( JsonToString( sVal ) );\r\n  \r\n  IF( sValType @= 'object' % sValType @= 'array' );\r\n    sVal = JsonToString( sVal );\r\n    pJson = JsonReplace( pJson, sKey, sVal );\r\n  ENDIF;\r\n  pPassedParameters = JsonReplace( pPassedParameters, sKey, JsonGet( pJson, sKey ) );\r\nEND;\r\n\r\nsMessages = JsonAdd( sMessages, '/Info/0', pPassedParameters );\r\nIF( pLogOutput = 1 );\r\n  LogOutput('INFO', JsonToString( sMessages, '/Info/0' ) );\r\nENDIF;\r\n\r\n#EndRegion - Process Parameters\r\n#################################################################################################\r\n\r\n################################################################################################# \r\n#Region - Validate Parameters\r\n\r\nnErrors = 0;\r\nsTargetCube = pTargetCube;\r\n\r\nnFactor            = IF( pFactor            = 0, 1, pFactor );\r\npDecimalSeparator  = IF( pDecimalSeparator  @= '', '.', pDecimalSeparator  );\r\npThousandSeparator = IF( pThousandSeparator @= '', ',', pThousandSeparator );\r\n\r\n# If specified source cube doesn't exist then terminate process\r\n#If( CubeExists(   pSrcCube   ) = 0 );\r\n#    nErrors = nErrors + 1;\r\n#  sMessage = Expand( 'Invalid source cube specified: %pSrcCube%.');\r\n#  LogOutput( cMsgErrorLevel, Expand( cMsgErrorContent ) );\r\n#EndIf;\r\n\r\n# If specified target cube doesn't exist then terminate process\r\n#If( CubeExists(   pTgtCube   ) = 0 );\r\n#  nErrors = nErrors + 1;\r\n#  sMessage = Expand( 'Invalid target cube specified: %pTgtCube%.');\r\n#  LogOutput( cMsgErrorLevel, Expand( cMsgErrorContent ) );\r\n#EndIf;\r\n\r\n# Validate Sandbox\r\nIf( TRIM( pSandbox ) @<> '' );\r\n    If( ServerSandboxExists( pSandbox ) = 0 );\r\n        SetUseActiveSandboxProperty( 0 );\r\n        nErrors = nErrors + 1;\r\n        sMessage = Expand('Sandbox %pSandbox% is invalid for the current user.');\r\n#        LogOutput( cMsgErrorLevel, Expand( cMsgErrorContent ) );\r\n    Else;\r\n        ServerActiveSandboxSet( pSandbox );\r\n        SetUseActiveSandboxProperty( 1 );\r\n    EndIf;\r\nElse;\r\n    SetUseActiveSandboxProperty( 0 );\r\nEndIf;\r\n\r\n# Convert pDatasource to JSON Object if not already\r\nsDatasourceJsonType = JsonType( pDatasource );\r\nIF( sDatasourceJsonType @<> 'object' );\r\n  sDatasourceName = pDatasource;\r\n  pDatasource = '{\"Name\":'|StringToJson( sDatasourceName )|'}';\r\nENDIF;\r\n\r\n# LOWER all keys\r\nnCount = JsonSize( pDatasource );\r\nWHILE( nCount > 0 );\r\n  nCount = nCount - 1;\r\n  \r\n  sKey = JsonGetKey( pDatasource, 0 );\r\n  pDatasource = JsonMove( pDatasource, sKey, LOWER( sKey ) );\r\nEND;\r\n\r\n# Validate pFilter, pExcept, and pDimMap\r\nIF( pFilter @= '' ); pFilter = '{}'; ENDIF;\r\nIF( pExcept @= '' ); pExcept = '{}'; ENDIF;\r\nIF( pDimMap @= '' ); pDimMap = '{}'; ENDIF;\r\n\r\npFilterType = JsonType( pFilter );\r\npExceptType = JsonType( pExcept );\r\npDimMapType = JsonType( pDimMap );\r\n\r\nIF( pFilterType @<> 'array' & pFilterType @<> 'object' );\r\n  sMessages = JsonAdd( sMessages, '/Error/0', StringToJson( 'Error: pFilter has invalid type \"'|pFilterType|'\".' ) );\r\nENDIF;\r\n\r\nIF( pExceptType @<> 'array' & pExceptType @<> 'object' );\r\n  sMessages = JsonAdd( sMessages, '/Error/0', StringToJson( 'Error: pExcept has invalid type \"'|pExceptType|'\".' ) );\r\nENDIF;\r\n\r\nIF( pDimMapType @<> 'array' & pDimMapType @<> 'object' );\r\n  sMessages = JsonAdd( sMessages, '/Error/0', StringToJson( 'Error: pDimMap has invalid type \"'|pDimMapType|'\".' ) );\r\nENDIF;\r\n\r\n#EndRegion - Validate Parameters\r\n#################################################################################################\r\n\r\n################################################################################################# \r\n#Region - Define Datasource\r\n\r\n# DatasourceName\r\nsName                    = JsonToString( pDatasource, '/name' );\r\nsDatasourceName          = JsonToString( pDatasource, '/datasourcename' );\r\nsDatasourceNameForServer = JsonToString( pDatasource, '/datasourcenameforserver' );\r\nsDatasourceNameForClient = JsonToString( pDatasource, '/datasourcenameforclient' );\r\nsDatasourceName          = IF( sDatasourceName @= '', sName, sDatasourceName );\r\nsDatasourceNameForServer = IF( sDatasourceNameForServer @= '', sDatasourceName, sDatasourceNameForServer );\r\nsDatasourceNameForClient = IF( sDatasourceNameForClient @= '', sDatasourceNameForServer, sDatasourceNameForClient );\r\nDatasourceNameforServer = sDatasourceNameForServer;\r\nDatasourceNameForClient = sDatasourceNameForClient;\r\n\r\nDatasourceType = UPPER( JsonToString( pDatasource, '/datasourcetype' ) );\r\n# If DatasourceType is not specified, try to infer from sName, based on if a cube exists  \r\nIF( DatasourceType @= '' );\r\n  DatasourceType = IF( CubeExists( sDatasourceNameForServer ) = 1, 'VIEW', 'CHARACTERDELIMITED' );\r\nENDIF;\r\n\r\n## Get Datasource Info from pDatasource\r\n# File Datasources\r\nsDatasourceASCIIDelimiter = JsonToString( pDatasource, '/datasourceasciidelimiter' );\r\nsDatasourceASCIIQuoteCharacter = JsonToString( pDatasource, '/datasourceasciiquotecharacter' );\r\nsDatasourceASCIIDecimalSeparator = JsonToString( pDatasource, '/datasourceasciidecimalseparator' );\r\nsDatasourceASCIIThousandSeparator = JsonToString( pDatasource, '/datasourceasciithousandseparator' );\r\nnDatasourceASCIIHeaderRecords = StringToNumberEx( JsonToString( pDatasource, '/datasourceasciiheaderrecords' ), pDecimalSeparator, pThousandSeparator );\r\n\r\n# TM1 Datasources\r\nsDatasourceCubeView = JsonToString( pDatasource, '/datasourcecubeview' );\r\nsDatasourceDimensionSubset = JsonToString( pDatasource, '/datasourcedimensionsubset' );\r\n\r\n# ODBC/OLEDBOLAP Datasources\r\nsDatasourcePassword = JsonToString( pDatasource, '/datasourcepassword' );\r\nsDatasourceQuery = JsonToString( pDatasource, '/datasourcequery' );\r\nsDatasourceUsername = JsonToString( pDatasource, '/datasourceusername' );\r\n\r\n# JSON Datasources\r\nsDatasourceJsonRootPointer = JsonToString( pDatasource, '/datasourcejsonrootpointer' );\r\nsDatasourceJsonVariableMapping = JsonToString( pDatasource, '/datasourcejsonvariablemapping' );\r\n\r\n## Define Datasource based on info\r\n# File Datasources\r\nDatasourceASCIIDelimiter = IF( sDatasourceASCIIDelimiter @= '', ',', sDatasourceASCIIDelimiter );\r\nDatasourceASCIIQuoteCharacter = IF( sDatasourceASCIIQuoteCharacter @= '', '\"', sDatasourceASCIIQuoteCharacter );\r\nDatasourceASCIIDecimalSeparator = IF( sDatasourceASCIIDecimalSeparator @= '', pDecimalSeparator, sDatasourceASCIIDecimalSeparator );\r\nDatasourceASCIIThousandSeparator = IF( sDatasourceASCIIThousandSeparator @= '', pThousandSeparator, sDatasourceASCIIThousandSeparator );\r\n  \r\n# TM1 Datasources\r\nDatasourceCubeView = sDatasourceCubeView;\r\nDatasourceDimensionSubset = sDatasourceDimensionSubset;\r\n  \r\n# ODBC/OLEDBOLAP Datasources\r\nDatasourcePassword = sDatasourcePassword;\r\nDatasourceQuery = sDatasourceQuery;\r\nDatasourceUsername = sDatasourceUsername;\r\n  \r\n# JSON Datasources\r\nDatasourceJsonRootPointer = IF( sDatasourceJsonRootPointer @= '', '/', sDatasourceJsonRootPointer );\r\nDatasourceJsonVariableMapping = IF( sDatasourceJsonVariableMapping @= '', '{}', sDatasourceJsonVariableMapping );\r\n\r\n#EndRegion - Define Datasource\r\n#################################################################################################\r\n\r\n# Create default mapping for pTargetCube\r\nsMapping = '[]';\r\nnTargetDimensionCount = CubeDimensionCountGet( pTargetCube );\r\nsTargetMeasureDimension = TABDIM( pTargetCube, nTargetDimensionCount );\r\ni = 0;\r\nWHILE( i < nTargetDimensionCount );\r\n  sMapping = JsonAdd( sMapping, '', NumberToString( i ) );\r\n  i = i + 1;\r\nEND;\r\n\r\n# Create a generic sMapping, where all of the Source Dimensions are mapped to the correct Target Dimensions. sMapping will be modified according to passed parameters later on.\r\nIF( DataSourceType @<> 'VIEW' );\r\n  sSourceCube = sTargetCube;\r\nELSE;\r\n  sSourceCube = DatasourceNameForServer;\r\nENDIF;\r\n\r\nnSourceDimensionCount = CubeDimensionCountGet( sSourceCube );\r\nsMapping = JsonAdd( sMapping, '', NumberToString( nSourceDimensionCount ) );\r\nWHILE( nSourceDimensionCount > 0 );\r\n  sSourceDimension = TABDIM( sSourceCube, nSourceDimensionCount );\r\n  nTargetCount = nTargetDimensionCount;\r\n  WHILE( nTargetCount > 0 );\r\n    sTargetDimension = TABDIM( sTargetCube, nTargetCount );\r\n    IF( sSourceDimension @= sTargetDimension );\r\n      sMapping = JsonReplace( sMapping, nTargetCount-1, NumberToString( nSourceDimensionCount-1 ) );\r\n    ENDIF;\r\n    \r\n    nTargetCount = nTargetCount - 1;\r\n  END;\r\n  nSourceDimensionCount = nSourceDimensionCount - 1;\r\nEND;\r\n  \r\n################################################################################################# \r\n#Region - Interpret parameters based on datasource type\r\n\r\nIF( DatasourceType @= 'CHARACTERDELIMITED' );\r\n    \r\nELSEIF( DatasourceType @= 'VIEW' );\r\n  IF( DatasourceCubeView @= '' );\r\n    ExecuteProcess('}bedrock.cube.view.create.from_json',\r\n      'pCube', sSourceCube,\r\n      'pView', cTemp,\r\n      'pFilter', pFilter,\r\n      'pExcept', pExcept,\r\n      'pJson', pJson );\r\n    DatasourceCubeView = cTemp;\r\n  ENDIF;\r\n  \r\n  #################################################################################################\r\n  #Region - Interpret pDimMap, pElementMapping, and Multi-Threading Parameters\r\n  \r\n  # REQUIREMENTS:\r\n  # - Convert pFilter to Dimension Object instead of Array, with values as arrays\r\n  # - Convert pExcept to Dimension Object instead of Array, with values as arrays\r\n  # - Have pDimMap be Object with keys as Dimension and values as arrays\r\n  \r\n  # Convert Filters (pFilter, pExcept, pDimMap) to standardized form\r\n  pFilters = '{\"pFilter\":'|pFilter|',\"pExcept\":'|pExcept|',\"pDimMap\":'|pDimMap|'}';\r\n  sFilters = '{\"pFilter\":{},\"pExcept\":{},\"pDimMap\":{}}';\r\n  # Loop through pFilter, pExcept, and pDimMap\r\n  nKey = JsonSize( sFilters ); WHILE( nKey > 0 ); nKey = nKey - 1;\r\n    sKey = JsonGetKey( sFilters, nKey );\r\n    \r\n    sCube = IF( sKey @= 'pDimMap', sTargetCube, sSourceCube );\r\n    nCube = CubeDimensionCountGet( sCube );\r\n    \r\n    # Loop Through Dimensions\r\n    i = 0; WHILE( i < nCube ); i = i + 1;\r\n      sDimension = TABDIM( sCube, i );\r\n      sI = NumberToString( i-1 );\r\n      \r\n      sVal = JsonGet( pFilters, '/'|sKey|'/'|IF( JsonType( pFilters, '/'|sKey ) @= 'array', sI, sDimension ) );\r\n      IF( JsonType( sVal ) @= 'string' ); \r\n        sVal = '['|sVal|']';\r\n      ELSEIF( JsonType( sVal ) @<> 'array' );\r\n        sVal = '[]';\r\n      ENDIF;\r\n      sFilters = JsonAdd( sFilters, '/'|sKey|'/'|sDimension, sVal );\r\n      \r\n    END;\r\n  END;\r\n\r\n  # Recursive Calls for multiple elements in pDimMap\r\n  sFiltersList = '['|sFilters|']';\r\n  i = 0; WHILE( i < nTargetDimensionCount ); i = i + 1;\r\n    sDimension = TABDIM( sTargetCube, i );\r\n    \r\n    sTempFiltersList = '[]';\r\n    nFiltersSize = JsonSize( sFiltersList ); WHILE( nFiltersSize > 0 ); nFiltersSize = nFiltersSize - 1;\r\n      sTempFilters = JsonGet( sFiltersList, nFiltersSize );\r\n      \r\n      nDimMapSize = JsonSize( sTempFilters, '/pDimMap/'|sDimension ); WHILE( nDimMapSize > 0 ); nDimMapSize = nDimMapSize - 1;\r\n        sTempFiltersList = JsonAdd( sTempFiltersList, '', JsonMove( sTempFilters, '/pDimMap/'|sDimension|'/'|NumberToString( nDimMapSize ), '/pDimMap/'|sDimension ) );\r\n      END;\r\n    END;\r\n    IF( sTempFiltersList @<> '[]' );\r\n      sFiltersList = sTempFiltersList;\r\n    ENDIF;\r\n  END;\r\n  \r\n  # Multi-Thread: For each set of parameters, loop through dimension, and each element in the dimension that is included in pFilter, but excluded in pExcept.\r\n  nMultiThreadDimensionCount = JsonSize( pMultiThreadDimensions );\r\n  IF( nMultiThreadDimensionCount > 0 );\r\n    sTempFiltersList = '[]';\r\n    i = 0;\r\n    WHILE( i < nMultiThreadDimensionCount );\r\n      sDimension = JsonToString( JsonGet( pMultiThreadDimensions, i ) );\r\n  \r\n      nSize = JsonSize( sFiltersList );\r\n      WHILE( nSize > 0 );\r\n        nSize = nSize - 1;\r\n        sFilters = JsonGet( sFiltersList, nSize );\r\n        ExecuteProcess('}bedrock.hier.sub.create.from_json',\r\n          'pDimension', sDimension,\r\n          'pSubset', cTemp,\r\n          'pFilter', JsonGet( sFilters, '/pFilter/'|sDimension ),\r\n          'pExcept', JsonGet( sFilters, '/pExcept/'|sDimension ) \r\n        );\r\n        sFilters = JsonRemove( sFilters, '/pExcept/'|sDimension );\r\n        \r\n        nSubsetSize = SubsetGetSize( sDimension, cTemp );\r\n        WHILE( nSubsetSize > 0 );\r\n          sElement = SubsetGetElementName( sDimension, cTemp, nSubsetSize );\r\n          \r\n          sFilters = JsonReplace( sFilters, '/pFilter/'|sDimension, StringToJson( sElement ) );\r\n          sTempFiltersList = JsonAdd( sTempFiltersList, 0, sFilters );\r\n          \r\n          nSubsetSize = nSubsetSize - 1;\r\n        END;\r\n      END;\r\n      i = i + 1;\r\n    END;\r\n    IF( sTempFiltersList @<> '[]' );\r\n      sFiltersList = sTempFiltersList;\r\n    ENDIF;\r\n  ENDIF;\r\n  \r\n  nSize = JsonSize( sFiltersList );\r\n  IF( nSize <> 1 );\r\n    Datasourcetype = 'NULL';\r\n    \r\n    # Single-Thread Recursive Call\r\n    IF( nMultiThreadDimensionCount <= 0 % pMaxThreads = 1 );\r\n      WHILE( nSize > 0 );\r\n        nSize = nSize - 1;\r\n        sJson = JsonGet( sFiltersList, nSize );\r\n        sJson = JsonMergePatch( pJson, sJson );\r\n        \r\n        ExecuteProcess( cThisProcName, 'pJson', sJson );\r\n      END;\r\n      \r\n    # Multi-Thread Recursive Call (using '}bedrock.process.multithread')\r\n    ELSE;\r\n      sTaskList = '[]';\r\n      WHILE( nSize > 0 );\r\n        nSize = nSize - 1;\r\n        sJson = JsonGet( sFiltersList, nSize );\r\n        sJson = JsonMergePatch( pJson, sJson );\r\n  \r\n        sTaskList = JsonAdd( sTaskList, '', '{\"process\":'|StringToJson( cThisProcName )|', \"parameters\":'|sJson|'}' );\r\n      END;\r\n      ExecuteProcess( '}bedrock.process.multithread',\r\n        'pTaskList', sTaskList );\r\n    ENDIF;\r\n  ENDIF;\r\n  \r\n  #EndRegion - Variable Mapping\r\n  #################################################################################################\r\n  \r\nELSE;\r\n  sMessages = JsonAdd( sMessages, '/Error/0', StringToJson( 'Error: Datasource Type \"'|DatasourceType|'\" is not supported' ) );\r\n  IF( pLogOutput = 1 ); LogOutput( 'INFO', JsonToString( sMessages, '/0' ) ); ENDIF;\r\n  DatasourceType = 'NULL';\r\nENDIF;\r\n\r\n#EndRegion - Interpret parameters based on datasource type\r\n################################################################################################# \r\nIF( DatasourceType @<> 'NULL' );\r\n#################################################################################################\r\n#Region - Interpret pDimMap\r\n\r\n# Reformat pDimMap from array to object\r\nIF( JsonType( pDimMap ) @= 'array' );\r\n  pOldDimMap = pDimMap;\r\n  pDimMap = '{}';\r\n  nSize = JsonSize( pOldDimMap );\r\n  WHILE( nSize > 0 );\r\n    sDimension = TABDIM( sTargetCube, nSize );\r\n    nSize = nSize - 1;\r\n    \r\n    IF( JsonType( pOldDimMap, nSize ) @= 'string' % JsonType( pOldDimMap, nSize ) @= 'number' );\r\n      pDimMap = JsonAdd( pDimMap, sDimension, JsonGet( pOldDimMap, nSize ) );\r\n    ENDIF;\r\n  END;\r\nENDIF;\r\n\r\n# Apply pDimMap to sMapping\r\ni = 0;\r\nWHILE( i <= nTargetDimensionCount );\r\n  i = i + 1;\r\n  sDimension = TABDIM( sTargetCube, i );\r\n  sDimension = IF( sDimension @= '', '/', sDimension );\r\n  sDimensionMap = JsonGet( pDimMap, sDimension );\r\n  sType = JsonType( sDimensionMap );\r\n  \r\n  IF( sType @= 'array' );\r\n    IF( JsonSize( sDimensionMap ) = 1 );\r\n      sDimensionMap = JsonGet( sDimensionMap, 0 );\r\n      sType = JsonType( sDimensionMap );\r\n    ELSE;\r\n      sMessages = JsonAdd( sMessages, '/Error/0', StringToJson( 'Error: pDimMap had multiple values for dimension \"'|sDimension|'\": '|sDimensionMap ) );\r\n    ENDIF;\r\n  ENDIF;\r\n  \r\n  IF( sDimensionMap @<> '' & ( sType @= 'string' % sType @= 'number' ) );\r\n    sMapping = JsonReplace( sMapping, i-1, sDimensionMap );\r\n  ENDIF;\r\nEND;\r\n\r\n# Allow for Overrides\r\nIF( JsonType( pMappingOverride ) @= 'array' & JsonSize( pMappingOverride ) > 0 );\r\n  sMapping = pMappingOverride;\r\nENDIF;\r\n\r\n#EndRegion - Interpret pDimMap\r\n#################################################################################################\r\n\r\n#################################################################################################\r\n#Region - Variable Mapping\r\n  \r\nn000 = IF( JsonType( sMapping, '/0'   ) @= 'string', 1, IF( StringToNumber( JsonGet( sMapping, 000 ) ) = 000 % 000 > nTargetDimensionCount, 0, 2 ) );\r\nn001 = IF( JsonType( sMapping, '/1'   ) @= 'string', 1, IF( StringToNumber( JsonGet( sMapping, 001 ) ) = 001 % 001 > nTargetDimensionCount, 0, 2 ) );\r\nn002 = IF( JsonType( sMapping, '/2'   ) @= 'string', 1, IF( StringToNumber( JsonGet( sMapping, 002 ) ) = 002 % 002 > nTargetDimensionCount, 0, 2 ) );\r\nn003 = IF( JsonType( sMapping, '/3'   ) @= 'string', 1, IF( StringToNumber( JsonGet( sMapping, 003 ) ) = 003 % 003 > nTargetDimensionCount, 0, 2 ) );\r\nn004 = IF( JsonType( sMapping, '/4'   ) @= 'string', 1, IF( StringToNumber( JsonGet( sMapping, 004 ) ) = 004 % 004 > nTargetDimensionCount, 0, 2 ) );\r\nn005 = IF( JsonType( sMapping, '/5'   ) @= 'string', 1, IF( StringToNumber( JsonGet( sMapping, 005 ) ) = 005 % 005 > nTargetDimensionCount, 0, 2 ) );\r\nn006 = IF( JsonType( sMapping, '/6'   ) @= 'string', 1, IF( StringToNumber( JsonGet( sMapping, 006 ) ) = 006 % 006 > nTargetDimensionCount, 0, 2 ) );\r\nn007 = IF( JsonType( sMapping, '/7'   ) @= 'string', 1, IF( StringToNumber( JsonGet( sMapping, 007 ) ) = 007 % 007 > nTargetDimensionCount, 0, 2 ) );\r\nn008 = IF( JsonType( sMapping, '/8'   ) @= 'string', 1, IF( StringToNumber( JsonGet( sMapping, 008 ) ) = 008 % 008 > nTargetDimensionCount, 0, 2 ) );\r\nn009 = IF( JsonType( sMapping, '/9'   ) @= 'string', 1, IF( StringToNumber( JsonGet( sMapping, 009 ) ) = 009 % 009 > nTargetDimensionCount, 0, 2 ) );\r\nn010 = IF( JsonType( sMapping, '/10'  ) @= 'string', 1, IF( StringToNumber( JsonGet( sMapping, 010 ) ) = 010 % 010 > nTargetDimensionCount, 0, 2 ) );\r\nn011 = IF( JsonType( sMapping, '/11'  ) @= 'string', 1, IF( StringToNumber( JsonGet( sMapping, 011 ) ) = 011 % 011 > nTargetDimensionCount, 0, 2 ) );\r\nn012 = IF( JsonType( sMapping, '/12'  ) @= 'string', 1, IF( StringToNumber( JsonGet( sMapping, 012 ) ) = 012 % 012 > nTargetDimensionCount, 0, 2 ) );\r\nn013 = IF( JsonType( sMapping, '/13'  ) @= 'string', 1, IF( StringToNumber( JsonGet( sMapping, 013 ) ) = 013 % 013 > nTargetDimensionCount, 0, 2 ) );\r\nn014 = IF( JsonType( sMapping, '/14'  ) @= 'string', 1, IF( StringToNumber( JsonGet( sMapping, 014 ) ) = 014 % 014 > nTargetDimensionCount, 0, 2 ) );\r\nn015 = IF( JsonType( sMapping, '/15'  ) @= 'string', 1, IF( StringToNumber( JsonGet( sMapping, 015 ) ) = 015 % 015 > nTargetDimensionCount, 0, 2 ) );\r\nn016 = IF( JsonType( sMapping, '/16'  ) @= 'string', 1, IF( StringToNumber( JsonGet( sMapping, 016 ) ) = 016 % 016 > nTargetDimensionCount, 0, 2 ) );\r\nn017 = IF( JsonType( sMapping, '/17'  ) @= 'string', 1, IF( StringToNumber( JsonGet( sMapping, 017 ) ) = 017 % 017 > nTargetDimensionCount, 0, 2 ) );\r\nn018 = IF( JsonType( sMapping, '/18'  ) @= 'string', 1, IF( StringToNumber( JsonGet( sMapping, 018 ) ) = 018 % 018 > nTargetDimensionCount, 0, 2 ) );\r\nn019 = IF( JsonType( sMapping, '/19'  ) @= 'string', 1, IF( StringToNumber( JsonGet( sMapping, 019 ) ) = 019 % 019 > nTargetDimensionCount, 0, 2 ) );\r\nn020 = IF( JsonType( sMapping, '/20'  ) @= 'string', 1, IF( StringToNumber( JsonGet( sMapping, 020 ) ) = 020 % 020 > nTargetDimensionCount, 0, 2 ) );\r\nn021 = IF( JsonType( sMapping, '/21'  ) @= 'string', 1, IF( StringToNumber( JsonGet( sMapping, 021 ) ) = 021 % 021 > nTargetDimensionCount, 0, 2 ) );\r\nn022 = IF( JsonType( sMapping, '/22'  ) @= 'string', 1, IF( StringToNumber( JsonGet( sMapping, 022 ) ) = 022 % 022 > nTargetDimensionCount, 0, 2 ) );\r\nn023 = IF( JsonType( sMapping, '/23'  ) @= 'string', 1, IF( StringToNumber( JsonGet( sMapping, 023 ) ) = 023 % 023 > nTargetDimensionCount, 0, 2 ) );\r\nn024 = IF( JsonType( sMapping, '/24'  ) @= 'string', 1, IF( StringToNumber( JsonGet( sMapping, 024 ) ) = 024 % 024 > nTargetDimensionCount, 0, 2 ) );\r\nn025 = IF( JsonType( sMapping, '/25'  ) @= 'string', 1, IF( StringToNumber( JsonGet( sMapping, 025 ) ) = 025 % 025 > nTargetDimensionCount, 0, 2 ) );\r\nn026 = IF( JsonType( sMapping, '/26'  ) @= 'string', 1, IF( StringToNumber( JsonGet( sMapping, 026 ) ) = 026 % 026 > nTargetDimensionCount, 0, 2 ) );\r\nn027 = IF( JsonType( sMapping, '/27'  ) @= 'string', 1, IF( StringToNumber( JsonGet( sMapping, 027 ) ) = 027 % 027 > nTargetDimensionCount, 0, 2 ) );\r\nn028 = IF( JsonType( sMapping, '/28'  ) @= 'string', 1, IF( StringToNumber( JsonGet( sMapping, 028 ) ) = 028 % 028 > nTargetDimensionCount, 0, 2 ) );\r\nn029 = IF( JsonType( sMapping, '/29'  ) @= 'string', 1, IF( StringToNumber( JsonGet( sMapping, 029 ) ) = 029 % 029 > nTargetDimensionCount, 0, 2 ) );\r\nn030 = IF( JsonType( sMapping, '/30'  ) @= 'string', 1, IF( StringToNumber( JsonGet( sMapping, 030 ) ) = 030 % 030 > nTargetDimensionCount, 0, 2 ) );\r\n  \r\ns000 = JsonToString( sMapping, '/0'   );\r\ns001 = JsonToString( sMapping, '/1'   );\r\ns002 = JsonToString( sMapping, '/2'   );\r\ns003 = JsonToString( sMapping, '/3'   );\r\ns004 = JsonToString( sMapping, '/4'   );\r\ns005 = JsonToString( sMapping, '/5'   );\r\ns006 = JsonToString( sMapping, '/6'   );\r\ns007 = JsonToString( sMapping, '/7'   );\r\ns008 = JsonToString( sMapping, '/8'   );\r\ns009 = JsonToString( sMapping, '/9'   );\r\ns010 = JsonToString( sMapping, '/10'  );\r\ns011 = JsonToString( sMapping, '/11'  );\r\ns012 = JsonToString( sMapping, '/12'  );\r\ns013 = JsonToString( sMapping, '/13'  );\r\ns014 = JsonToString( sMapping, '/14'  );\r\ns015 = JsonToString( sMapping, '/15'  );\r\ns016 = JsonToString( sMapping, '/16'  );\r\ns017 = JsonToString( sMapping, '/17'  );\r\ns018 = JsonToString( sMapping, '/18'  );\r\ns019 = JsonToString( sMapping, '/19'  );\r\ns020 = JsonToString( sMapping, '/20'  );\r\ns021 = JsonToString( sMapping, '/21'  );\r\ns022 = JsonToString( sMapping, '/22'  );\r\ns023 = JsonToString( sMapping, '/23'  );\r\ns024 = JsonToString( sMapping, '/24'  );\r\ns025 = JsonToString( sMapping, '/25'  );\r\ns026 = JsonToString( sMapping, '/26'  );\r\ns027 = JsonToString( sMapping, '/27'  );\r\ns028 = JsonToString( sMapping, '/28'  );\r\ns029 = JsonToString( sMapping, '/29'  );\r\ns030 = JsonToString( sMapping, '/30'  );\r\n\r\nt000 = JsonToString( sMapping, '/0'   ); WHILE( LONG( t000 ) < 3 ); t000 = '0'|t000; END;\r\nt001 = JsonToString( sMapping, '/1'   ); WHILE( LONG( t001 ) < 3 ); t001 = '0'|t001; END;\r\nt002 = JsonToString( sMapping, '/2'   ); WHILE( LONG( t002 ) < 3 ); t002 = '0'|t002; END;\r\nt003 = JsonToString( sMapping, '/3'   ); WHILE( LONG( t003 ) < 3 ); t003 = '0'|t003; END;\r\nt004 = JsonToString( sMapping, '/4'   ); WHILE( LONG( t004 ) < 3 ); t004 = '0'|t004; END;\r\nt005 = JsonToString( sMapping, '/5'   ); WHILE( LONG( t005 ) < 3 ); t005 = '0'|t005; END;\r\nt006 = JsonToString( sMapping, '/6'   ); WHILE( LONG( t006 ) < 3 ); t006 = '0'|t006; END;\r\nt007 = JsonToString( sMapping, '/7'   ); WHILE( LONG( t007 ) < 3 ); t007 = '0'|t007; END;\r\nt008 = JsonToString( sMapping, '/8'   ); WHILE( LONG( t008 ) < 3 ); t008 = '0'|t008; END;\r\nt009 = JsonToString( sMapping, '/9'   ); WHILE( LONG( t009 ) < 3 ); t009 = '0'|t009; END;\r\nt010 = JsonToString( sMapping, '/10'  ); WHILE( LONG( t010 ) < 3 ); t010 = '0'|t010; END;\r\nt011 = JsonToString( sMapping, '/11'  ); WHILE( LONG( t011 ) < 3 ); t011 = '0'|t011; END;\r\nt012 = JsonToString( sMapping, '/12'  ); WHILE( LONG( t012 ) < 3 ); t012 = '0'|t012; END;\r\nt013 = JsonToString( sMapping, '/13'  ); WHILE( LONG( t013 ) < 3 ); t013 = '0'|t013; END;\r\nt014 = JsonToString( sMapping, '/14'  ); WHILE( LONG( t014 ) < 3 ); t014 = '0'|t014; END;\r\nt015 = JsonToString( sMapping, '/15'  ); WHILE( LONG( t015 ) < 3 ); t015 = '0'|t015; END;\r\nt016 = JsonToString( sMapping, '/16'  ); WHILE( LONG( t016 ) < 3 ); t016 = '0'|t016; END;\r\nt017 = JsonToString( sMapping, '/17'  ); WHILE( LONG( t017 ) < 3 ); t017 = '0'|t017; END;\r\nt018 = JsonToString( sMapping, '/18'  ); WHILE( LONG( t018 ) < 3 ); t018 = '0'|t018; END;\r\nt019 = JsonToString( sMapping, '/19'  ); WHILE( LONG( t019 ) < 3 ); t019 = '0'|t019; END;\r\nt020 = JsonToString( sMapping, '/20'  ); WHILE( LONG( t020 ) < 3 ); t020 = '0'|t020; END;\r\nt021 = JsonToString( sMapping, '/21'  ); WHILE( LONG( t021 ) < 3 ); t021 = '0'|t021; END;\r\nt022 = JsonToString( sMapping, '/22'  ); WHILE( LONG( t022 ) < 3 ); t022 = '0'|t022; END;\r\nt023 = JsonToString( sMapping, '/23'  ); WHILE( LONG( t023 ) < 3 ); t023 = '0'|t023; END;\r\nt024 = JsonToString( sMapping, '/24'  ); WHILE( LONG( t024 ) < 3 ); t024 = '0'|t024; END;\r\nt025 = JsonToString( sMapping, '/25'  ); WHILE( LONG( t025 ) < 3 ); t025 = '0'|t025; END;\r\nt026 = JsonToString( sMapping, '/26'  ); WHILE( LONG( t026 ) < 3 ); t026 = '0'|t026; END;\r\nt027 = JsonToString( sMapping, '/27'  ); WHILE( LONG( t027 ) < 3 ); t027 = '0'|t027; END;\r\nt028 = JsonToString( sMapping, '/28'  ); WHILE( LONG( t028 ) < 3 ); t028 = '0'|t028; END;\r\nt029 = JsonToString( sMapping, '/29'  ); WHILE( LONG( t029 ) < 3 ); t029 = '0'|t029; END;\r\nt030 = JsonToString( sMapping, '/30'  ); WHILE( LONG( t030 ) < 3 ); t030 = '0'|t030; END;\r\n\r\n#EndRegion - Variable Mapping\r\n#################################################################################################\r\n\r\n### Check for errors before continuing\r\nIf( nErrors <> 0 );\r\n  If( pStrictErrorHandling = 1 ); \r\n      ProcessQuit; \r\n  Else;\r\n      ProcessBreak;\r\n  EndIf;\r\nEndIf;\r\n\r\n# CLEAR OUT TARGET\r\nIF( pZeroTarget = 1 );\r\n  sZeroOutFilter = '{}';\r\n  i = 0;\r\n  WHILE( i <= nTargetDimensionCount );\r\n    i = i + 1;\r\n    sDimension = TABDIM( sTargetCube, i );\r\n    \r\n    IF( JsonSize( sFilters, '/pDimMap/'|sDimension ) > 0 );\r\n      sDimensionFilter = JsonGet( sFilters, '/pDimMap/'|sDimension );\r\n    ELSE;\r\n      sDimensionFilter = JsonGet( sFilters, '/pFilter/'|sDimension );\r\n    ENDIF;\r\n    \r\n    sZeroOutFilter = JsonAdd( sZeroOutFilter, sDimension, sDimensionFilter );\r\n  END;\r\n    \r\n  ExecuteProcess('}bedrock.cube.view.create.from_json',\r\n  'pCube', sTargetCube,\r\n  'pView', cTemp|'_clear',\r\n  'pFilter', sZeroOutFilter,\r\n                'pExcept', pExcept );\r\n  ExecuteProcess('}bedrock.cube.data.clear',\r\n  'pCube', sTargetCube,\r\n  'pView', cTemp|'_clear' );\r\nENDIF;\r\n\r\n# DIFFERENT CALLS FOR pFile = 1\r\n\r\nENDIF;",
+  "MetadataProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****",
+  "DataProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n# Put the Target Elements and Value into an Array\r\nsV000 = IF( n000 = 0, v000, IF( n000 = 1, s000, EXPAND( '%v'|t000|'%' ) ) );\r\nsV001 = IF( n001 = 0, v001, IF( n001 = 1, s001, EXPAND( '%v'|t001|'%' ) ) );\r\nsV002 = IF( n002 = 0, v002, IF( n002 = 1, s002, EXPAND( '%v'|t002|'%' ) ) );\r\nsV003 = IF( n003 = 0, v003, IF( n003 = 1, s003, EXPAND( '%v'|t003|'%' ) ) );\r\nsV004 = IF( n004 = 0, v004, IF( n004 = 1, s004, EXPAND( '%v'|t004|'%' ) ) );\r\nsV005 = IF( n005 = 0, v005, IF( n005 = 1, s005, EXPAND( '%v'|t005|'%' ) ) );\r\nsV006 = IF( n006 = 0, v006, IF( n006 = 1, s006, EXPAND( '%v'|t006|'%' ) ) );\r\nsV007 = IF( n007 = 0, v007, IF( n007 = 1, s007, EXPAND( '%v'|t007|'%' ) ) );\r\nsV008 = IF( n008 = 0, v008, IF( n008 = 1, s008, EXPAND( '%v'|t008|'%' ) ) );\r\nsV009 = IF( n009 = 0, v009, IF( n009 = 1, s009, EXPAND( '%v'|t009|'%' ) ) );\r\nsV010 = IF( n010 = 0, v010, IF( n010 = 1, s010, EXPAND( '%v'|t010|'%' ) ) );\r\nsV011 = IF( n011 = 0, v011, IF( n011 = 1, s011, EXPAND( '%v'|t011|'%' ) ) );\r\nsV012 = IF( n012 = 0, v012, IF( n012 = 1, s012, EXPAND( '%v'|t012|'%' ) ) );\r\nsV013 = IF( n013 = 0, v013, IF( n013 = 1, s013, EXPAND( '%v'|t013|'%' ) ) );\r\nsV014 = IF( n014 = 0, v014, IF( n014 = 1, s014, EXPAND( '%v'|t014|'%' ) ) );\r\nsV015 = IF( n015 = 0, v015, IF( n015 = 1, s015, EXPAND( '%v'|t015|'%' ) ) );\r\nsV016 = IF( n016 = 0, v016, IF( n016 = 1, s016, EXPAND( '%v'|t016|'%' ) ) );\r\nsV017 = IF( n017 = 0, v017, IF( n017 = 1, s017, EXPAND( '%v'|t017|'%' ) ) );\r\nsV018 = IF( n018 = 0, v018, IF( n018 = 1, s018, EXPAND( '%v'|t018|'%' ) ) );\r\nsV019 = IF( n019 = 0, v019, IF( n019 = 1, s019, EXPAND( '%v'|t019|'%' ) ) );\r\nsV020 = IF( n020 = 0, v020, IF( n020 = 1, s020, EXPAND( '%v'|t020|'%' ) ) );\r\nsV021 = IF( n021 = 0, v021, IF( n021 = 1, s021, EXPAND( '%v'|t021|'%' ) ) );\r\nsV022 = IF( n022 = 0, v022, IF( n022 = 1, s022, EXPAND( '%v'|t022|'%' ) ) );\r\nsV023 = IF( n023 = 0, v023, IF( n023 = 1, s023, EXPAND( '%v'|t023|'%' ) ) );\r\nsV024 = IF( n024 = 0, v024, IF( n024 = 1, s024, EXPAND( '%v'|t024|'%' ) ) );\r\nsV025 = IF( n025 = 0, v025, IF( n025 = 1, s025, EXPAND( '%v'|t025|'%' ) ) );\r\nsV026 = IF( n026 = 0, v026, IF( n026 = 1, s026, EXPAND( '%v'|t026|'%' ) ) );\r\nsV027 = IF( n027 = 0, v027, IF( n027 = 1, s027, EXPAND( '%v'|t027|'%' ) ) );\r\nsV028 = IF( n028 = 0, v028, IF( n028 = 1, s028, EXPAND( '%v'|t028|'%' ) ) );\r\nsV029 = IF( n029 = 0, v029, IF( n029 = 1, s029, EXPAND( '%v'|t029|'%' ) ) );\r\nsV030 = IF( n030 = 0, v030, IF( n030 = 1, s030, EXPAND( '%v'|t030|'%' ) ) );\r\n\r\n# IF-Block depending on number of dimensions in target\r\nIF( nTargetDimensionCount = 002 );\r\nELSEIF( nTargetDimensionCount = 003 );\r\n\tIF( CellIsUpdateable( sTargetCube, sV000,sV001,sV002 ) = 0 ); ITEMSKIP; ENDIF;\r\n\tIF( DTYPE( sTargetMeasureDimension, sV002 ) @= 'S' );\r\n\t\tCellPutS( sV003, sTargetCube, sV000,sV001,sV002 );\r\n\tELSE;\r\n\t\tnVal = nFactor * StringToNumberEx( sV003, pDecimalSeparator, pThousandSeparator ) + IF( pIncrement = 0, 0, CellGetN( sTargetCube, sV000,sV001,sV002 ) );\r\n\t\tCellPutN( nVal, sTargetCube, sV000,sV001,sV002 );\r\n\tENDIF;\r\nELSEIF( nTargetDimensionCount = 004 );\r\n\tIF( CellIsUpdateable( sTargetCube, sV000,sV001,sV002,sV003 ) = 0 ); ITEMSKIP; ENDIF;\r\n\tIF( DTYPE( sTargetMeasureDimension, sV003 ) @= 'S' );\r\n\t\tCellPutS( sV004, sTargetCube, sV000,sV001,sV002,sV003 );\r\n\tELSE;\r\n\t\tnVal = nFactor * StringToNumberEx( sV004, pDecimalSeparator, pThousandSeparator ) + IF( pIncrement = 0, 0, CellGetN( sTargetCube, sV000,sV001,sV002,sV003 ) );\r\n\t\tCellPutN( nVal, sTargetCube, sV000,sV001,sV002,sV003 );\r\n\tENDIF;\r\nELSEIF( nTargetDimensionCount = 005 );\r\n\tIF( CellIsUpdateable( sTargetCube, sV000,sV001,sV002,sV003,sV004 ) = 0 ); ITEMSKIP; ENDIF;\r\n\tIF( DTYPE( sTargetMeasureDimension, sV004 ) @= 'S' );\r\n\t\tCellPutS( sV005, sTargetCube, sV000,sV001,sV002,sV003,sV004 );\r\n\tELSE;\r\n\t\tnVal = nFactor * StringToNumberEx( sV005, pDecimalSeparator, pThousandSeparator ) + IF( pIncrement = 0, 0, CellGetN( sTargetCube, sV000,sV001,sV002,sV003,sV004 ) );\r\n\t\tCellPutN( nVal, sTargetCube, sV000,sV001,sV002,sV003,sV004 );\r\n\tENDIF;\r\nELSEIF( nTargetDimensionCount = 006 );\r\n\tIF( CellIsUpdateable( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005 ) = 0 ); ITEMSKIP; ENDIF;\r\n\tIF( DTYPE( sTargetMeasureDimension, sV005 ) @= 'S' );\r\n\t\tCellPutS( sV006, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005 );\r\n\tELSE;\r\n\t\tnVal = nFactor * StringToNumberEx( sV006, pDecimalSeparator, pThousandSeparator ) + IF( pIncrement = 0, 0, CellGetN( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005 ) );\r\n\t\tCellPutN( nVal, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005 );\r\n\tENDIF;\r\nELSEIF( nTargetDimensionCount = 007 );\r\n\tIF( CellIsUpdateable( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006 ) = 0 ); ITEMSKIP; ENDIF;\r\n\tIF( DTYPE( sTargetMeasureDimension, sV006 ) @= 'S' );\r\n\t\tCellPutS( sV007, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006 );\r\n\tELSE;\r\n\t\tnVal = nFactor * StringToNumberEx( sV007, pDecimalSeparator, pThousandSeparator ) + IF( pIncrement = 0, 0, CellGetN( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006 ) );\r\n\t\tCellPutN( nVal, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006 );\r\n\tENDIF;\r\nELSEIF( nTargetDimensionCount = 008 );\r\n\tIF( CellIsUpdateable( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007 ) = 0 ); ITEMSKIP; ENDIF;\r\n\tIF( DTYPE( sTargetMeasureDimension, sV007 ) @= 'S' );\r\n\t\tCellPutS( sV008, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007 );\r\n\tELSE;\r\n\t\tnVal = nFactor * StringToNumberEx( sV008, pDecimalSeparator, pThousandSeparator ) + IF( pIncrement = 0, 0, CellGetN( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007 ) );\r\n\t\tCellPutN( nVal, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007 );\r\n\tENDIF;\r\nELSEIF( nTargetDimensionCount = 009 );\r\n\tIF( CellIsUpdateable( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008 ) = 0 ); ITEMSKIP; ENDIF;\r\n\tIF( DTYPE( sTargetMeasureDimension, sV008 ) @= 'S' );\r\n\t\tCellPutS( sV009, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008 );\r\n\tELSE;\r\n\t\tnVal = nFactor * StringToNumberEx( sV009, pDecimalSeparator, pThousandSeparator ) + IF( pIncrement = 0, 0, CellGetN( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008 ) );\r\n\t\tCellPutN( nVal, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008 );\r\n\tENDIF;\r\nELSEIF( nTargetDimensionCount = 010 );\r\n\tIF( CellIsUpdateable( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009 ) = 0 ); ITEMSKIP; ENDIF;\r\n\tIF( DTYPE( sTargetMeasureDimension, sV009 ) @= 'S' );\r\n\t\tCellPutS( sV010, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009 );\r\n\tELSE;\r\n\t\tnVal = nFactor * StringToNumberEx( sV010, pDecimalSeparator, pThousandSeparator ) + IF( pIncrement = 0, 0, CellGetN( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009 ) );\r\n\t\tCellPutN( nVal, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009 );\r\n\tENDIF;\r\nELSEIF( nTargetDimensionCount = 011 );\r\n\tIF( CellIsUpdateable( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010 ) = 0 ); ITEMSKIP; ENDIF;\r\n\tIF( DTYPE( sTargetMeasureDimension, sV010 ) @= 'S' );\r\n\t\tCellPutS( sV011, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010 );\r\n\tELSE;\r\n\t\tnVal = nFactor * StringToNumberEx( sV011, pDecimalSeparator, pThousandSeparator ) + IF( pIncrement = 0, 0, CellGetN( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010 ) );\r\n\t\tCellPutN( nVal, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010 );\r\n\tENDIF;\r\nELSEIF( nTargetDimensionCount = 012 );\r\n\tIF( CellIsUpdateable( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011 ) = 0 ); ITEMSKIP; ENDIF;\r\n\tIF( DTYPE( sTargetMeasureDimension, sV011 ) @= 'S' );\r\n\t\tCellPutS( sV012, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011 );\r\n\tELSE;\r\n\t\tnVal = nFactor * StringToNumberEx( sV012, pDecimalSeparator, pThousandSeparator ) + IF( pIncrement = 0, 0, CellGetN( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011 ) );\r\n\t\tCellPutN( nVal, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011 );\r\n\tENDIF;\r\nELSEIF( nTargetDimensionCount = 013 );\r\n\tIF( CellIsUpdateable( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012 ) = 0 ); ITEMSKIP; ENDIF;\r\n\tIF( DTYPE( sTargetMeasureDimension, sV012 ) @= 'S' );\r\n\t\tCellPutS( sV013, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012 );\r\n\tELSE;\r\n\t\tnVal = nFactor * StringToNumberEx( sV013, pDecimalSeparator, pThousandSeparator ) + IF( pIncrement = 0, 0, CellGetN( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012 ) );\r\n\t\tCellPutN( nVal, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012 );\r\n\tENDIF;\r\nELSEIF( nTargetDimensionCount = 014 );\r\n\tIF( CellIsUpdateable( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013 ) = 0 ); ITEMSKIP; ENDIF;\r\n\tIF( DTYPE( sTargetMeasureDimension, sV013 ) @= 'S' );\r\n\t\tCellPutS( sV014, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013 );\r\n\tELSE;\r\n\t\tnVal = nFactor * StringToNumberEx( sV014, pDecimalSeparator, pThousandSeparator ) + IF( pIncrement = 0, 0, CellGetN( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013 ) );\r\n\t\tCellPutN( nVal, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013 );\r\n\tENDIF;\r\nELSEIF( nTargetDimensionCount = 015 );\r\n\tIF( CellIsUpdateable( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014 ) = 0 ); ITEMSKIP; ENDIF;\r\n\tIF( DTYPE( sTargetMeasureDimension, sV014 ) @= 'S' );\r\n\t\tCellPutS( sV015, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014 );\r\n\tELSE;\r\n\t\tnVal = nFactor * StringToNumberEx( sV015, pDecimalSeparator, pThousandSeparator ) + IF( pIncrement = 0, 0, CellGetN( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014 ) );\r\n\t\tCellPutN( nVal, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014 );\r\n\tENDIF;\r\nELSEIF( nTargetDimensionCount = 016 );\r\n\tIF( CellIsUpdateable( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015 ) = 0 ); ITEMSKIP; ENDIF;\r\n\tIF( DTYPE( sTargetMeasureDimension, sV015 ) @= 'S' );\r\n\t\tCellPutS( sV016, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015 );\r\n\tELSE;\r\n\t\tnVal = nFactor * StringToNumberEx( sV016, pDecimalSeparator, pThousandSeparator ) + IF( pIncrement = 0, 0, CellGetN( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015 ) );\r\n\t\tCellPutN( nVal, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015 );\r\n\tENDIF;\r\nELSEIF( nTargetDimensionCount = 017 );\r\n\tIF( CellIsUpdateable( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016 ) = 0 ); ITEMSKIP; ENDIF;\r\n\tIF( DTYPE( sTargetMeasureDimension, sV016 ) @= 'S' );\r\n\t\tCellPutS( sV017, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016 );\r\n\tELSE;\r\n\t\tnVal = nFactor * StringToNumberEx( sV017, pDecimalSeparator, pThousandSeparator ) + IF( pIncrement = 0, 0, CellGetN( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016 ) );\r\n\t\tCellPutN( nVal, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016 );\r\n\tENDIF;\r\nELSEIF( nTargetDimensionCount = 018 );\r\n\tIF( CellIsUpdateable( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017 ) = 0 ); ITEMSKIP; ENDIF;\r\n\tIF( DTYPE( sTargetMeasureDimension, sV017 ) @= 'S' );\r\n\t\tCellPutS( sV018, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017 );\r\n\tELSE;\r\n\t\tnVal = nFactor * StringToNumberEx( sV018, pDecimalSeparator, pThousandSeparator ) + IF( pIncrement = 0, 0, CellGetN( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017 ) );\r\n\t\tCellPutN( nVal, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017 );\r\n\tENDIF;\r\nELSEIF( nTargetDimensionCount = 019 );\r\n\tIF( CellIsUpdateable( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018 ) = 0 ); ITEMSKIP; ENDIF;\r\n\tIF( DTYPE( sTargetMeasureDimension, sV018 ) @= 'S' );\r\n\t\tCellPutS( sV019, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018 );\r\n\tELSE;\r\n\t\tnVal = nFactor * StringToNumberEx( sV019, pDecimalSeparator, pThousandSeparator ) + IF( pIncrement = 0, 0, CellGetN( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018 ) );\r\n\t\tCellPutN( nVal, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018 );\r\n\tENDIF;\r\nELSEIF( nTargetDimensionCount = 020 );\r\n\tIF( CellIsUpdateable( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019 ) = 0 ); ITEMSKIP; ENDIF;\r\n\tIF( DTYPE( sTargetMeasureDimension, sV019 ) @= 'S' );\r\n\t\tCellPutS( sV020, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019 );\r\n\tELSE;\r\n\t\tnVal = nFactor * StringToNumberEx( sV020, pDecimalSeparator, pThousandSeparator ) + IF( pIncrement = 0, 0, CellGetN( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019 ) );\r\n\t\tCellPutN( nVal, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019 );\r\n\tENDIF;\r\nELSEIF( nTargetDimensionCount = 021 );\r\n\tIF( CellIsUpdateable( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020 ) = 0 ); ITEMSKIP; ENDIF;\r\n\tIF( DTYPE( sTargetMeasureDimension, sV020 ) @= 'S' );\r\n\t\tCellPutS( sV021, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020 );\r\n\tELSE;\r\n\t\tnVal = nFactor * StringToNumberEx( sV021, pDecimalSeparator, pThousandSeparator ) + IF( pIncrement = 0, 0, CellGetN( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020 ) );\r\n\t\tCellPutN( nVal, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020 );\r\n\tENDIF;\r\nELSEIF( nTargetDimensionCount = 022 );\r\n\tIF( CellIsUpdateable( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020,sV021 ) = 0 ); ITEMSKIP; ENDIF;\r\n\tIF( DTYPE( sTargetMeasureDimension, sV021 ) @= 'S' );\r\n\t\tCellPutS( sV022, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020,sV021 );\r\n\tELSE;\r\n\t\tnVal = nFactor * StringToNumberEx( sV022, pDecimalSeparator, pThousandSeparator ) + IF( pIncrement = 0, 0, CellGetN( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020,sV021 ) );\r\n\t\tCellPutN( nVal, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020,sV021 );\r\n\tENDIF;\r\nELSEIF( nTargetDimensionCount = 023 );\r\n\tIF( CellIsUpdateable( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020,sV021,sV022 ) = 0 ); ITEMSKIP; ENDIF;\r\n\tIF( DTYPE( sTargetMeasureDimension, sV022 ) @= 'S' );\r\n\t\tCellPutS( sV023, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020,sV021,sV022 );\r\n\tELSE;\r\n\t\tnVal = nFactor * StringToNumberEx( sV023, pDecimalSeparator, pThousandSeparator ) + IF( pIncrement = 0, 0, CellGetN( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020,sV021,sV022 ) );\r\n\t\tCellPutN( nVal, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020,sV021,sV022 );\r\n\tENDIF;\r\nELSEIF( nTargetDimensionCount = 024 );\r\n\tIF( CellIsUpdateable( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020,sV021,sV022,sV023 ) = 0 ); ITEMSKIP; ENDIF;\r\n\tIF( DTYPE( sTargetMeasureDimension, sV023 ) @= 'S' );\r\n\t\tCellPutS( sV024, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020,sV021,sV022,sV023 );\r\n\tELSE;\r\n\t\tnVal = nFactor * StringToNumberEx( sV024, pDecimalSeparator, pThousandSeparator ) + IF( pIncrement = 0, 0, CellGetN( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020,sV021,sV022,sV023 ) );\r\n\t\tCellPutN( nVal, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020,sV021,sV022,sV023 );\r\n\tENDIF;\r\nELSEIF( nTargetDimensionCount = 025 );\r\n\tIF( CellIsUpdateable( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020,sV021,sV022,sV023,sV024 ) = 0 ); ITEMSKIP; ENDIF;\r\n\tIF( DTYPE( sTargetMeasureDimension, sV024 ) @= 'S' );\r\n\t\tCellPutS( sV025, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020,sV021,sV022,sV023,sV024 );\r\n\tELSE;\r\n\t\tnVal = nFactor * StringToNumberEx( sV025, pDecimalSeparator, pThousandSeparator ) + IF( pIncrement = 0, 0, CellGetN( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020,sV021,sV022,sV023,sV024 ) );\r\n\t\tCellPutN( nVal, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020,sV021,sV022,sV023,sV024 );\r\n\tENDIF;\r\nELSEIF( nTargetDimensionCount = 026 );\r\n\tIF( CellIsUpdateable( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020,sV021,sV022,sV023,sV024,sV025 ) = 0 ); ITEMSKIP; ENDIF;\r\n\tIF( DTYPE( sTargetMeasureDimension, sV025 ) @= 'S' );\r\n\t\tCellPutS( sV026, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020,sV021,sV022,sV023,sV024,sV025 );\r\n\tELSE;\r\n\t\tnVal = nFactor * StringToNumberEx( sV026, pDecimalSeparator, pThousandSeparator ) + IF( pIncrement = 0, 0, CellGetN( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020,sV021,sV022,sV023,sV024,sV025 ) );\r\n\t\tCellPutN( nVal, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020,sV021,sV022,sV023,sV024,sV025 );\r\n\tENDIF;\r\nELSEIF( nTargetDimensionCount = 027 );\r\n\tIF( CellIsUpdateable( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020,sV021,sV022,sV023,sV024,sV025,sV026 ) = 0 ); ITEMSKIP; ENDIF;\r\n\tIF( DTYPE( sTargetMeasureDimension, sV026 ) @= 'S' );\r\n\t\tCellPutS( sV027, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020,sV021,sV022,sV023,sV024,sV025,sV026 );\r\n\tELSE;\r\n\t\tnVal = nFactor * StringToNumberEx( sV027, pDecimalSeparator, pThousandSeparator ) + IF( pIncrement = 0, 0, CellGetN( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020,sV021,sV022,sV023,sV024,sV025,sV026 ) );\r\n\t\tCellPutN( nVal, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020,sV021,sV022,sV023,sV024,sV025,sV026 );\r\n\tENDIF;\r\nELSEIF( nTargetDimensionCount = 028 );\r\n\tIF( CellIsUpdateable( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020,sV021,sV022,sV023,sV024,sV025,sV026,sV027 ) = 0 ); ITEMSKIP; ENDIF;\r\n\tIF( DTYPE( sTargetMeasureDimension, sV027 ) @= 'S' );\r\n\t\tCellPutS( sV028, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020,sV021,sV022,sV023,sV024,sV025,sV026,sV027 );\r\n\tELSE;\r\n\t\tnVal = nFactor * StringToNumberEx( sV028, pDecimalSeparator, pThousandSeparator ) + IF( pIncrement = 0, 0, CellGetN( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020,sV021,sV022,sV023,sV024,sV025,sV026,sV027 ) );\r\n\t\tCellPutN( nVal, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020,sV021,sV022,sV023,sV024,sV025,sV026,sV027 );\r\n\tENDIF;\r\nELSEIF( nTargetDimensionCount = 029 );\r\n\tIF( CellIsUpdateable( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020,sV021,sV022,sV023,sV024,sV025,sV026,sV027,sV028 ) = 0 ); ITEMSKIP; ENDIF;\r\n\tIF( DTYPE( sTargetMeasureDimension, sV028 ) @= 'S' );\r\n\t\tCellPutS( sV029, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020,sV021,sV022,sV023,sV024,sV025,sV026,sV027,sV028 );\r\n\tELSE;\r\n\t\tnVal = nFactor * StringToNumberEx( sV029, pDecimalSeparator, pThousandSeparator ) + IF( pIncrement = 0, 0, CellGetN( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020,sV021,sV022,sV023,sV024,sV025,sV026,sV027,sV028 ) );\r\n\t\tCellPutN( nVal, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020,sV021,sV022,sV023,sV024,sV025,sV026,sV027,sV028 );\r\n\tENDIF;\r\nELSEIF( nTargetDimensionCount = 030 );\r\n\tIF( CellIsUpdateable( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020,sV021,sV022,sV023,sV024,sV025,sV026,sV027,sV028,sV029 ) = 0 ); ITEMSKIP; ENDIF;\r\n\tIF( DTYPE( sTargetMeasureDimension, sV029 ) @= 'S' );\r\n\t\tCellPutS( sV030, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020,sV021,sV022,sV023,sV024,sV025,sV026,sV027,sV028,sV029 );\r\n\tELSE;\r\n\t\tnVal = nFactor * StringToNumberEx( sV030, pDecimalSeparator, pThousandSeparator ) + IF( pIncrement = 0, 0, CellGetN( sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020,sV021,sV022,sV023,sV024,sV025,sV026,sV027,sV028,sV029 ) );\r\n\t\tCellPutN( nVal, sTargetCube, sV000,sV001,sV002,sV003,sV004,sV005,sV006,sV007,sV008,sV009,sV010,sV011,sV012,sV013,sV014,sV015,sV016,sV017,sV018,sV019,sV020,sV021,sV022,sV023,sV024,sV025,sV026,sV027,sV028,sV029 );\r\n\tENDIF;\r\nENDIF;\r\n\r\n",
+  "EpilogProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****",
+  "HasSecurityAccess": true,
+  "UIData": "_ParameterConstraints=e30=\f",
+  "DataSource": {
+    "Type": "TM1CubeView",
+    "dataSourceNameForClient": "Bedrock Source Cube",
+    "dataSourceNameForServer": "Bedrock Source Cube",
+    "view": "Default"
+  },
+  "Parameters": [
+    {
+      "Name": "pDatasource",
+      "Prompt": "REQUIRED: Data source specification. If a string is passed, it will be assumed to be a cube name. If no cube exists, it will be assumed to be a CSV file. To be more detailed, pass a JSON Object with the data source variable name as the key, and the value as the value. E.g. {\"datasourcenameforserver\":\"file.csv\", \"datasourceasciiheaderrecords\":3}",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pTargetCube",
+      "Prompt": "REQUIRED: Target cube name",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pFilter",
+      "Prompt": "OPTIONAL: JSON Array or JSON Object specifying which elements to include in the view (JSON Array or JSON Object. Default = '{}')",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pExcept",
+      "Prompt": "OPTIONAL: JSON Array or JSON Object specifying which elements to exclude in the view (JSON Array or JSON Object. Default = '{}')",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pDimMap",
+      "Prompt": "OPTIONAL: Required if target has dims not in source. Format: 'dim_one\u00a6 el_one & dim_two\u00a6 el_two'",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pMultithreadDimensions",
+      "Prompt": "OPTIONAL: Parallelization filter in format: dim_one\u00a6 el_one + el_two. Dimension must not be part of filter",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pMaxThreads",
+      "Prompt": "OPTIONAL: Maximum number of threads to run when parallel processing is enabled (Default = 1)",
+      "Value": 1,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pSuppressConsol",
+      "Prompt": "OPTIONAL: Suppress consolidated values (Boolean. Default = 1)",
+      "Value": 1,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pSuppressConsolStrings",
+      "Prompt": "OPTIONAL: Suppress consolidated string cells (Boolean. Default = 1)",
+      "Value": 1,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pSuppressRules",
+      "Prompt": "OPTIONAL: Suppress rules (Boolean. Default = 1)",
+      "Value": 1,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pSuppressZero",
+      "Prompt": "OPTIONAL: Suppress zeroes (Boolean. Default = 1)",
+      "Value": 1,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pZeroTarget",
+      "Prompt": "OPTIONAL: Zero out target before start of process (Boolean. Default = 1)",
+      "Value": 1,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pFactor",
+      "Prompt": "OPTIONAL: Multiply source values by factor (Default = 1)",
+      "Value": 1,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pTemp",
+      "Prompt": "OPTIONAL: Delete/create temporary objects (0 = Do not delete, 1 = Delete, 2 = if view and subsets are created, keep only subsets)",
+      "Value": 1,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pSandbox",
+      "Prompt": "OPTIONAL: Use sandbox",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pDecimalSeparator",
+      "Prompt": "OPTIONAL: Decimal separator for string/number conversion (Exactly 3 digits = ASCII code. Default ='.')",
+      "Value": ".",
+      "Type": "String"
+    },
+    {
+      "Name": "pThousandSeparator",
+      "Prompt": "OPTIONAL: Thousand separator for string/number conversion (Exactly 3 digits = ASCII code. Default = ',')",
+      "Value": ",",
+      "Type": "String"
+    },
+    {
+      "Name": "pMappingOverride",
+      "Prompt": "OPTIONAL: Override any mapping that has been created by this process",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pIncrement",
+      "Prompt": "OPTIONAL: Increment amounts (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pLogOutput",
+      "Prompt": "OPTIONAL: Write parameters and action summary to server message log (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pStrictErrorHandling",
+      "Prompt": "OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pJson",
+      "Prompt": "OPTIONAL: JSON Object with process parameter values. This will overwrite user passed parameters for all included parameters.",
+      "Value": "{}",
+      "Type": "String"
+    }
+  ],
+  "Variables": [
+    {
+      "Name": "v000",
+      "Type": "String",
+      "Position": 1,
+      "StartByte": 0,
+      "EndByte": 0
+    },
+    {
+      "Name": "v001",
+      "Type": "String",
+      "Position": 2,
+      "StartByte": 0,
+      "EndByte": 0
+    },
+    {
+      "Name": "v002",
+      "Type": "String",
+      "Position": 3,
+      "StartByte": 0,
+      "EndByte": 0
+    },
+    {
+      "Name": "v003",
+      "Type": "String",
+      "Position": 4,
+      "StartByte": 0,
+      "EndByte": 0
+    },
+    {
+      "Name": "v004",
+      "Type": "String",
+      "Position": 5,
+      "StartByte": 0,
+      "EndByte": 0
+    },
+    {
+      "Name": "v005",
+      "Type": "String",
+      "Position": 6,
+      "StartByte": 0,
+      "EndByte": 0
+    },
+    {
+      "Name": "v006",
+      "Type": "String",
+      "Position": 7,
+      "StartByte": 0,
+      "EndByte": 0
+    },
+    {
+      "Name": "v007",
+      "Type": "String",
+      "Position": 8,
+      "StartByte": 0,
+      "EndByte": 0
+    },
+    {
+      "Name": "v008",
+      "Type": "String",
+      "Position": 9,
+      "StartByte": 0,
+      "EndByte": 0
+    },
+    {
+      "Name": "v009",
+      "Type": "String",
+      "Position": 10,
+      "StartByte": 0,
+      "EndByte": 0
+    },
+    {
+      "Name": "v010",
+      "Type": "String",
+      "Position": 11,
+      "StartByte": 0,
+      "EndByte": 0
+    },
+    {
+      "Name": "v011",
+      "Type": "String",
+      "Position": 12,
+      "StartByte": 0,
+      "EndByte": 0
+    },
+    {
+      "Name": "v012",
+      "Type": "String",
+      "Position": 13,
+      "StartByte": 0,
+      "EndByte": 0
+    },
+    {
+      "Name": "v013",
+      "Type": "String",
+      "Position": 14,
+      "StartByte": 0,
+      "EndByte": 0
+    },
+    {
+      "Name": "v014",
+      "Type": "String",
+      "Position": 15,
+      "StartByte": 0,
+      "EndByte": 0
+    },
+    {
+      "Name": "v015",
+      "Type": "String",
+      "Position": 16,
+      "StartByte": 0,
+      "EndByte": 0
+    },
+    {
+      "Name": "v016",
+      "Type": "String",
+      "Position": 17,
+      "StartByte": 0,
+      "EndByte": 0
+    },
+    {
+      "Name": "v017",
+      "Type": "String",
+      "Position": 18,
+      "StartByte": 0,
+      "EndByte": 0
+    },
+    {
+      "Name": "v018",
+      "Type": "String",
+      "Position": 19,
+      "StartByte": 0,
+      "EndByte": 0
+    },
+    {
+      "Name": "v019",
+      "Type": "String",
+      "Position": 20,
+      "StartByte": 0,
+      "EndByte": 0
+    },
+    {
+      "Name": "v020",
+      "Type": "String",
+      "Position": 21,
+      "StartByte": 0,
+      "EndByte": 0
+    },
+    {
+      "Name": "v021",
+      "Type": "String",
+      "Position": 22,
+      "StartByte": 0,
+      "EndByte": 0
+    },
+    {
+      "Name": "v022",
+      "Type": "String",
+      "Position": 23,
+      "StartByte": 0,
+      "EndByte": 0
+    },
+    {
+      "Name": "v023",
+      "Type": "String",
+      "Position": 24,
+      "StartByte": 0,
+      "EndByte": 0
+    },
+    {
+      "Name": "v024",
+      "Type": "String",
+      "Position": 25,
+      "StartByte": 0,
+      "EndByte": 0
+    },
+    {
+      "Name": "v025",
+      "Type": "String",
+      "Position": 26,
+      "StartByte": 0,
+      "EndByte": 0
+    },
+    {
+      "Name": "v026",
+      "Type": "String",
+      "Position": 27,
+      "StartByte": 0,
+      "EndByte": 0
+    },
+    {
+      "Name": "v027",
+      "Type": "String",
+      "Position": 28,
+      "StartByte": 0,
+      "EndByte": 0
+    },
+    {
+      "Name": "v028",
+      "Type": "String",
+      "Position": 29,
+      "StartByte": 0,
+      "EndByte": 0
+    },
+    {
+      "Name": "v029",
+      "Type": "String",
+      "Position": 30,
+      "StartByte": 0,
+      "EndByte": 0
+    },
+    {
+      "Name": "v030",
+      "Type": "String",
+      "Position": 31,
+      "StartByte": 0,
+      "EndByte": 0
+    }
+  ],
+  "VariablesUIData": [
+    "VarType=32\fColType=827\f",
+    "VarType=32\fColType=827\f",
+    "VarType=32\fColType=827\f",
+    "VarType=32\fColType=827\f",
+    "VarType=32\fColType=827\f",
+    "VarType=32\fColType=827\f",
+    "VarType=32\fColType=827\f",
+    "VarType=32\fColType=827\f",
+    "VarType=32\fColType=827\f",
+    "VarType=32\fColType=827\f",
+    "VarType=32\fColType=827\f",
+    "VarType=32\fColType=827\f",
+    "VarType=32\fColType=827\f",
+    "VarType=32\fColType=827\f",
+    "VarType=32\fColType=827\f",
+    "VarType=32\fColType=827\f",
+    "VarType=32\fColType=827\f",
+    "VarType=32\fColType=827\f",
+    "VarType=32\fColType=827\f",
+    "VarType=32\fColType=827\f",
+    "VarType=32\fColType=827\f",
+    "VarType=32\fColType=827\f",
+    "VarType=32\fColType=827\f",
+    "VarType=32\fColType=827\f",
+    "VarType=32\fColType=827\f",
+    "VarType=32\fColType=827\f",
+    "VarType=32\fColType=827\f",
+    "VarType=32\fColType=827\f",
+    "VarType=32\fColType=827\f",
+    "VarType=32\fColType=827\f",
+    "VarType=32\fColType=827\f"
+  ]
+}
