@@ -1,0 +1,88 @@
+{
+  "Name": "}bedrock.git.init",
+  "PrologProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n#################################################################################################\r\n##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 5.0.0~~##\r\n#################################################################################################\r\n\r\n#Region @DOC\r\n#### Description:\r\n#Connects the TM1 database to a Git repository (TM1 Git integration). Wraps the `POST /GitInit` REST API endpoint.\r\n#\r\n#### How to Use:\r\n#\r\n#- `pGitURL`: REQUIRED: the repository URL, e.g. `https://github.com/<owner>/<repo>`.\r\n#- `pDeployment`: OPTIONAL: the deployment name from the `.tm1project` file to use.\r\n#- `pForce`: 1 = replace any existing Git context on the database.\r\n#- `pConnectionName`: a connection name configured in `}bedrock.session.start`, or a connection-details JSON object returned by it. When a JSON object is passed, that session is reused and is not closed at the end of this process.\r\n#- `pLogOutput`, `pStrictErrorHandling` and `pJson` work as in all bedrock processes.\r\n#\r\n#Credentials, depending on how the repository authenticates:\r\n#- HTTPS: `pUsername` and `pPassword` (for GitHub, use a personal access token as the password).\r\n#- SSH: `pPublicKey` and `pPrivateKey`, plus `pPassphrase` if the key has one.\r\n#\r\n#> [!WARNING]\r\n#> Never save real credentials as parameter defaults. Defaults are stored in the process and exported with it.\r\n#\r\n#### Return Value:\r\n#`sBedrockReturnValue` is set to the response of the `GitInit` request, which describes the Git status.\r\n#\r\n#Here is an example call:\r\n#```\r\n#ExecuteProcess( '}bedrock.git.init',\r\n#  'pConnectionName', 'Development',\r\n#  'pGitURL', 'https://github.com/<owner>/<repo>',\r\n#  'pUsername', '<user>',\r\n#  'pPassword', sToken );\r\n#```\r\n#EndRegion @DOC\r\n\r\n### Global Variables\r\npJson = IF( pJson @= '', '{}', pJson );\r\nStringGlobalVariable(  'sBedrockReturnValue' );\r\nNumericGlobalVariable( 'nBedrockReturnValue' );\r\n\r\n### Constants\r\ncThisProcName = GetProcessName();\r\ncUserName     = TM1User();\r\ncTimeStamp    = TimSt( Now, '\\Y\\m\\d\\h\\i\\s' );\r\ncRandomInt    = NumberToString( INT( RAND( ) * 1000000000 ) );\r\ncTemp         = cThisProcName |'_'| cTimeStamp |'_'| cRandomInt;\r\nsMessages     = '{\"Process\": \"'|cThisProcName|'\", \"User\": \"'|cUserName|'\", \"Info\": [\"Process: '''|cThisProcName|''' run by User: '''|cUserName|'''.\"], \"Error\": []}';\r\n\r\n#################################################################################################\r\n#Region - Process Parameters\r\n\r\npJson = IF( JsonType( pJson ) @<> 'object', '{}', pJson );\r\n\r\npDefaultParameters = '{\r\n  \"pConnectionName\": \"\",\r\n  \"pGitURL\":       \"\",\r\n  \"pDeployment\":   \"\",\r\n  \"pUsername\":     \"\",\r\n  \"pPassword\":     \"\",\r\n  \"pPublicKey\":    \"\",\r\n  \"pPrivateKey\":   \"\",\r\n  \"pPassphrase\":   \"\",\r\n  \"pForce\":        0,\r\n  \"pLogOutput\":           0,\r\n  \"pStrictErrorHandling\": 0\r\n}';\r\n\r\npPassedParameters = '{\r\n  \"pConnectionName\": '|StringToJson( pConnectionName )|',\r\n  \"pGitURL\":       '|StringToJson( pGitURL       )|',\r\n  \"pDeployment\":   '|StringToJson( pDeployment   )|',\r\n  \"pUsername\":     '|StringToJson( pUsername      )|',\r\n  \"pPassword\":     '|StringToJson( pPassword      )|',\r\n  \"pPublicKey\":    '|StringToJson( pPublicKey     )|',\r\n  \"pPrivateKey\":   '|StringToJson( pPrivateKey    )|',\r\n  \"pPassphrase\":   '|StringToJson( pPassphrase    )|',\r\n  \"pForce\":        '|NumberToString( pForce       )|',\r\n  \"pLogOutput\":           '|NumberToString( pLogOutput           )|',\r\n  \"pStrictErrorHandling\": '|NumberToString( pStrictErrorHandling )|'\r\n}';\r\n\r\npJson = JsonMergePatch( pPassedParameters, pJson );\r\n\r\nIF( JsonType( JsonGet( pJson, '/pConnectionName' ) ) @= 'string' );\r\n  pConnectionName = JsonToString( pJson, '/pConnectionName' );\r\nELSE;\r\n  pConnectionName = JsonGet( pJson, '/pConnectionName' );\r\nENDIF;\r\npGitURL       = JsonToString( pJson, '/pGitURL'       );\r\npDeployment   = JsonToString( pJson, '/pDeployment'   );\r\npUsername     = JsonToString( pJson, '/pUsername'     );\r\npPassword     = JsonToString( pJson, '/pPassword'     );\r\npPublicKey    = JsonToString( pJson, '/pPublicKey'    );\r\npPrivateKey   = JsonToString( pJson, '/pPrivateKey'   );\r\npPassphrase   = JsonToString( pJson, '/pPassphrase'   );\r\npForce        = StringToNumber( JsonToString( pJson, '/pForce' ) );\r\npLogOutput           = StringToNumber( JsonToString( pJson, '/pLogOutput'           ) );\r\npStrictErrorHandling = StringToNumber( JsonToString( pJson, '/pStrictErrorHandling' ) );\r\n\r\nIF( pLogOutput = 1 );\r\n  LogOutput( 'INFO', 'Process: ' | cThisProcName | ' | GitURL: ' | pGitURL | ' | Deployment: ' | pDeployment );\r\nENDIF;\r\n\r\n#EndRegion - Process Parameters\r\n#################################################################################################\r\n\r\n#################################################################################################\r\n#Region - Validate Parameters\r\n\r\nIF( pGitURL @= '' );\r\n  sMessages = JsonAdd( sMessages, '/Error/0', '\"pGitURL is required.\"' );\r\nENDIF;\r\n\r\n#IF( pDeployment @= '' );\r\n#  sMessages = JsonAdd( sMessages, '/Error/0', '\"pDeployment is required.\"' );\r\n#ENDIF;\r\n\r\nIF( JsonSize( sMessages, '/Error' ) <> 0 );\r\n  IF( pLogOutput = 1 );\r\n    LogOutput( 'ERROR', 'Validation failed: ' | JsonToString( sMessages, '/Error' ) );\r\n  ENDIF;\r\n  IF( pStrictErrorHandling = 1 );\r\n    ProcessQuit;\r\n  ELSE;\r\n    ProcessBreak;\r\n  ENDIF;\r\nENDIF;\r\n\r\n#EndRegion - Validate Parameters\r\n#################################################################################################\r\n\r\n#################################################################################################\r\n#Region - Build Request Body\r\n\r\n### Required fields\r\nsBody = '{\"URL\": ' | StringToJson( pGitURL ) | '}';\r\nsBody = JsonAdd( sBody, 'Force', IF( pForce = 1, 'true', 'false' ) );\r\n\r\n### Optional credential fields\r\nIF( pDeployment @<> '' );\r\n  sBody = JsonAdd( sBody, 'Deployment', StringToJson( pDeployment ) );\r\nENDIF;\r\nIF( pUsername @<> '' );\r\n  sBody = JsonAdd( sBody, 'Username', StringToJson( pUsername ) );\r\nENDIF;\r\nIF( pPassword @<> '' );\r\n  sBody = JsonAdd( sBody, 'Password', StringToJson( pPassword ) );\r\nENDIF;\r\nIF( pPublicKey @<> '' );\r\n  sBody = JsonAdd( sBody, 'PublicKey', StringToJson( pPublicKey ) );\r\nENDIF;\r\nIF( pPrivateKey @<> '' );\r\n  sBody = JsonAdd( sBody, 'PrivateKey', StringToJson( pPrivateKey ) );\r\nENDIF;\r\nIF( pPassphrase @<> '' );\r\n  sBody = JsonAdd( sBody, 'Passphrase', StringToJson( pPassphrase ) );\r\nENDIF;\r\n\r\nIF( pLogOutput = 1 );\r\n  LogOutput( 'INFO', 'GitInit body (credentials redacted): URL=' | pGitURL | ' Deployment=' | pDeployment );\r\nENDIF;\r\n\r\n#EndRegion - Build Request Body\r\n#################################################################################################\r\n\r\n#################################################################################################\r\n#Region - Get Connection Details\r\n\r\n# Get Database Connection Details\r\nsDatabaseParameterType = JsonType( pConnectionName );\r\nIF( sDatabaseParameterType @<> 'object' );\r\n  ExecuteProcess( '}bedrock.session.start', 'pConnectionName', pConnectionName, 'pJson', pJson ); sConnectionDetails = sBedrockReturnValue;\r\nELSE;\r\n  sConnectionDetails = pConnectionName;\r\nENDIF;\r\npJson = JsonAdd( pJson, 'pConnectionName', sConnectionDetails );\r\n\r\nsURL        = JsonToString( sConnectionDetails, '/sURL' );\r\nsAuthHeader = JsonToString( sConnectionDetails, '/sAuthHeader' );\r\n\r\n### Authentication headers for requests to this connection\r\nsAuthHeaders = '[]';\r\nIF( JsonToString( sConnectionDetails, '/sAuthHeader' ) @<> '' );\r\n  sAuthHeaders = JsonAdd( sAuthHeaders, '', StringToJson( 'Authorization: ' | JsonToString( sConnectionDetails, '/sAuthHeader' ) ) );\r\nELSEIF( JsonToString( sConnectionDetails, '/sSID' ) @<> '' );\r\n  sAuthHeaders = JsonAdd( sAuthHeaders, '', StringToJson( 'Cookie: ' | JsonToString( sConnectionDetails, '/sSID' ) ) );\r\nENDIF;\r\n\r\n#EndRegion - Get Connection Details\r\n#################################################################################################\r\n\r\n#################################################################################################\r\n#Region - Execute Request\r\n\r\n### Conditionally include Authorization header for stateless auth modes\r\nExecuteProcess( '}bedrock.process.execute_http_request',\r\n  'pMethod',  'POST',\r\n  'pURL',     sURL | '/GitInit',\r\n  'pHeaders', sAuthHeaders,\r\n  'pBody',    sBody,\r\n  'pJson',    pJson\r\n);\r\n\r\nIF( pLogOutput = 1 );\r\n  LogOutput( 'INFO', 'GitInit complete. Response: ' | sBedrockReturnValue );\r\nENDIF;\r\n\r\n#EndRegion - Execute Request\r\n#################################################################################################\r\n",
+  "MetadataProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****",
+  "DataProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****",
+  "EpilogProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n##################################################################################################\r\n#Region - Cleanup\r\n\r\nIF( sDatabaseParameterType @<> 'object' );\r\n  ExecuteProcess( '}bedrock.process.execute_http_request', 'pMethod', 'POST', 'pURL', sURL | '/ActiveSession/tm1.Close', 'pHeaders', sAuthHeaders );\r\nENDIF;\r\n\r\n#EndRegion - Cleanup\r\n#################################################################################################",
+  "HasSecurityAccess": false,
+  "UIData": "",
+  "DataSource": {
+    "Type": "None"
+  },
+  "Parameters": [
+    {
+      "Name": "pConnectionName",
+      "Prompt": "OPTIONAL: Connection name in }bedrock.session.start, or a connection-details JSON object returned by it. If blank, the session.start default connection is used",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pGitURL",
+      "Prompt": "REQUIRED: Git repository URL, e.g. https://github.com/<owner>/<repo>",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pDeployment",
+      "Prompt": "OPTIONAL: Deployment name from the .tm1project file",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pUsername",
+      "Prompt": "OPTIONAL: Git user name for HTTPS authentication",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pPassword",
+      "Prompt": "OPTIONAL: Git password or personal access token for HTTPS authentication. Never save a real value as the default",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pPublicKey",
+      "Prompt": "OPTIONAL: SSH public key for SSH authentication",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pPrivateKey",
+      "Prompt": "OPTIONAL: SSH private key for SSH authentication. Never save a real value as the default",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pPassphrase",
+      "Prompt": "OPTIONAL: Passphrase for the SSH private key",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pForce",
+      "Prompt": "OPTIONAL: Replace any existing Git context on the database (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pLogOutput",
+      "Prompt": "OPTIONAL: Write parameters and action summary to server message log (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pStrictErrorHandling",
+      "Prompt": "OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pJson",
+      "Prompt": "OPTIONAL: JSON Object with process parameter values. This will overwrite user passed parameters for all included parameters.",
+      "Value": "",
+      "Type": "String"
+    }
+  ],
+  "Variables": [],
+  "VariablesUIData": []
+}
