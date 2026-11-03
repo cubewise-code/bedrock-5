@@ -1,0 +1,89 @@
+{
+  "Name": "}bedrock.hier.sub.create.from_json",
+  "PrologProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n################################################################################################### \r\n##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.0~~## \r\n################################################################################################### \r\n\r\n#Region @DOC\r\n# Description:\r\n# This process will create a static subset in a Hierarchy of target Dimension.\r\n\r\n# Note:\r\n# This process uses a number of parameters to determine what to include in the subset:\r\n# - pConsol: If specified, only elements that are descendants of the consol will be included in\r\n#   the subset. If blank, then this filter will be ignored.\r\n# - pAttr: If specified, only elements that have a value equivalent to pAttrValue will be included\r\n#   in the subset. If blank, this filter will be ignored.\r\n# - pLevelFrom: Only elements with a level greater than or equal to pLevelFrom will be included in\r\n#   the subset.\r\n# - pLevelTo: Only elements with a level less than or equal to pLevelFrom will be included in the\r\n#   subset.\r\n# - pExclusions: If pExclusions is specified then the elements (separated by a delimiter) will be\r\n#   excluded from the subset. Wildcards characters `*` and `?` are accepted.\r\n# - pAddToSubset : If the specified subset already exists then this parameter will control whether\r\n#   elements will be added to the existing subset (value 1) or a new subset will be created\r\n#   (value 0).\r\n#EndRegion @DOC\r\n\r\n### Global Variables\r\npJson = IF( pJson @= '', '{}', pJson );\r\nStringGlobalVariable(  'sBedrockReturnValue' );\r\nNumericGlobalVariable( 'nBedrockReturnValue' );\r\n\r\n### Constants ###\r\ncThisProcName   = GetProcessName();\r\ncUserName       = TM1User();\r\ncTimeStamp      = TimSt( Now, '\\Y\\m\\d\\h\\i\\s' );\r\ncRandomInt      = NumberToString( INT( RAND( ) * 1000000000 ));\r\ncTemp           = cThisProcName |'_'| cTimeStamp |'_'| cRandomInt;\r\nsErrors         = '[]';\r\n\r\n#################################################################################################\r\n#Region - Process Parameters\r\n\r\npDefaultParameters = '{\r\n  \"pAlias\":               \"\",\r\n  \"pAttr\":                \"\",\r\n  \"pAttrValue\":           \"\",\r\n  \"pConsol\":              \"*\",\r\n  \"pDelim\":               \"&\",\r\n  \"pDimension\":                 null,\r\n  \"pExclusions\":          \"\",\r\n  \"pHierarchy\":                \"\",\r\n  \"pSubset\":                 null,\r\n  \"pAddToSubset\":         0,\r\n  \"pLevelFrom\":           0,\r\n  \"pLevelTo\":             999,\r\n  \"pLogOutput\":           0,\r\n  \"pStrictErrorHandling\": 0,\r\n  \"pTemp\":                1\r\n}';\r\n\r\npPassedParameters = '{\r\n  \"pDimension\":                 '|StringToJson  ( pDimension                 )|',\r\n  \"pHierarchy\":                '|StringToJson  ( pHierarchy                )|',\r\n  \"pSubset\":                 '|StringToJson  ( pSubset                 )|',\r\n  \"pLogOutput\":           '|NumberToString( pLogOutput           )|',\r\n  \"pStrictErrorHandling\": '|NumberToString( pStrictErrorHandling )|',\r\n  \"pTemp\":                '|NumberToString( pTemp                )|'\r\n}';\r\n\r\npJson = JsonMergePatch( pPassedParameters, pJson );\r\n# String Parameters\r\npAlias               =                 JsonToString( JsonGet( pJson, 'pAlias'               ) );\r\npAttr                =                 JsonToString( JsonGet( pJson, 'pAttr'                ) );\r\npAttrValue           =                 JsonToString( JsonGet( pJson, 'pAttrValue'           ) );\r\npConsol              =                 JsonToString( JsonGet( pJson, 'pConsol'              ) );\r\npDelim               =                 JsonToString( JsonGet( pJson, 'pDelim'               ) );\r\npDimension                 =                 JsonToString( JsonGet( pJson, 'pDimension'                 ) );\r\npExclusions          =                 JsonToString( JsonGet( pJson, 'pExclusions'          ) );\r\npDefaultMDX          =                 JsonToString( JsonGet( pJson, 'pDefaultMDX'          ) );\r\npHierarchy                =                 JsonToString( JsonGet( pJson, 'pHierarchy'                ) );\r\npSubset                 =                 JsonToString( JsonGet( pJson, 'pSubset'                 ) );\r\n# Numeric Parameters\r\npAddToSubset         = StringToNumber( JsonToString( JsonGet( pJson, 'pAddToSubset'         ) ) );\r\npLevelFrom           = StringToNumber( JsonToString( JsonGet( pJson, 'pLevelFrom'           ) ) );\r\npLevelTo             = StringToNumber( JsonToString( JsonGet( pJson, 'pLevelTo'             ) ) );\r\npLogOutput           = StringToNumber( JsonToString( JsonGet( pJson, 'pLogOutput'           ) ) );\r\npStrictErrorHandling = StringToNumber( JsonToString( JsonGet( pJson, 'pStrictErrorHandling' ) ) );\r\npTemp                = StringToNumber( JsonToString( JsonGet( pJson, 'pTemp'                ) ) );\r\n\r\n### Get the parameters that differ from the default\r\npDiffer = JsonDiff( pDefaultParameters, pJson );\r\nnSize = JsonSize( pDiffer );\r\nWHILE( nSize > 0 );\r\n  nSize = nSize - 1;\r\n  pDiffer = JsonReplace( pDiffer, '/'|NumberToString( nSize )|'/op', '\"add\"' );\r\nEND;\r\npJson = JsonPatch( '{}', pDiffer );\r\n\r\nIF( pLogOutput = 1 ); LogOutput('INFO', 'Passed Parameters: '|pPassedParameters ); ENDIF;\r\n\r\n#EndRegion - Process Parameters\r\n#################################################################################################\r\n\r\nIF( pHierarchy @= '' );\r\n  pHierarchy = pDimension;\r\nENDIF;\r\n\r\n################################################################################################# \r\n#Region - Construct View\r\n\r\nsDimension = pDimension;\r\nsHierarchy = pHierarchy;\r\nsFilter = pFilter;\r\nsExcept = pExcept;\r\nsDefaultMDX = pDefaultMDX;\r\nsSubset = pSubset;\r\n\r\n# Change sFilter to be JSON array\r\nsFilterType = JsonType( sFilter );\r\nIF( sFilterType @= 'object' );\r\n  sFilter = JsonGet( sFilter, sDimension );\r\nELSEIF( sFilterType @= 'string' );\r\n  sFilter = JsonAdd( '[]', 0, sFilter );\r\nELSEIF( sFilterType @<> 'array' );\r\n  sFilter = JsonAdd( '[]', 0, StringToJson( sFilter ) );\r\nENDIF;\r\n\r\n# Change sExcept to be JSON array\r\nsExceptType = JsonType( sExcept );\r\nIF( sExceptType @= 'object' );\r\n  sExcept = JsonGet( sExcept, sDimension );\r\nELSEIF( sExceptType @= 'string' );\r\n  sExcept = JsonAdd( '[]', 0, sExcept );\r\nELSEIF( sExceptType @<> 'array' );\r\n  sExcept = JsonAdd( '[]', 0, StringToJson( sExcept ) );\r\nENDIF;\r\n\r\n# Create Subset and set MDX\r\nIF( SubsetExists( sDimension, sSubset ) = 0 );\r\n  SubsetCreate( sDimension, sSubset, pTemp );\r\nENDIF;\r\nSubsetMDXSet( sDimension, sSubset, '' );\r\nIF( pAddToSubset = 0 );\r\n  SubsetDeleteAllElements( sDimension, sSubset );\r\nENDIF;\r\n\r\n\r\n# Loop through sFilter\r\nSubsetCreate( sDimension, cTemp|'_mdx', 1 );\r\nnSize = JsonSize( sFilter );\r\nIF( nSize <= 0 & pAddToSubset = 0 );\r\n  SubsetMDXSet( sDimension, sSubset, '{TM1FILTERBYLEVEL({TM1SUBSETALL(['|sDimension|'].['|sDimension|'])}, 0)}' );\r\n  SubsetMDXSet( sDimension, sSubset, '' );\r\nENDIF;\r\n  \r\nWHILE( nSize > 0 );\r\n  nSize = nSize - 1;\r\n  sElement = JsontoString( sFilter, '/'|NumberToString( nSize ) );\r\n  nIsMDX = IF( SUBST( sElement, 1, 1 ) @= '{' & SUBST( sElement, LONG( sElement ), 1 ) @= '}', 1, 0 );\r\n  \r\n  # Check if sElement is an element. If so, add it to the subset.\r\n  IF( ElementIndex( sDimension, sHierarchy, sElement ) <> 0 );\r\n    IF( SubsetElementExists( sDimension, sSubset, sElement ) = 0 );\r\n      SubsetElementInsert( sDimension, sSubset, sElement, 0 );\r\n    ENDIF;\r\n  ELSEIF( nIsMDX = 1 % SubsetExists( sDimension, sElement ) = 1 );\r\n    # Check if sElement is not a subset name\r\n    IF( SubsetExists( sDimension, sElement ) = 0 );\r\n      SubsetCreateByMDX( cTemp|'_subset', sElement, sDimension, 1 );\r\n      sElement = cTemp|'_subset';\r\n    ENDIF;\r\n    # Loop through subset, adding each element\r\n    nSubsetSize = SubsetGetSize( sDimension, sElement );\r\n    WHILE( nSubsetSize > 0 );\r\n      sSubsetElement = SubsetGetElementName( sDimension, sElement, nSubsetSize );\r\n      IF( SubsetElementExists( sDimension, sSubset, sSubsetElement ) = 0 );\r\n        SubsetElementInsert( sDimension, sSubset, sSubsetElement, 0 );\r\n      ENDIF;\r\n      nSubsetSize = nSubsetSize - 1;\r\n    END;\r\n  ENDIF;\r\nEND;\r\n\r\n# Loop through sExcept\r\nnSize = JsonSize( sExcept );\r\nWHILE( nSize > 0 );\r\n  nSize = nSize - 1;\r\n  sElement = JsontoString( sExcept, '/'|NumberToString( nSize ) );\r\n  nIsMDX = IF( SUBST( sElement, 1, 1 ) @= '{' & SUBST( sElement, LONG( sElement ), 1 ) @= '}', 1, 0 );\r\n  \r\n  # Check if sElement is an element. If so, add it to the subset.\r\n  IF( ElementIndex( sDimension, sHierarchy, sElement ) <> 0 );\r\n    WHILE( SubsetElementExists( sDimension, sSubset, sElement ) = 1 );\r\n      nElementIndex = SubsetElementGetIndex( sDimension, sSubset, sElement, 1 );\r\n      SubsetElementDelete( sDimension, sSubset, nElementIndex );\r\n    END;\r\n  ELSEIF( nIsMDX = 1 % SubsetExists( sDimension, sElement ) = 1 );\r\n    # Check if sElement is not a subset name\r\n    IF( SubsetExists( sDimension, sElement ) = 0 );\r\n      SubsetCreateByMDX( cTemp|'_subset', sElement, sDimension, 1 );\r\n      sElement = cTemp|'_subset';\r\n    ENDIF;\r\n    # Loop through subset, adding each element\r\n    nSubsetSize = SubsetGetSize( sDimension, sElement );\r\n    WHILE( nSubsetSize > 0 );\r\n      sSubsetElement = SubsetGetElementName( sDimension, sElement, nSubsetSize );\r\n      WHILE( SubsetElementExists( sDimension, sSubset, sSubsetElement ) = 1 );\r\n        nElementIndex = SubsetElementGetIndex( sDimension, sSubset, sSubsetElement, 1 );\r\n        SubsetElementDelete( sDimension, sSubset, nElementIndex );\r\n      END;\r\n      nSubsetSize = nSubsetSize - 1;\r\n    END;\r\n  ENDIF;\r\nEND;\r\n\r\n#EndRegion - Construct View\r\n################################################################################################# \r\n\r\nDatasourceNameForServer = sDimension;\r\nDatasourceNameForClient = sDimension;\r\nDatasourceDimensionSubset = sSubset;\r\n",
+  "MetadataProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****",
+  "DataProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****",
+  "EpilogProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****",
+  "HasSecurityAccess": true,
+  "UIData": "",
+  "DataSource": {
+    "Type": "TM1DimensionSubset",
+    "dataSourceNameForClient": "}Cubes",
+    "dataSourceNameForServer": "}Cubes",
+    "subset": "All"
+  },
+  "Parameters": [
+    {
+      "Name": "pDimension",
+      "Prompt": "REQUIRED: Delimited list of dimensions",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pHierarchy",
+      "Prompt": "OPTIONAL: Hierarchy name (Default = pDimension)",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pSubset",
+      "Prompt": "REQUIRED: Subset name",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pFilter",
+      "Prompt": "OPTIONAL:",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pExcept",
+      "Prompt": "OPTIONAL: Delimited list of elements to exclude",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pAddToSubset",
+      "Prompt": "OPTIONAL: Add to subset if it already exists (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pTemp",
+      "Prompt": "OPTIONAL: Delete/create temporary objects (0 = Do not delete, 1 = Delete, 2 = if view and subsets are created, keep only subsets)",
+      "Value": 1,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pLogOutput",
+      "Prompt": "OPTIONAL: Write parameters and action summary to server message log (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pStrictErrorHandling",
+      "Prompt": "OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pJson",
+      "Prompt": "OPTIONAL: JSON Object with process parameter values. This will overwrite user passed parameters for all included parameters.",
+      "Value": "{}",
+      "Type": "String"
+    }
+  ],
+  "Variables": [
+    {
+      "Name": "vElement",
+      "Type": "String",
+      "Position": 1,
+      "StartByte": 0,
+      "EndByte": 0
+    }
+  ],
+  "VariablesUIData": [
+    "VarType=32\fColType=827\f"
+  ]
+}

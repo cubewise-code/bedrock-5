@@ -1,0 +1,86 @@
+{
+  "Name": "}bedrock.server.backup.create",
+  "PrologProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n###################################################################################################\r\n##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.4~~##\r\n###################################################################################################\r\n\r\n#Region @DOC\r\n#### Description:\r\n#Creates a backup of a Planning Analytics SaaS database, optionally waiting until it is available.\r\n#\r\n#### How to Use:\r\n#\r\n#- `pBackupFileName`: REQUIRED: the backup name, without an extension. `.tgz` is added. These characters are not allowed: `#=:|+?*,;.\"/\\[]&<>` and backtick.\r\n#- `pDatabaseName`: OPTIONAL: the database to back up. If blank, the database from the connection is used.\r\n#- `pWaitForComplete`: 1 = wait until the backup appears in `}bedrock.server.backup.list`, checking every `pWaitInterval` seconds for up to `pTimeout` seconds.\r\n#- `pRunProcessMode`: set to 1 when the connection's values in `}bedrock.session.start` are read from a cube. The session is then started with `RunProcess` and its details are read back from a file.\r\n#- `pConnectionName`: a connection name configured in `}bedrock.session.start`, or a connection-details JSON object returned by it. When a JSON object is passed, that session is reused and is not closed at the end of this process.\r\n#- `pLogOutput`, `pStrictErrorHandling` and `pJson` work as in all bedrock processes.\r\n#\r\n#> [!IMPORTANT]\r\n#> This process calls the Planning Analytics SaaS backup API (`/pakate/v0/v12db/...`) and only works on Planning Analytics SaaS. The host is taken from the connection's URL.\r\n#\r\n#### Return Value:\r\n#`sBedrockReturnValue` is set to the response of the backup request, or the backup list if `pWaitForComplete = 1`.\r\n#EndRegion @DOC\r\n\r\n### Global Variables\r\npJson = IF( pJson @= '', '{}', pJson );\r\nStringGlobalVariable(  'sBedrockReturnValue' );\r\nNumericGlobalVariable( 'nBedrockReturnValue' );\r\n\r\n### Constants ###\r\ncThisProcName   = GetProcessName();\r\ncUserName       = TM1User();\r\ncTimeStamp      = TimSt( Now, '\\Y\\m\\d\\h\\i\\s' );\r\ncRandomInt      = NumberToString( INT( RAND( ) * 1000000000 ));\r\ncTemp           = cThisProcName |'_'| cTimeStamp |'_'| cRandomInt;\r\nsMessages       = '{\"Process\": \"'|cThisProcName|'\", \"User\": \"'|cUsername|'\", \"Info\": [\"Process: '''|cThisProcName|''' run by User: '''|cUsername|'''.\"], \"Error\": []}';\r\ncMsgErrorContent= 'User:%cUserName% Process:%cThisProcName% ErrorMsg:%sMessage%';\r\n\r\n#################################################################################################\r\n#Region - Process Parameters\r\n\r\npJson = IF( JsonType( pJson ) @<> 'object', '{}', pJson );\r\nsMessages = '{\"Process\": \"'|GetProcessName()|'\", \"User\": \"'|TM1User()|'\", \"Info\": [\"Process: '''|GetProcessName()|''' run by User: '''|TM1User()|'''.\"], \"Error\": []}';\r\npDefaultParameters = '{\r\n  \"pConnectionName\":  null,\r\n  \"pDatabaseName\":  null,\r\n  \"pBackupFileName\":                null,\r\n  \"pLogOutput\":           0,\r\n  \"pStrictErrorHandling\": 0,\r\n  \"pWaitForComplete\": 0,\r\n  \"pTimeout\": 1800,\r\n  \"pWaitInterval\": 15,\r\n  \"pRunProcessMode\": 0\r\n}';\r\n\r\npPassedParameters = '{\r\n  \"pConnectionName\":  '|StringToJson  ( pConnectionName  )|',\r\n  \"pDatabaseName\":  '|StringToJson  ( pDatabaseName  )|',\r\n  \"pBackupFileName\":                '|StringToJson  ( pBackupFileName                )|',\r\n  \"pLogOutput\":           '|NumberToString( pLogOutput           )|',\r\n  \"pStrictErrorHandling\": '|NumberToString( pStrictErrorHandling )|',\r\n  \"pWaitForComplete\": '|NumberToString( pWaitForComplete )|',\r\n  \"pTimeout\": '|NumberToString( pTimeout )|',\r\n  \"pWaitInterval\": '|NumberToString( pWaitInterval )|',\r\n  \"pRunProcessMode\": '|NumberToString( pRunProcessMode )|'\r\n}';\r\n\r\npJson = JsonMergePatch( pPassedParameters, pJson );\r\npWaitForComplete = StringToNumber( JsonToString( pJson, '/pWaitForComplete' ) );\r\npTimeout = StringToNumber( JsonToString( pJson, '/pTimeout' ) );\r\npWaitInterval = StringToNumber( JsonToString( pJson, '/pWaitInterval' ) );\r\npRunProcessMode = StringToNumber( JsonToString( pJson, '/pRunProcessMode' ) );\r\n# String Parameters\r\nIF( JsonType( JsonGet( pJson, '/pConnectionName' ) ) @= 'string' );\r\n  pConnectionName = JsonToString( pJson, '/pConnectionName' );\r\nELSE;\r\n  pConnectionName = JsonGet( pJson, '/pConnectionName' );\r\nENDIF;\r\npDatabaseName  =                 JsonToString( pJson, '/pDatabaseName'  );\r\npBackupFileName                =                 JsonToString( pJson, '/pBackupFileName'                );\r\n# Numeric Parameters\r\npLogOutput           = StringToNumber( JsonToString( pJson, '/pLogOutput'           ) );\r\npStrictErrorHandling = StringToNumber( JsonToString( pJson, '/pStrictErrorHandling' ) );\r\n\r\n### Get the parameters that differ from the default\r\npDiffer = JsonDiff( pDefaultParameters, pJson );\r\nnSize = JsonSize( pDiffer );\r\nWHILE( nSize > 0 );\r\n  nSize = nSize - 1;\r\n  pDiffer = JsonReplace( pDiffer, '/'|NumberToString( nSize )|'/op', '\"add\"' );\r\nEND;\r\npJson = JsonPatch( '{}', pDiffer );\r\n\r\n### LogOutput parameters\r\nnSize = JsonSize( pJson );\r\nWHILE( nSize > 0 );\r\n  nSize = nSize - 1;\r\n  sKey = JsonGetKey( pJson, nSize );\r\n  pPassedParameters = JsonReplace( pPassedParameters, sKey, JsonGet( pJson, sKey ) );\r\nEND;\r\n\r\nsMessages = JsonAdd( sMessages, '/Info/0', pPassedParameters );\r\nIF( pLogOutput = 1 );\r\n  LogOutput('INFO', JsonToString( sMessages, '/Info/0' ) );\r\nENDIF;\r\n\r\n#EndRegion - Process Parameters\r\n#################################################################################################\r\n\r\n#################################################################################################\r\n#Region - Validate Parameters\r\n\r\n# Validate pBackupFileName\r\npBackupFileName = TRIM( pBackupFileName );\r\n\r\nsForbiddenChars = '#=:|+?*,;.\"/\\[]&<>`';\r\nWHILE( LONG( sForbiddenChars ) <> 0 );\r\n  sForbiddenChar = SUBST( sForbiddenChars, 1, 1 );\r\n  sForbiddenChars = DELET( sForbiddenChars, 1, 1 );\r\n  \r\n  IF( SCAN( sForbiddenChar, pBackupFileName ) <> 0 );\r\n    nErrors = 1;\r\n    sMessage = 'The following characters are forbidden in pBackupFileName: [#=:|+?*,;.\"/\\[]&<>`]'; LogOutput( 'ERROR', EXPAND( cMsgErrorContent ) );\r\n    ProcessBreak;\r\n  ENDIF;\r\nEND;\r\n\r\npBackupFileName = pBackupFileName | '.tgz';\r\n\r\n# Get Database Connection Details\r\nsDatabaseParameterType = JsonType( pConnectionName );\r\nIF( sDatabaseParameterType @<> 'object' );\r\n  IF( pRunProcessMode = 0 );\r\n    ExecuteProcess( '}bedrock.session.start', 'pConnectionName', pConnectionName, 'pJson', pJson ); sConnectionDetails = sBedrockReturnValue;\r\n  ELSE;\r\n    RunProcess( '}bedrock.session.start', 'pConnectionName', pConnectionName, 'pRunProcessMode', 1, 'pJson', pJson ); \r\n    ExecuteProcess( '}bedrock.file.read', 'pFile', '^'|pConnectionName|'.json', 'pTimeout', 30, 'pWaitInterval', .1 ); sConnectionDetails = sBedrockReturnValue; ASCIIDelete( '^'|pConnectionName|'.json' );\r\n  ENDIF;\r\nELSE;\r\n  sConnectionDetails = pConnectionName;\r\nENDIF;\r\npJson = JsonAdd( pJson, 'pConnectionName', sConnectionDetails );\r\n\r\n### Authentication headers for requests to this connection\r\nsAuthHeaders = '[]';\r\nIF( JsonToString( sConnectionDetails, '/sAuthHeader' ) @<> '' );\r\n  sAuthHeaders = JsonAdd( sAuthHeaders, '', StringToJson( 'Authorization: ' | JsonToString( sConnectionDetails, '/sAuthHeader' ) ) );\r\nELSEIF( JsonToString( sConnectionDetails, '/sSID' ) @<> '' );\r\n  sAuthHeaders = JsonAdd( sAuthHeaders, '', StringToJson( 'Cookie: ' | JsonToString( sConnectionDetails, '/sSID' ) ) );\r\nENDIF;\r\n\r\nsConnectionURL = JsonToString( sConnectionDetails, '/sURL' );\r\n### Planning Analytics SaaS host, taken from the connection's base URL\r\nnHostStart  = SCAN( '://', sConnectionURL ) + 3;\r\nnHostLength = SCAN( '/', DELET( sConnectionURL, 1, nHostStart - 1 ) ) - 1;\r\nsHostURL    = SUBST( sConnectionURL, 1, nHostStart - 1 + nHostLength );\r\n\r\n# Get Database Details\r\nIF( pDatabaseName @= '' );\r\n  pDatabaseName = JsonToString( sConnectionDetails, 'sDBN' );\r\nENDIF;\r\n\r\nsURL = JsonToString( sConnectionDetails, 'sURL' );\r\nsSID = JsonToString( sConnectionDetails, 'sSID' );\r\n\r\n### If errors occurred terminate process with a major error status ###\r\nIF( JsonSize( sMessages, '/Error' ) <> 0 );\r\n  IF( pStrictErrorHandling = 1 );\r\n    ProcessQuit;\r\n  ELSE;\r\n    ProcessBreak;\r\n  ENDIF;\r\nENDIF;\r\n\r\n#EndRegion - Validate Parameters\r\n#################################################################################################\r\n\r\n#################################################################################################\r\n#Region - Execute HTTP Requests\r\n\r\nsRequestURL = sHostURL | '/pakate/v0/v12db/'|pDatabaseName|'/backup';\r\n\r\n# Get Server Host ID\r\nExecuteProcess( '}bedrock.process.execute_http_request',\r\n  'pMethod', 'POST',\r\n  'pBody', '{\"url\":'|StringToJson( pBackupFileName )|'}',\r\n  'pHeaders', sAuthHeaders,\r\n  'pURL', sRequestURL,\r\n  'pJson', pJson );\r\nsResponse = sBedrockReturnValue;\r\n\r\n# Wait for the backup to complete\r\nIF( pWaitForComplete = 1 );\r\n  nFoundBackup = 0;\r\n  \r\n  # Repeatedly retrieve backup list\r\n  WHILE( nFoundBackup = 0 & pTimeout > 0 );\r\n    ExecuteProcess('}bedrock.server.backup.list',\r\n      'pConnectionName', sConnectionDetails,\r\n      'pDatabaseName', pDatabaseName,\r\n      'pBackupType','BOTH',\r\n      'pJson', pJson );\r\n    sBackups = sBedrockReturnValue;\r\n    \r\n    WHILE( JsonSize( sBackups ) > 0 );\r\n      sBackupName = JsonToString( sBackups, '/0/name' );\r\n      sBackups = JsonRemove( sBackups, 0 );\r\n\r\n      IF( sBackupName @= pBackupFileName );\r\n        nFoundBackup = 1;\r\n      ENDIF;\r\n    END;\r\n    \r\n    SLEEP( pWaitInterval * 1000 );\r\n    pTimeout = pTimeout -  pWaitInterval;\r\n  END;\r\nENDIF;\r\n\r\n#EndRegion - Execute HTTP Requests\r\n#################################################################################################\r\n\r\n",
+  "MetadataProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n",
+  "DataProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n",
+  "EpilogProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n##################################################################################################\r\n#Region - Cleanup\r\n\r\nIF( nErrors <> 0 );\r\n  IF( pStrictErrorHandling = 1 );\r\n    ProcessQuit;\r\n  ENDIF;\r\nENDIF;\r\n\r\nIF( sDatabaseParameterType @<> 'object' );\r\n  ExecuteProcess( '}bedrock.process.execute_http_request', 'pMethod', 'POST', 'pURL', sURL | '/ActiveSession/tm1.Close', 'pHeaders', sAuthHeaders );\r\nENDIF;\r\n\r\n#EndRegion - Cleanup\r\n#################################################################################################\r\n",
+  "HasSecurityAccess": false,
+  "UIData": "",
+  "DataSource": {
+    "Type": "None"
+  },
+  "Parameters": [
+    {
+      "Name": "pConnectionName",
+      "Prompt": "OPTIONAL: Connection name in }bedrock.session.start, or a connection-details JSON object returned by it. If blank, the session.start default connection is used",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pDatabaseName",
+      "Prompt": "OPTIONAL: Database to back up. If blank, the database from the connection is used",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pBackupFileName",
+      "Prompt": "REQUIRED: Backup name without extension (.tgz is added). Must not contain #=:|+?*,;.\"/\\[]&<>`",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pWaitForComplete",
+      "Prompt": "OPTIONAL: Wait until the backup appears in the backup list (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pTimeout",
+      "Prompt": "OPTIONAL: Maximum time to wait for the backup in seconds (Numeric. Default = 1800)",
+      "Value": 1800,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pWaitInterval",
+      "Prompt": "OPTIONAL: Time between backup list checks in seconds (Numeric. Default = 15)",
+      "Value": 15,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pLogOutput",
+      "Prompt": "OPTIONAL: Write parameters and action summary to server message log (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pStrictErrorHandling",
+      "Prompt": "OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pRunProcessMode",
+      "Prompt": "OPTIONAL: Set to 1 if the connection's values in }bedrock.session.start are read from a cube (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pJson",
+      "Prompt": "OPTIONAL: JSON Object with process parameter values. This will overwrite user passed parameters for all included parameters.",
+      "Value": "{}",
+      "Type": "String"
+    }
+  ],
+  "Variables": [
+    {
+      "Name": "vContext",
+      "Type": "String",
+      "Position": 1,
+      "StartByte": 0,
+      "EndByte": 0
+    }
+  ],
+  "VariablesUIData": [
+    "VarType=32\fColType=827\f"
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "Name": "}bedrock.utils.string.to_list",
+  "PrologProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n################################################################################################# \r\n##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0.0~~##\r\n################################################################################################# \r\n\r\n#Region @DOC\r\n# Description:\r\n# This process creates a view that can be used for exporting, copying or zeroing out numbers.\r\n\r\n# Use case: Intended for development/prototyping or production.\r\n# 1/ Create a view to zero out data.\r\n# 2/ Create a view to use as a source for exporting or copying.\r\n\r\n# Note:\r\n# Naturally, a valid cube name (pCube) is mandatory otherwise the process will abort.\r\n# The pFilter parameter contains the dimenson and elements to be used for filtering:\r\n# - The format of the pFilter parameter is as follows delimiters of :, & and +: Dim1: Elem1 + Elem2 & Dim2: Elem3 + Elem4.\r\n# - The dimension parameters do not need to be given in the index order of dimensions in the cube.\r\n# - The dimension name is specified as the first member of the delimited string of elements.\r\n# - If consols are skipped the N level children of any consolidated filter elements will be used.\r\n# - Spaces are ignored so use them to make your filter more readable.\r\n# - pTemp: This parameter will control whether to make the view temporary (value 1) or if the\r\n#   view will be permanently retained (value 0).\r\n#EndRegion @DOC\r\n\r\n### Global Variables\r\npJson = IF( pJson @= '', '{}', pJson );\r\nStringGlobalVariable(  'sBedrockReturnValue' );\r\nNumericGlobalVariable( 'nBedrockReturnValue' );\r\n\r\n### Constants ###\r\ncThisProcName   = GetProcessName();\r\ncUserName       = TM1User();\r\ncTimeStamp      = TimSt( Now, '\\Y\\m\\d\\h\\i\\s' );\r\ncRandomInt      = NumberToString( INT( RAND( ) * 1000000000 ));\r\ncTemp           = cThisProcName |'_'| cTimeStamp |'_'| cRandomInt;\r\nsErrorMessage   = '{\"Process\": \"'|cThisProcName|'\", \"User\": \"'|cUsername|'\", \"Messages\":[]}';\r\nsInfoMessage    = '{\"Process\": \"'|cThisProcName|'\", \"User\": \"'|cUsername|'\", \"Messages\":[]}';\r\n\r\n\r\n\r\n#################################################################################################\r\n#Region - Process Parameters\r\n\r\npJson = IF( JsonType( pJson ) @<> 'object', '{}', pJson );\r\nsMessages = '{\"Process\": \"'|GetProcessName()|'\", \"User\": \"'|TM1User()|'\", \"Info\": [\"Process: '''|GetProcessName()|''' run by User: '''|TM1User()|'''.\"], \"Error\": []}';\r\npDefaultParameters = '{\r\n  \"pDelimiter\":           \";\",\r\n  \"pString\":              null,\r\n  \"pLogOutput\":           0,\r\n  \"pStrictErrorHandling\": 0,\r\n  \"pTRIM\":                0\r\n}';\r\n\r\npPassedParameters = '{\r\n  \"pDelimiter\":           '|StringToJson  ( pDelimiter           )|',\r\n  \"pString\":              '|StringToJson  ( pString              )|',\r\n  \"pLogOutput\":           '|NumberToString( pLogOutput           )|',\r\n  \"pStrictErrorHandling\": '|NumberToString( pStrictErrorHandling )|',\r\n  \"pTRIM\":                '|NumberToString( pTRIM                )|'\r\n}';\r\n\r\npJson = JsonMergePatch( pPassedParameters, pJson );\r\n# String Parameters\r\npDelimiter           =                 JsonToString( JsonGet( pJson, 'pDelimiter'         ) );\r\npString              =                 JsonToString( JsonGet( pJson, 'pString'            ) );\r\n# Numeric Parameters\r\npLogOutput           = StringToNumber( JsonToString( JsonGet( pJson, 'pLogOutput'         ) ) );\r\npStrictErrorHandling = StringToNumber( JsonToString( JsonGet( pJson, 'pStrictErrorHandling' ) ) );\r\npTRIM                = StringToNumber( JsonToString( JsonGet( pJson, 'pTRIM'              ) ) );\r\n\r\n### Get the parameters that differ from the default\r\npDiffer = JsonDiff( pDefaultParameters, pJson );\r\nnSize = JsonSize( pDiffer );\r\nWHILE( nSize > 0 );\r\n  nSize = nSize - 1;\r\n  pDiffer = JsonReplace( pDiffer, '/'|NumberToString( nSize )|'/op', '\"add\"' );\r\nEND;\r\npJson = JsonPatch( '{}', pDiffer );\r\n\r\n### LogOutput parameters\r\nsMessages = JsonAdd( sMessages, '/Info/-', pJson );\r\nIF( pLogOutput = 1 );\r\n  LogOutput('INFO', JsonToString( sMessages, '/Info/0', 0, ' ' ) );\r\nENDIF;\r\n\r\n#EndRegion - Process Parameters\r\n#################################################################################################\r\n\r\n################################################################################################# \r\n#Region - Convert Delimited List into JSON array\r\n\r\n# Pre-Loop Preparation\r\npString = TRIM( pString );\r\npDelimiter = TRIM( pDelimiter );\r\n\r\nnListLength = LONG( pString );\r\nnDelimiterLength = LONG( pDelimiter );\r\n\r\npString = pString | pDelimiter;\r\nsReturnValue = '[]';\r\n\r\n# Main Processing Loop\r\nnDelimiterPosition = SCAN( pDelimiter, pString );\r\nWHILE( nDelimiterPosition <> 0 );\r\n  # Extract Value and Modify\r\n  sListElement = SUBST( pString, 1, nDelimiterPosition - 1 );\r\n  sListElement = IF( pTRIM = 1, TRIM( sListElement ), sListElement );\r\n    \r\n  # Add to Output\r\n  IF( sListElement @<> '' );\r\n    sReturnValue = JsonAdd( sReturnValue, '', StringToJson( sListElement ) );\r\n  ENDIF;\r\n  \r\n  # Prepare for Next Iteration\r\n  pString = SUBST( pString, nDelimiterPosition + nDelimiterLength, nListLength );\r\n  nDelimiterPosition = SCAN( pDelimiter, pString );\r\nEND;\r\n\r\n#EndRegion - Convert Delimited List into JSON array\r\n#################################################################################################\r\n\r\nsBedrockReturnValue = sReturnValue;\r\n",
+  "MetadataProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****",
+  "DataProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****",
+  "EpilogProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****",
+  "HasSecurityAccess": false,
+  "UIData": "",
+  "DataSource": {
+    "Type": "None"
+  },
+  "Parameters": [
+    {
+      "Name": "pString",
+      "Prompt": "REQUIRED: Input string",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pDelimiter",
+      "Prompt": "OPTIONAL: Delimiter between substrings (Default = ';')",
+      "Value": ";",
+      "Type": "String"
+    },
+    {
+      "Name": "pTRIM",
+      "Prompt": "OPTIONAL: TRIM substrings (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pLogOutput",
+      "Prompt": "OPTIONAL: Write parameters and action summary to server message log (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pStrictErrorHandling",
+      "Prompt": "OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pJson",
+      "Prompt": "OPTIONAL: JSON Object with process parameter values. This will overwrite user passed parameters for all included parameters.",
+      "Value": "{}",
+      "Type": "String"
+    }
+  ],
+  "Variables": [],
+  "VariablesUIData": []
+}
