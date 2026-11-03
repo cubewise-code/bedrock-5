@@ -1,0 +1,80 @@
+{
+  "Name": "}bedrock.database.create",
+  "PrologProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n################################################################################################# \r\n##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0.0~~##\r\n################################################################################################# \r\n\r\n#Region @DOC\r\n# Description:\r\n# This process creates a view that can be used for exporting, copying or zeroing out numbers.\r\n\r\n# Use case: Intended for development/prototyping or production.\r\n# 1/ Create a view to zero out data.\r\n# 2/ Create a view to use as a source for exporting or copying.\r\n\r\n# Note:\r\n# Naturally, a valid cube name (pCube) is mandatory otherwise the process will abort.\r\n# The pFilter parameter contains the dimenson and elements to be used for filtering:\r\n# - The format of the pFilter parameter is as follows delimiters of :, & and +: Dim1: Elem1 + Elem2 & Dim2: Elem3 + Elem4.\r\n# - The dimension parameters do not need to be given in the index order of dimensions in the cube.\r\n# - The dimension name is specified as the first member of the delimited string of elements.\r\n# - If consols are skipped the N level children of any consolidated filter elements will be used.\r\n# - Spaces are ignored so use them to make your filter more readable.\r\n# - pTemp: This parameter will control whether to make the view temporary (value 1) or if the\r\n#   view will be permanently retained (value 0).\r\n#EndRegion @DOC\r\n\r\n### Global Variables\r\npJson = IF( pJson @= '', '{}', pJson );\r\nStringGlobalVariable(  'sBedrockReturnValue' );\r\nNumericGlobalVariable( 'nBedrockReturnValue' );\r\n\r\n### Constants ###\r\ncThisProcName   = GetProcessName();\r\ncUserName       = TM1User();\r\ncTimeStamp      = TimSt( Now, '\\Y\\m\\d\\h\\i\\s' );\r\ncRandomInt      = NumberToString( INT( RAND( ) * 1000000000 ));\r\ncTemp           = cThisProcName |'_'| cTimeStamp |'_'| cRandomInt;\r\nsMessages       = '{\"Process\": \"'|cThisProcName|'\", \"User\": \"'|cUsername|'\", \"Info\": [\"Process: '''|cThisProcName|''' run by User: '''|cUsername|'''.\"], \"Error\": []}';\r\n\r\n#################################################################################################\r\n#Region - Process Parameters\r\n\r\npJson = IF( JsonType( pJson ) @<> 'object', '{}', pJson );\r\nsMessages = '{\"Process\": \"'|GetProcessName()|'\", \"User\": \"'|TM1User()|'\", \"Info\": [\"Process: '''|GetProcessName()|''' run by User: '''|TM1User()|'''.\"], \"Error\": []}';\r\npDefaultParameters = '{\r\n  \"pConnectionName\":  null,\r\n  \"pDatabaseName\":  null,\r\n  \"pLogOutput\":           0,\r\n  \"pStrictErrorHandling\": 0\r\n}';\r\n\r\npPassedParameters = '{\r\n  \"pConnectionName\":  '|StringToJson  ( pConnectionName  )|',\r\n  \"pDatabaseName\":  '|StringToJson  ( pDatabaseName  )|',\r\n  \"pLogOutput\":           '|NumberToString( pLogOutput           )|',\r\n  \"pStrictErrorHandling\": '|NumberToString( pStrictErrorHandling )|'\r\n}';\r\n\r\npJson = JsonMergePatch( pPassedParameters, pJson );\r\n# String Parameters\r\npConnectionName  =                 JsonToString( pJson, '/pConnectionName'  );\r\npDatabaseName  =                 JsonToString( pJson, '/pDatabaseName'  );\r\n# Numeric Parameters\r\npLogOutput           = StringToNumber( JsonToString( pJson, '/pLogOutput'           ) );\r\npStrictErrorHandling = StringToNumber( JsonToString( pJson, '/pStrictErrorHandling' ) );\r\n\r\n### Get the parameters that differ from the default\r\npDiffer = JsonDiff( pDefaultParameters, pJson );\r\nnSize = JsonSize( pDiffer );\r\nWHILE( nSize > 0 );\r\n  nSize = nSize - 1;\r\n  pDiffer = JsonReplace( pDiffer, '/'|NumberToString( nSize )|'/op', '\"add\"' );\r\nEND;\r\npJson = JsonPatch( '{}', pDiffer );\r\n\r\n### LogOutput parameters\r\nnSize = JsonSize( pJson );\r\nWHILE( nSize > 0 );\r\n  nSize = nSize - 1;\r\n  sKey = JsonGetKey( pJson, nSize );\r\n  pPassedParameters = JsonReplace( pPassedParameters, sKey, JsonGet( pJson, sKey ) );\r\nEND;\r\n\r\nsMessages = JsonAdd( sMessages, '/Info/0', pPassedParameters );\r\nIF( pLogOutput = 1 );\r\n  LogOutput('INFO', JsonToString( sMessages, '/Info/0' ) );\r\nENDIF;\r\n\r\n#EndRegion - Process Parameters\r\n#################################################################################################\r\n\r\n#################################################################################################\r\n#Region - Validate Parameters\r\n\r\npReplicaCount = MAX( 1,  ROUND( pReplicaCount ) );\r\npMemory       = MAX( 1,  ROUND( pMemory       ) );\r\npDiskSpace    = MAX( 20, ROUND( pDiskSpace    ) );\r\n\r\nsSchedule = '';\r\nIF( LONG( pBackupStartTime ) = 5 );\r\n  nBackupStartTime = ParseDate( pBackupStartTime, 'HH:mm');\r\nELSEIF( LONG( pBackupStartTime ) = 7 );\r\n  nBackupStartTime = ParseDate( pBackupStartTime, 'HH:mmaa');\r\nELSE;\r\n  nBackupStartTime = 0;\r\nENDIF;\r\n\r\nIF( nBackupStartTime <> 0 );\r\n  sSchedule = NumberToString( TIMVL( nBackupStartTime, 'I' ) )|' '|NumberToString( TIMVL( nBackupStartTime, 'H' )+1 )|' * * *';\r\nENDIF;\r\n\r\n# Get Database Connection Details\r\nsDatabaseParameterType = JsonType( pConnectionName );\r\nIF( sDatabaseParameterType @<> 'object' );\r\n  ExecuteProcess( '}bedrock.session.start', 'pConnectionName', pConnectionName, 'pJson', pJson ); sConnectionDetails = sBedrockReturnValue;\r\nELSE;\r\n  sConnectionDetails = pConnectionName;\r\nENDIF;\r\npJson = JsonAdd( pJson, 'pConnectionName', sConnectionDetails );\r\n\r\n### If errors occurred terminate process with a major error status ###\r\nIF( JsonSize( sMessages, '/Error' ) <> 0 );\r\n    ProcessBreak;\r\nENDIF;\r\n\r\n#EndRegion - Validate Parameters\r\n#################################################################################################\r\n\r\n#################################################################################################\r\n#Region - Execute HTTP Requests\r\n\r\nsBody = '{}';\r\nsBody = JsonAdd( sBody, 'name',             StringToJson( pDatabaseName ) );\r\nsBody = JsonAdd( sBody, 'replicas',         NumberToString( pReplicaCount ) );\r\nsBody = JsonAdd( sBody, 'schedule',         StringToJson( sSchedule ) );\r\nsBody = JsonAdd( sBody, 'resources',        '{\"replica\":{\"memory\":{\"requests\":\"'|NumberToString(pMemory)|'G\",\"limits\":\"'|NumberToString(pMemory)|'G\"}},\"storage\":{\"size\":\"'|NumberToString(pDiskSpace)|'G\"}}' );\r\nsBody = JsonAdd( sBody, 'autoBackupOptOut', IF( sSchedule @= '', 'true', 'false' ) );\r\n\r\n# Get Database Details\r\nsURL = JsonToString( sConnectionDetails, '/sURL' );\r\nsRequestURL = 'https://us-east-1.planninganalytics.saas.ibm.com/pakate/v0/v12db';\r\n\r\n# Get Server Host ID\r\nExecuteProcess( '}bedrock.process.execute_http_request',\r\n  'pMethod', 'POST',\r\n  'pURL', sRequestURL,\r\n  'pBody', sBody,\r\n  'pJson', pJson );\r\nsResponse = sBedrockReturnValue;\r\nLogOutput( 'INFO', 'sResponse: '|sResponse );\r\n\r\n#EndRegion - Execute HTTP Requests\r\n#################################################################################################\r\n\r\n##################################################################################################\r\n#Region - Cleanup\r\n\r\nIF( sDatabaseParameterType @<> 'object' % pConnectionName @= '' );\r\n  ExecuteProcess( '}bedrock.process.execute_http_request', 'pMethod', 'POST', 'pURL', sURL | '/ActiveSession/tm1.Close' );\r\nENDIF;\r\n\r\n#EndRegion - Cleanup\r\n#################################################################################################\r\n",
+  "MetadataProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****",
+  "DataProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****",
+  "EpilogProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****",
+  "HasSecurityAccess": false,
+  "UIData": "",
+  "DataSource": {
+    "Type": "None"
+  },
+  "Parameters": [
+    {
+      "Name": "pConnectionName",
+      "Prompt": "REQUIRED: Name of the connection",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pDatabaseName",
+      "Prompt": "REQUIRED: Name of the target database",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pReplicaCount",
+      "Prompt": "",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pMemory",
+      "Prompt": "",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pDiskSpace",
+      "Prompt": "",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pBackupStartTime",
+      "Prompt": "",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pLogOutput",
+      "Prompt": "OPTIONAL: Write parameters and action summary to server message log (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pStrictErrorHandling",
+      "Prompt": "OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pJson",
+      "Prompt": "OPTIONAL: JSON Object with process parameter values. This will overwrite user passed parameters for all included parameters.",
+      "Value": "{}",
+      "Type": "String"
+    }
+  ],
+  "Variables": [
+    {
+      "Name": "vContext",
+      "Type": "String",
+      "Position": 1,
+      "StartByte": 0,
+      "EndByte": 0
+    }
+  ],
+  "VariablesUIData": [
+    "VarType=32\fColType=827\f"
+  ]
+}

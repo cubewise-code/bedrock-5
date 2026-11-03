@@ -1,0 +1,62 @@
+{
+  "Name": "}bedrock.server.backup.delete",
+  "PrologProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n################################################################################################# \r\n##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0.0~~##\r\n################################################################################################# \r\n\r\n#Region @DOC\r\n#### Description:\r\n#Deletes a backup of a Planning Analytics SaaS database.\r\n#\r\n#### How to Use:\r\n#\r\n#- `pDatabaseName`: REQUIRED: the database the backup belongs to.\r\n#- `pBackupFileName`: REQUIRED: the backup file name, including the extension, e.g. `nightly.tgz`.\r\n#- `pConnectionName`: a connection name configured in `}bedrock.session.start`, or a connection-details JSON object returned by it. When a JSON object is passed, that session is reused and is not closed at the end of this process.\r\n#- `pLogOutput`, `pStrictErrorHandling` and `pJson` work as in all bedrock processes.\r\n#\r\n#The process fails if no backup with that name is found in `}bedrock.server.backup.list`.\r\n#\r\n#> [!IMPORTANT]\r\n#> This process calls the Planning Analytics SaaS backup API (`/pakate/v0/v12db/...`) and only works on Planning Analytics SaaS. The host is taken from the connection's URL.\r\n#\r\n#> [!WARNING]\r\n#> Deleted backups cannot be recovered.\r\n#EndRegion @DOC\r\n\r\n### Global Variables\r\npJson = IF( pJson @= '', '{}', pJson );\r\nStringGlobalVariable(  'sBedrockReturnValue' );\r\nNumericGlobalVariable( 'nBedrockReturnValue' );\r\n\r\n### Constants ###\r\ncThisProcName   = GetProcessName();\r\ncUserName       = TM1User();\r\ncTimeStamp      = TimSt( Now, '\\Y\\m\\d\\h\\i\\s' );\r\ncRandomInt      = NumberToString( INT( RAND( ) * 1000000000 ));\r\ncTemp           = cThisProcName |'_'| cTimeStamp |'_'| cRandomInt;\r\nsMessages       = '{\"Process\": \"'|cThisProcName|'\", \"User\": \"'|cUsername|'\", \"Info\": [\"Process: '''|cThisProcName|''' run by User: '''|cUsername|'''.\"], \"Error\": []}';\r\ncMsgErrorContent= 'User:%cUserName% Process:%cThisProcName% ErrorMsg:%sMessage%';\r\n\r\n#################################################################################################\r\n#Region - Process Parameters\r\n\r\npJson = IF( JsonType( pJson ) @<> 'object', '{}', pJson );\r\nsMessages = '{\"Process\": \"'|GetProcessName()|'\", \"User\": \"'|TM1User()|'\", \"Info\": [\"Process: '''|GetProcessName()|''' run by User: '''|TM1User()|'''.\"], \"Error\": []}';\r\npDefaultParameters = '{\r\n  \"pConnectionName\":  null,\r\n  \"pDatabaseName\":  null,\r\n  \"pBackupFileName\":                null,\r\n  \"pLogOutput\":           0,\r\n  \"pStrictErrorHandling\": 0\r\n}';\r\n\r\npPassedParameters = '{\r\n  \"pConnectionName\":  '|StringToJson  ( pConnectionName  )|',\r\n  \"pDatabaseName\":  '|StringToJson  ( pDatabaseName  )|',\r\n  \"pBackupFileName\":                '|StringToJson  ( pBackupFileName                )|',\r\n  \"pLogOutput\":           '|NumberToString( pLogOutput           )|',\r\n  \"pStrictErrorHandling\": '|NumberToString( pStrictErrorHandling )|'\r\n}';\r\n\r\npJson = JsonMergePatch( pPassedParameters, pJson );\r\n# String Parameters\r\nIF( JsonType( JsonGet( pJson, '/pConnectionName' ) ) @= 'string' );\r\n  pConnectionName = JsonToString( pJson, '/pConnectionName' );\r\nELSE;\r\n  pConnectionName = JsonGet( pJson, '/pConnectionName' );\r\nENDIF;\r\npDatabaseName  =                 JsonToString( pJson, '/pDatabaseName'  );\r\npBackupFileName                =                 JsonToString( pJson, '/pBackupFileName'                );\r\n# Numeric Parameters\r\npLogOutput           = StringToNumber( JsonToString( pJson, '/pLogOutput'           ) );\r\npStrictErrorHandling = StringToNumber( JsonToString( pJson, '/pStrictErrorHandling' ) );\r\n\r\n### Get the parameters that differ from the default\r\npDiffer = JsonDiff( pDefaultParameters, pJson );\r\nnSize = JsonSize( pDiffer );\r\nWHILE( nSize > 0 );\r\n  nSize = nSize - 1;\r\n  pDiffer = JsonReplace( pDiffer, '/'|NumberToString( nSize )|'/op', '\"add\"' );\r\nEND;\r\npJson = JsonPatch( '{}', pDiffer );\r\n\r\n### LogOutput parameters\r\nnSize = JsonSize( pJson );\r\nWHILE( nSize > 0 );\r\n  nSize = nSize - 1;\r\n  sKey = JsonGetKey( pJson, nSize );\r\n  pPassedParameters = JsonReplace( pPassedParameters, sKey, JsonGet( pJson, sKey ) );\r\nEND;\r\n\r\nsMessages = JsonAdd( sMessages, '/Info/0', pPassedParameters );\r\nIF( pLogOutput = 1 );\r\n  LogOutput('INFO', JsonToString( sMessages, '/Info/0' ) );\r\nENDIF;\r\n\r\n#EndRegion - Process Parameters\r\n#################################################################################################\r\n\r\n#################################################################################################\r\n#Region - Validate Parameters\r\n\r\n# Get Database Connection Details\r\nsDatabaseParameterType = JsonType( pConnectionName );\r\nIF( sDatabaseParameterType @<> 'object' );\r\n  ExecuteProcess( '}bedrock.session.start', 'pConnectionName', pConnectionName, 'pJson', pJson ); sConnectionDetails = sBedrockReturnValue;\r\nELSE;\r\n  sConnectionDetails = pConnectionName;\r\nENDIF;\r\npJson = JsonAdd( pJson, 'pConnectionName', sConnectionDetails );\r\n\r\n### Authentication headers for requests to this connection\r\nsAuthHeaders = '[]';\r\nIF( JsonToString( sConnectionDetails, '/sAuthHeader' ) @<> '' );\r\n  sAuthHeaders = JsonAdd( sAuthHeaders, '', StringToJson( 'Authorization: ' | JsonToString( sConnectionDetails, '/sAuthHeader' ) ) );\r\nELSEIF( JsonToString( sConnectionDetails, '/sSID' ) @<> '' );\r\n  sAuthHeaders = JsonAdd( sAuthHeaders, '', StringToJson( 'Cookie: ' | JsonToString( sConnectionDetails, '/sSID' ) ) );\r\nENDIF;\r\n\r\nsConnectionURL = JsonToString( sConnectionDetails, '/sURL' );\r\n### Planning Analytics SaaS host, taken from the connection's base URL\r\nnHostStart  = SCAN( '://', sConnectionURL ) + 3;\r\nnHostLength = SCAN( '/', DELET( sConnectionURL, 1, nHostStart - 1 ) ) - 1;\r\nsHostURL    = SUBST( sConnectionURL, 1, nHostStart - 1 + nHostLength );\r\n\r\n### If errors occurred terminate process with a major error status ###\r\nIF( JsonSize( sMessages, '/Error' ) <> 0 );\r\n  IF( pStrictErrorHandling = 1 );\r\n    ProcessQuit;\r\n  ELSE;\r\n    ProcessBreak;\r\n  ENDIF;\r\nENDIF;\r\n\r\n# Validate pBackupFileName\r\npBackupFileName = TRIM( pBackupFileName );\r\n\r\nExecuteProcess( '}bedrock.server.backup.list',\r\n  'pBackupType', 'BOTH',\r\n  'pJson', pJson ); \r\nsBackups = sBedrockReturnValue;\r\n\r\nnBackupFound = 0;\r\nnSize = JsonSize( sBackups );\r\nWHILE( nSize > 0 );\r\n  nSize = nSize - 1;\r\n  \r\n  sBackup = JsonGet( sBackups, nSize );\r\n  sBackupName = JsonToString( sBackup, '/name' );\r\n  IF( sBackupName @= pBackupFileName );\r\n    sBackupSize = JsonGet( sBackup, 'size' );\r\n    sBackupType = JsonToString( sBackup, '/type' );\r\n    nBackupFound = 1;\r\n    BREAK;\r\n  ENDIF;\r\nEND;\r\n\r\nIF( nBackupFound = 0 );\r\n  nErrors = 1;\r\n  sMessage = 'The backup could not be found'; LogOutput( 'ERROR', EXPAND( cMsgErrorContent ) );\r\n  ProcessBreak;\r\nENDIF;\r\n\r\n#EndRegion - Validate Parameters\r\n#################################################################################################\r\n\r\n#################################################################################################\r\n#Region - Execute HTTP Requests\r\n\r\n# Get Database Details\r\nsURL = JsonToString( sConnectionDetails, '/sURL' );\r\nsRequestURL = sHostURL | '/pakate/v0/v12db/'|pDatabaseName|'/backups/'|LOWER( sBackupType )|'/'|pBackupFileName;\r\n\r\n# Get Server Host ID\r\nExecuteProcess( '}bedrock.process.execute_http_request',\r\n  'pMethod', 'DELETE',\r\n  'pURL', sRequestURL,\r\n  'pHeaders', sAuthHeaders,\r\n  'pJson', pJson );\r\nIF( pLogOutput = 1 );\r\n  LogOutput( 'INFO', sBedrockReturnValue );\r\nENDIF;\r\n\r\n#EndRegion - Execute HTTP Requests\r\n#################################################################################################\r\n",
+  "MetadataProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****",
+  "DataProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****",
+  "EpilogProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n##################################################################################################\r\n#Region - Cleanup\r\n\r\nIF( nErrors <> 0 );\r\n  IF( pStrictErrorHandling = 1 );\r\n    ProcessQuit;\r\n  ENDIF;\r\nENDIF;\r\n\r\nIF( sDatabaseParameterType @<> 'object' );\r\n  ExecuteProcess( '}bedrock.process.execute_http_request', 'pMethod', 'POST', 'pURL', sURL | '/ActiveSession/tm1.Close', 'pHeaders', sAuthHeaders );\r\nENDIF;\r\n\r\n#EndRegion - Cleanup\r\n#################################################################################################",
+  "HasSecurityAccess": false,
+  "UIData": "",
+  "DataSource": {
+    "Type": "None"
+  },
+  "Parameters": [
+    {
+      "Name": "pConnectionName",
+      "Prompt": "OPTIONAL: Connection name in }bedrock.session.start, or a connection-details JSON object returned by it. If blank, the session.start default connection is used",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pDatabaseName",
+      "Prompt": "REQUIRED: Database the backup belongs to",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pBackupFileName",
+      "Prompt": "REQUIRED: Backup file name including extension, e.g. nightly.tgz",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pLogOutput",
+      "Prompt": "OPTIONAL: Write parameters and action summary to server message log (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pStrictErrorHandling",
+      "Prompt": "OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pJson",
+      "Prompt": "OPTIONAL: JSON Object with process parameter values. This will overwrite user passed parameters for all included parameters.",
+      "Value": "{}",
+      "Type": "String"
+    }
+  ],
+  "Variables": [
+    {
+      "Name": "vContext",
+      "Type": "String",
+      "Position": 1,
+      "StartByte": 0,
+      "EndByte": 0
+    }
+  ],
+  "VariablesUIData": [
+    "VarType=32\fColType=827\f"
+  ]
+}

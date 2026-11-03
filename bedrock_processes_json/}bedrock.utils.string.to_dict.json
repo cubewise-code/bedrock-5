@@ -1,0 +1,58 @@
+{
+  "Name": "}bedrock.utils.string.to_dict",
+  "PrologProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n################################################################################################# \r\n##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0.0~~##\r\n################################################################################################# \r\n\r\n#Region @DOC\r\n# Description:\r\n# This process creates a view that can be used for exporting, copying or zeroing out numbers.\r\n\r\n# Use case: Intended for development/prototyping or production.\r\n# 1/ Create a view to zero out data.\r\n# 2/ Create a view to use as a source for exporting or copying.\r\n\r\n# Note:\r\n# Naturally, a valid cube name (pCube) is mandatory otherwise the process will abort.\r\n# The pFilter parameter contains the dimenson and elements to be used for filtering:\r\n# - The format of the pFilter parameter is as follows delimiters of :, & and +: Dim1: Elem1 + Elem2 & Dim2: Elem3 + Elem4.\r\n# - The dimension parameters do not need to be given in the index order of dimensions in the cube.\r\n# - The dimension name is specified as the first member of the delimited string of elements.\r\n# - If consols are skipped the N level children of any consolidated filter elements will be used.\r\n# - Spaces are ignored so use them to make your filter more readable.\r\n# - pTemp: This parameter will control whether to make the view temporary (value 1) or if the\r\n#   view will be permanently retained (value 0).\r\n#EndRegion @DOC\r\n\r\n### Global Variables\r\npJson = IF( pJson @= '', '{}', pJson );\r\nStringGlobalVariable(  'sBedrockReturnValue' );\r\nNumericGlobalVariable( 'nBedrockReturnValue' );\r\n\r\n### Constants ###\r\ncThisProcName   = GetProcessName();\r\ncUserName       = TM1User();\r\ncTimeStamp      = TimSt( Now, '\\Y\\m\\d\\h\\i\\s' );\r\ncRandomInt      = NumberToString( INT( RAND( ) * 1000000000 ));\r\ncTemp           = cThisProcName |'_'| cTimeStamp |'_'| cRandomInt;\r\nsErrorMessage   = '{\"Process\": \"'|cThisProcName|'\", \"User\": \"'|cUsername|'\", \"Messages\":[]}';\r\nsInfoMessage    = '{\"Process\": \"'|cThisProcName|'\", \"User\": \"'|cUsername|'\", \"Messages\":[]}';\r\n\r\n\r\n#################################################################################################\r\n#Region - Process Parameters\r\n\r\npJson = IF( JsonType( pJson ) @<> 'object', '{}', pJson );\r\nsMessages = '{\"Process\": \"'|GetProcessName()|'\", \"User\": \"'|TM1User()|'\", \"Info\": [\"Process: '''|GetProcessName()|''' run by User: '''|TM1User()|'''.\"], \"Error\": []}';\r\npDefaultParameters = '{\r\n  \"pItemDelimiter\":       \";\",\r\n  \"pKeyValueDelimiter\":   \"=\",\r\n  \"pString\":              null,\r\n  \"pCASIKeys\":            0,\r\n  \"pLogOutput\":           0,\r\n  \"pStrictErrorHandling\": 0\r\n}';\r\n\r\npPassedParameters = '{\r\n  \"pItemDelimiter\":       '|StringToJson  ( pItemDelimiter       )|',\r\n  \"pKeyValueDelimiter\":   '|StringToJson  ( pKeyValueDelimiter   )|',\r\n  \"pString\":              '|StringToJson  ( pString              )|',\r\n  \"pCASIKeys\":            '|NumberToString( pCASIKeys            )|',\r\n  \"pLogOutput\":           '|NumberToString( pLogOutput           )|',\r\n  \"pStrictErrorHandling\": '|NumberToString( pStrictErrorHandling )|'\r\n}';\r\n\r\npJson = JsonMergePatch( pPassedParameters, pJson );\r\n# String Parameters\r\npItemDelimiter       =                 JsonToString( JsonGet( pJson, 'pItemDelimiter'     ) );\r\npKeyValueDelimiter   =                 JsonToString( JsonGet( pJson, 'pKeyValueDelimiter' ) );\r\npString              =                 JsonToString( JsonGet( pJson, 'pString'            ) );\r\n# Numeric Parameters\r\npCASIKeys            = StringToNumber( JsonToString( JsonGet( pJson, 'pCASIKeys'          ) ) );\r\npLogOutput           = StringToNumber( JsonToString( JsonGet( pJson, 'pLogOutput'         ) ) );\r\npStrictErrorHandling = StringToNumber( JsonToString( JsonGet( pJson, 'pStrictErrorHandling' ) ) );\r\n\r\n### Get the parameters that differ from the default\r\npDiffer = JsonDiff( pDefaultParameters, pJson );\r\nnSize = JsonSize( pDiffer );\r\nWHILE( nSize > 0 );\r\n  nSize = nSize - 1;\r\n  pDiffer = JsonReplace( pDiffer, '/'|NumberToString( nSize )|'/op', '\"add\"' );\r\nEND;\r\npJson = JsonPatch( '{}', pDiffer );\r\n\r\n### LogOutput parameters\r\nsMessages = JsonAdd( sMessages, '/Info/-', pJson );\r\nIF( pLogOutput = 1 );\r\n  LogOutput('INFO', JsonToString( sMessages, '/Info/0', 0, ' ' ) );\r\nENDIF;\r\n\r\n#EndRegion - Process Parameters\r\n#################################################################################################\r\n\r\nnDelimiterLength = LONG( pKeyValueDelimiter );\r\n# Convert pFilter to JSON array of key-value pairs\r\nExecuteProcess( '}bedrock.utils.string.to_list', 'pString', pString, 'pDelimiter', pItemDelimiter );\r\nsArray = sBedrockReturnValue;\r\nsReturnValue = '{}';\r\n\r\nWHILE( JsonSize( sArray ) > 0 );\r\n  sElement = JsonToString( JsonGet( sArray, '/0' ) );\r\n  sArray = JsonRemove( sArray, '/0' );\r\n  \r\n  nDelimiterIndex = SCAN( pKeyValueDelimiter, sElement );\r\n  IF( nDelimiterIndex <> 0 );\r\n    sKey = SUBST( sElement, 1, nDelimiterIndex - 1 );\r\n    sVal = StringToJson( SUBST( sElement, nDelimiterIndex + nDelimiterLength, LONG( sElement ) ) );\r\n  ELSE;\r\n    sKey = sElement;\r\n    sVal = 'null';\r\n  ENDIF;\r\n  \r\n  #CASI Key\r\n  IF( pCASIKeys = 1 );\r\n    WHILE( SCAN( ' ', sKey ) <> 0 ); sKey = DELET( sKey, SCAN( ' ', sKey), 1 ); END; sKey = LOWER( sKey );\r\n  ENDIF;\r\n  \r\n  sReturnValue = JsonAdd( sReturnValue, sKey, sVal );\r\nEND;\r\nsBedrockReturnValue = sReturnValue;\r\n",
+  "MetadataProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****",
+  "DataProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****",
+  "EpilogProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****",
+  "HasSecurityAccess": false,
+  "UIData": "",
+  "DataSource": {
+    "Type": "None"
+  },
+  "Parameters": [
+    {
+      "Name": "pString",
+      "Prompt": "REQUIRED: Input string",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pKeyValueDelimiter",
+      "Prompt": "OPTIONAL: Delimiter between a key and it's value (Default = '=')",
+      "Value": "=",
+      "Type": "String"
+    },
+    {
+      "Name": "pItemDelimiter",
+      "Prompt": "OPTIONAL: Delimiter between key-value pairs (Default = ';')",
+      "Value": ";",
+      "Type": "String"
+    },
+    {
+      "Name": "pCASIKeys",
+      "Prompt": "OPTIONAL: Make keys Case And Space Insensitive (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pLogOutput",
+      "Prompt": "OPTIONAL: Write parameters and action summary to server message log (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pStrictErrorHandling",
+      "Prompt": "OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pJson",
+      "Prompt": "OPTIONAL: JSON Object with process parameter values. This will overwrite user passed parameters for all included parameters.",
+      "Value": "{}",
+      "Type": "String"
+    }
+  ],
+  "Variables": [],
+  "VariablesUIData": []
+}

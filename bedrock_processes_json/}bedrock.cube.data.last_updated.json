@@ -1,0 +1,58 @@
+{
+  "Name": "}bedrock.cube.data.last_updated",
+  "PrologProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n################################################################################################# \r\n##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 4.0.0~~##\r\n################################################################################################# \r\n\r\n#Region @DOC\r\n# Description:\r\n# This process creates a view that can be used for exporting, copying or zeroing out numbers.\r\n\r\n# Use case: Intended for development/prototyping or production.\r\n# 1/ Create a view to zero out data.\r\n# 2/ Create a view to use as a source for exporting or copying.\r\n\r\n# Note:\r\n# Naturally, a valid cube name (pCube) is mandatory otherwise the process will abort.\r\n# The pFilter parameter contains the dimenson and elements to be used for filtering:\r\n# - The format of the pFilter parameter is as follows delimiters of :, & and +: Dim1: Elem1 + Elem2 & Dim2: Elem3 + Elem4.\r\n# - The dimension parameters do not need to be given in the index order of dimensions in the cube.\r\n# - The dimension name is specified as the first member of the delimited string of elements.\r\n# - If consols are skipped the N level children of any consolidated filter elements will be used.\r\n# - Spaces are ignored so use them to make your filter more readable.\r\n# - pTemp: This parameter will control whether to make the view temporary (value 1) or if the\r\n#   view will be permanently retained (value 0).\r\n#EndRegion @DOC\r\n\r\n### Global Variables\r\npJson = IF( pJson @= '', '{}', pJson );\r\nStringGlobalVariable(  'sBedrockReturnValue' );\r\nNumericGlobalVariable( 'nBedrockReturnValue' );\r\n\r\n### Constants ###\r\ncThisProcName   = GetProcessName();\r\ncUserName       = TM1User();\r\ncTimeStamp      = TimSt( Now, '\\Y\\m\\d\\h\\i\\s' );\r\ncRandomInt      = NumberToString( INT( RAND( ) * 1000000000 ));\r\ncTemp           = cThisProcName |'_'| cTimeStamp |'_'| cRandomInt;\r\nsMessages       = '{\"Process\": \"'|cThisProcName|'\", \"User\": \"'|cUsername|'\", \"Info\": [\"Process: '''|cThisProcName|''' run by User: '''|cUsername|'''.\"], \"Error\": []}';\r\n\r\n#################################################################################################\r\n#Region - Process Parameters\r\n\r\npJson = IF( JsonType( pJson ) @<> 'object', '{}', pJson );\r\nsMessages = '{\"Process\": \"'|GetProcessName()|'\", \"User\": \"'|TM1User()|'\", \"Info\": [\"Process: '''|GetProcessName()|''' run by User: '''|TM1User()|'''.\"], \"Error\": []}';\r\npDefaultParameters = '{\r\n  \"pProcess\":             null,\r\n  \"pProcessParameters\":   \"\",\r\n  \"pSourceDatabaseName\":  null,\r\n  \"pTargetDatabaseName\":  null,\r\n  \"pLogOutput\":           0,\r\n  \"pStrictErrorHandling\": 0\r\n}';\r\n\r\npPassedParameters = '{\r\n  \"pProcess\":             '|StringToJson  ( pProcess             )|',\r\n  \"pProcessParameters\":   '|StringToJson  ( pProcessParameters   )|',\r\n  \"pSourceDatabaseName\":  '|StringToJson  ( pSourceDatabaseName  )|',\r\n  \"pTargetDatabaseName\":  '|StringToJson  ( pTargetDatabaseName  )|',\r\n  \"pLogOutput\":           '|NumberToString( pLogOutput           )|',\r\n  \"pStrictErrorHandling\": '|NumberToString( pStrictErrorHandling )|'\r\n}';\r\n\r\npJson = JsonMergePatch( pPassedParameters, pJson );\r\n# String Parameters\r\npProcess             =                 JsonToString( pJson, '/pProcess'             );\r\npProcessParameters   =                 JsonToString( pJson, '/pProcessParameters'   );\r\npSourceDatabaseName  =                 JsonToString( pJson, '/pSourceDatabaseName'  );\r\npTargetDatabaseName  =                 JsonToString( pJson, '/pTargetDatabaseName'  );\r\n# Numeric Parameters\r\npLogOutput           = StringToNumber( JsonToString( pJson, '/pLogOutput'           ) );\r\npStrictErrorHandling = StringToNumber( JsonToString( pJson, '/pStrictErrorHandling' ) );\r\n\r\n### Get the parameters that differ from the default\r\npDiffer = JsonDiff( pDefaultParameters, pJson );\r\nnSize = JsonSize( pDiffer );\r\nWHILE( nSize > 0 );\r\n  nSize = nSize - 1;\r\n  pDiffer = JsonReplace( pDiffer, '/'|NumberToString( nSize )|'/op', '\"add\"' );\r\nEND;\r\npJson = JsonPatch( '{}', pDiffer );\r\n\r\n### LogOutput parameters\r\nnSize = JsonSize( pJson );\r\nWHILE( nSize > 0 );\r\n  nSize = nSize - 1;\r\n  sKey = JsonGetKey( pJson, nSize );\r\n  pPassedParameters = JsonReplace( pPassedParameters, sKey, JsonGet( pJson, sKey ) );\r\nEND;\r\n\r\nsMessages = JsonAdd( sMessages, '/Info/0', pPassedParameters );\r\nIF( pLogOutput = 1 );\r\n  LogOutput('INFO', JsonToString( sMessages, '/Info/0' ) );\r\nENDIF;\r\n\r\n#EndRegion - Process Parameters\r\n#################################################################################################\r\n\r\n#################################################################################################\r\n#Region - Validate Parameters\r\n\r\n# Get Database Connection Details\r\nsSourceDatabaseParameterType = JsonType( pSourceDatabaseName );\r\nIF( sSourceDatabaseParameterType @<> 'object' );\r\n  ExecuteProcess( '}bedrock-v12.session.start', 'pDatabaseName', pSourceDatabaseName, 'pJson', pJson ); sSourceConnectionDetails = sBedrockReturnValue;\r\nELSE;\r\n  sSourceConnectionDetails = pSourceDatabaseName;\r\nENDIF;\r\n\r\n#sTargetDatabaseParameterType = JsonType( pTargetDatabaseName );\r\n#IF( sTargetDatabaseParameterType @<> 'object' );\r\n#  ExecuteProcess( '}bedrock-v12.session.start', 'pDatabaseName', pTargetDatabaseName, 'pJson', pJson, 'pLogOutput', 1 ); sTargetConnectionDetails = sBedrockReturnValue;\r\n#ELSE;\r\n#  sTargetConnectionDetails = pTargetDatabaseName;\r\n#ENDIF;\r\n\r\n### If errors occurred terminate process with a major error status ###\r\nIF( JsonSize( sMessages, '/Error' ) <> 0 );\r\n    ProcessBreak;\r\nENDIF;\r\n\r\n#EndRegion - Validate Parameters\r\n#################################################################################################\r\n\r\n#################################################################################################\r\n#Region - Execute Process Remotely\r\n\r\n# Get connection details\r\nsSourceURL = JsonToString( sSourceConnectionDetails, '/sURL' );\r\nsSourceSID = JsonToString( sSourceConnectionDetails, '/sSID' );\r\n\r\n# Check if process exists on target\r\n\r\nsURL = sSourceURL | '/Servers(''bedrock-5-dev'')/transactionlog';\r\nsURL = 'https://us-east-1.planninganalytics.saas.ibm.com/prism/harmony/tiprocess/api/v1/Servers(''bedrock-5-dev'')/transactionlog';\r\nsBody = '{\r\n  \"entryLimit\":500,\r\n  \"skip\":0,\r\n  \"fromTime\":\"2026-01-27T06:00:00.000Z\",\r\n  \"toTime\":\"2026-01-29T06:59:59.000Z\",\r\n  \"fieldMatch\":\"ALL\",\r\n  \"orderby\": \"TimeStamp\",\r\n  \"top\":1,\r\n  \"filterFields\":[\r\n    {\r\n      \"name\":\"Cube\",\r\n      \"operator\":\"EQUALS\",\r\n      \"value\":\"Cube\"\r\n    }\r\n  ]\r\n}';\r\n\r\nExecuteProcess('}bedrock-v12.process.execute_http_request',\r\n  'pMethod','POST',\r\n  'pURL', sURL,\r\n  'pBody', sBody,\r\n  'pHeaders', '[\"Content-Type:application/json; charset=utf-8\"]' );\r\nsResponse = sBedrockReturnValue;\r\nLogOutput( 'INFO', 'sResponse:'|sResponse );\r\n\r\n\r\n##EndRegion - Execute Process Remotely\r\n##################################################################################################\r\n\r\n#################################################################################################\r\n#Region - Cleanup\r\n\r\n\r\n# Delete process on remote server if it was created\r\n#IF( nProcessExists = 0 );\r\n#  ExecuteHttpRequest( 'DELETE', sTargetURL | '/Processes('''|pProcess|''')' );\r\n#  sBody = HttpResponseGetBody(); nStatusCode = HttpResponseGetStatusCode();\r\n#\r\n#  sInfos = JsonAdd( sInfos, '', 'ExecuteHttpRequest: '| '{\"method\": \"POST\", \"url\": '|StringToJson(sURL)|', \"response_code\": '|NumberToString(nStatusCode)|', \"response_body\": '|StringToJson(sBody)|'}' );\r\n#  IF( pLogOutput = 1 ); LogOutput( 'INFO', JsonToString( JsonGet( sInfos, JsonSize( sInfos ) - 1 ) ) ); ENDIF;\r\n#ENDIF;\r\n\r\n# Close sessions\r\nIF( sSourceDatabaseParameterType @<> 'object' );\r\n  ExecuteHttpRequest( 'POST', sSourceURL | '/ActiveSession/tm1.Close', '-h Content-Type:application/json; charset=utf-8' );\r\nENDIF;\r\n\r\n#EndRegion - Cleanup\r\n#################################################################################################\r\n",
+  "MetadataProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****",
+  "DataProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****",
+  "EpilogProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****",
+  "HasSecurityAccess": false,
+  "UIData": "",
+  "DataSource": {
+    "Type": "None"
+  },
+  "Parameters": [
+    {
+      "Name": "pProcess",
+      "Prompt": "REQUIRED: Process name",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pProcessParameters",
+      "Prompt": "OPTIONAL: JSON object of parameters to execute the process with",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pSourceDatabaseName",
+      "Prompt": "REQUIRED: Name of source database",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pTargetDatabaseName",
+      "Prompt": "REQUIRED: Name of target database",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pLogOutput",
+      "Prompt": "OPTIONAL: Write parameters and action summary to server message log (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pStrictErrorHandling",
+      "Prompt": "OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pJson",
+      "Prompt": "OPTIONAL: JSON Object with process parameter values. This will overwrite user passed parameters for all included parameters.",
+      "Value": "{}",
+      "Type": "String"
+    }
+  ],
+  "Variables": [],
+  "VariablesUIData": []
+}

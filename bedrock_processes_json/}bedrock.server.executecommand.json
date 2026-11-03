@@ -1,9 +1,9 @@
 {
   "Name": "}bedrock.server.executecommand",
-  "PrologProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n#Region @DOC\r\n# Description:\r\n# This process has been depreciated and only exists to maintain backwards compatibility. \r\n#\r\n#EndRegion @DOC\r\n\r\nLogOutput( 'WARNING', 'Process \"' | GetProcessName() | '\" has been depreciated and should no longer be called.' );\r\n",
+  "PrologProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n#Region @DOC\r\n# Description:\r\n# This process has been deprecated and only exists to maintain backwards compatibility. \r\n#\r\n#EndRegion @DOC\r\n\r\nLogOutput( 'WARNING', 'Process \"' | GetProcessName() | '\" has been deprecated and should no longer be called.' );\r\n",
   "MetadataProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n",
   "DataProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n",
-  "EpilogProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n#DEPRECIATED",
+  "EpilogProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n#DEPRECATED",
   "HasSecurityAccess": false,
   "UIData": "",
   "DataSource": {
@@ -39,12 +39,6 @@
       "Prompt": "OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean. Default = 0)",
       "Value": 0,
       "Type": "Numeric"
-    },
-    {
-      "Name": "pJson",
-      "Prompt": "OPTIONAL: JSON Object with process parameter values. This will overwrite user passed parameters.",
-      "Value": "{}",
-      "Type": "String"
     }
   ],
   "Variables": [
@@ -56,5 +50,7 @@
       "EndByte": 0
     }
   ],
-  "VariablesUIData": []
+  "VariablesUIData": [
+    "VarType=32\fColType=827\f"
+  ]
 }

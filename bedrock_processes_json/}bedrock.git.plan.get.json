@@ -1,0 +1,40 @@
+{
+  "Name": "}bedrock.git.plan.get",
+  "PrologProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n#################################################################################################\r\n##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 5.0.0~~##\r\n#################################################################################################\r\n\r\n#Region @DOC\r\n#### Description:\r\n#Lists the Git plans on the TM1 database. Wraps the `GET /GitPlans` REST API endpoint.\r\n#\r\n#### How to Use:\r\n#\r\n#Use this to review push or pull plans created with `pExecute = 0`, and to find a plan ID for `}bedrock.git.plan.execute`.\r\n#\r\n#- `pConnectionName`: a connection name configured in `}bedrock.session.start`, or a connection-details JSON object returned by it. When a JSON object is passed, that session is reused and is not closed at the end of this process.\r\n#- `pLogOutput`, `pStrictErrorHandling` and `pJson` work as in all bedrock processes.\r\n#\r\n#### Return Value:\r\n#`sBedrockReturnValue` is set to the response of the `GitPlans` request.\r\n#EndRegion @DOC\r\n\r\n### Global Variables\r\npJson = IF( pJson @= '', '{}', pJson );\r\nStringGlobalVariable(  'sBedrockReturnValue' );\r\nNumericGlobalVariable( 'nBedrockReturnValue' );\r\n\r\n### Constants\r\ncThisProcName = GetProcessName();\r\ncUserName     = TM1User();\r\nsMessages     = '{\"Process\": \"'|cThisProcName|'\", \"User\": \"'|cUserName|'\", \"Info\": [\"Process: '''|cThisProcName|''' run by User: '''|cUserName|'''.\"], \"Error\": []}';\r\n\r\n#################################################################################################\r\n#Region - Process Parameters\r\n\r\npJson = IF( JsonType( pJson ) @<> 'object', '{}', pJson );\r\n\r\npDefaultParameters = '{\r\n  \"pConnectionName\":        \"\",\r\n  \"pLogOutput\":           0,\r\n  \"pStrictErrorHandling\": 0\r\n}';\r\n\r\npPassedParameters = '{\r\n  \"pConnectionName\":        '|StringToJson( pConnectionName          )|',\r\n  \"pLogOutput\":           '|NumberToString( pLogOutput           )|',\r\n  \"pStrictErrorHandling\": '|NumberToString( pStrictErrorHandling )|'\r\n}';\r\n\r\npJson = JsonMergePatch( pPassedParameters, pJson );\r\n\r\nIF( JsonType( JsonGet( pJson, '/pConnectionName' ) ) @= 'string' );\r\n  pConnectionName = JsonToString( pJson, '/pConnectionName' );\r\nELSE;\r\n  pConnectionName = JsonGet( pJson, '/pConnectionName' );\r\nENDIF;\r\npLogOutput           = StringToNumber( JsonToString( pJson, '/pLogOutput'           ) );\r\npStrictErrorHandling = StringToNumber( JsonToString( pJson, '/pStrictErrorHandling' ) );\r\n\r\nIF( pLogOutput = 1 );\r\n  LogOutput( 'INFO', 'Process: ' | cThisProcName );\r\nENDIF;\r\n\r\n#EndRegion - Process Parameters\r\n#################################################################################################\r\n\r\n#################################################################################################\r\n#Region - Validate Parameters\r\n\r\nIF( JsonSize( sMessages, '/Error' ) <> 0 );\r\n  IF( pLogOutput = 1 );\r\n    LogOutput( 'ERROR', 'Validation failed: ' | JsonToString( sMessages, '/Error' ) );\r\n  ENDIF;\r\n  IF( pStrictErrorHandling = 1 );\r\n    ProcessQuit;\r\n  ELSE;\r\n    ProcessBreak;\r\n  ENDIF;\r\nENDIF;\r\n\r\n#EndRegion - Validate Parameters\r\n#################################################################################################\r\n\r\n#################################################################################################\r\n#Region - Get Connection Details\r\n\r\n# Get Database Connection Details\r\nsDatabaseParameterType = JsonType( pConnectionName );\r\nIF( sDatabaseParameterType @<> 'object' );\r\n  ExecuteProcess( '}bedrock.session.start', 'pConnectionName', pConnectionName, 'pJson', pJson ); sConnectionDetails = sBedrockReturnValue;\r\nELSE;\r\n  sConnectionDetails = pConnectionName;\r\nENDIF;\r\npJson = JsonAdd( pJson, 'pConnectionName', sConnectionDetails );\r\n\r\nsURL        = JsonToString( sConnectionDetails, '/sURL' );\r\nsAuthHeader = JsonToString( sConnectionDetails, '/sAuthHeader' );\r\n\r\n### Authentication headers for requests to this connection\r\nsAuthHeaders = '[]';\r\nIF( JsonToString( sConnectionDetails, '/sAuthHeader' ) @<> '' );\r\n  sAuthHeaders = JsonAdd( sAuthHeaders, '', StringToJson( 'Authorization: ' | JsonToString( sConnectionDetails, '/sAuthHeader' ) ) );\r\nELSEIF( JsonToString( sConnectionDetails, '/sSID' ) @<> '' );\r\n  sAuthHeaders = JsonAdd( sAuthHeaders, '', StringToJson( 'Cookie: ' | JsonToString( sConnectionDetails, '/sSID' ) ) );\r\nENDIF;\r\n\r\n#EndRegion - Get Connection Details\r\n#################################################################################################\r\n\r\n#################################################################################################\r\n#Region - Read Git Plans\r\n\r\nExecuteProcess( '}bedrock.process.execute_http_request',\r\n  'pMethod',  'GET',\r\n  'pURL',     sURL | '/GitPlans',\r\n  'pHeaders', sAuthHeaders,\r\n  'pJson',    pJson\r\n);\r\n\r\nIF( pLogOutput = 1 );\r\n  LogOutput( 'INFO', 'GET GitPlans complete. Response: ' | sBedrockReturnValue );\r\nENDIF;\r\n\r\n### sBedrockReturnValue contains the list of Git plans.\r\n\r\n#EndRegion - Read Git Plans\r\n#################################################################################################\r\n",
+  "MetadataProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****",
+  "DataProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****",
+  "EpilogProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n##################################################################################################\r\n#Region - Cleanup\r\n\r\nIF( sDatabaseParameterType @<> 'object' );\r\n  ExecuteProcess( '}bedrock.process.execute_http_request', 'pMethod', 'POST', 'pURL', sURL | '/ActiveSession/tm1.Close', 'pHeaders', sAuthHeaders );\r\nENDIF;\r\n\r\n#EndRegion - Cleanup\r\n#################################################################################################",
+  "HasSecurityAccess": false,
+  "UIData": "",
+  "DataSource": {
+    "Type": "None"
+  },
+  "Parameters": [
+    {
+      "Name": "pConnectionName",
+      "Prompt": "OPTIONAL: Connection name in }bedrock.session.start, or a connection-details JSON object returned by it. If blank, the session.start default connection is used",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pLogOutput",
+      "Prompt": "OPTIONAL: Write parameters and action summary to server message log (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pStrictErrorHandling",
+      "Prompt": "OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pJson",
+      "Prompt": "OPTIONAL: JSON Object with process parameter values. This will overwrite user passed parameters for all included parameters.",
+      "Value": "",
+      "Type": "String"
+    }
+  ],
+  "Variables": [],
+  "VariablesUIData": []
+}

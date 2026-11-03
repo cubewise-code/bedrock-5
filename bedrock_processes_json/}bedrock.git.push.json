@@ -1,0 +1,112 @@
+{
+  "Name": "}bedrock.git.push",
+  "PrologProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n#################################################################################################\r\n##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock Ver 5.0.0~~##\r\n#################################################################################################\r\n\r\n#Region @DOC\r\n#### Description:\r\n#Creates a Git push plan and optionally executes it. Wraps the `POST /GitPush` REST API endpoint, and `}bedrock.git.plan.execute` when `pExecute = 1`.\r\n#\r\n#### How to Use:\r\n#\r\n#- `pMessage`: REQUIRED: the commit message.\r\n#- `pEmail`: REQUIRED: the commit author's email.\r\n#- `pAuthor`: OPTIONAL: the commit author. If blank, `<process name> called by user <TM1 user>` is used.\r\n#- `pBranch`: the existing branch whose latest commit is the parent. Leave blank only for a brand new repository with no commits.\r\n#- `pNewBranch`: OPTIONAL: create and push to this new branch instead of updating `pBranch`.\r\n#- `pForce`: 1 = override precondition checks. Use with caution in production.\r\n#- `pExecute`: 1 = execute the plan immediately. 0 = leave the plan pending, so it can be reviewed with `}bedrock.git.plan.get` and executed later with `}bedrock.git.plan.execute`.\r\n#- `pConnectionName`: a connection name configured in `}bedrock.session.start`, or a connection-details JSON object returned by it. When a JSON object is passed, that session is reused and is not closed at the end of this process.\r\n#- `pLogOutput`, `pStrictErrorHandling` and `pJson` work as in all bedrock processes.\r\n#\r\n#Credentials, depending on how the repository authenticates:\r\n#- HTTPS: `pUsername` and `pPassword` (for GitHub, use a personal access token as the password).\r\n#- SSH: `pPublicKey` and `pPrivateKey`, plus `pPassphrase` if the key has one.\r\n#\r\n#> [!WARNING]\r\n#> Never save real credentials as parameter defaults. Defaults are stored in the process and exported with it.\r\n#\r\n#### Return Value:\r\n#`sBedrockReturnValue` is set to the plan-creation response, whether or not `pExecute = 1`. The plan ID is at `/body/ID`.\r\n#EndRegion @DOC\r\n\r\n### Global Variables\r\npJson = IF( pJson @= '', '{}', pJson );\r\nStringGlobalVariable(  'sBedrockReturnValue' );\r\nNumericGlobalVariable( 'nBedrockReturnValue' );\r\n\r\n### Constants\r\ncThisProcName = GetProcessName();\r\ncUserName     = TM1User();\r\nsMessages     = '{\"Process\": \"'|cThisProcName|'\", \"User\": \"'|cUserName|'\", \"Info\": [\"Process: '''|cThisProcName|''' run by User: '''|cUserName|'''.\"], \"Error\": []}';\r\n\r\n#################################################################################################\r\n#Region - Process Parameters\r\n\r\npJson = IF( JsonType( pJson ) @<> 'object', '{}', pJson );\r\n\r\npDefaultParameters = '{\r\n  \"pConnectionName\":        \"\",\r\n  \"pMessage\":             \"\",\r\n  \"pAuthor\":              \"\",\r\n  \"pEmail\":               \"\",\r\n  \"pBranch\":              \"\",\r\n  \"pNewBranch\":           \"\",\r\n  \"pForce\":               0,\r\n  \"pUsername\":            \"\",\r\n  \"pPassword\":            \"\",\r\n  \"pPublicKey\":           \"\",\r\n  \"pPrivateKey\":          \"\",\r\n  \"pPassphrase\":          \"\",\r\n  \"pExecute\":             0,\r\n  \"pLogOutput\":           0,\r\n  \"pStrictErrorHandling\": 0\r\n}';\r\n\r\npPassedParameters = '{\r\n  \"pConnectionName\":        '|StringToJson( pConnectionName          )|',\r\n  \"pMessage\":             '|StringToJson( pMessage               )|',\r\n  \"pAuthor\":              '|StringToJson( pAuthor                )|',\r\n  \"pEmail\":               '|StringToJson( pEmail                 )|',\r\n  \"pBranch\":              '|StringToJson( pBranch                )|',\r\n  \"pNewBranch\":           '|StringToJson( pNewBranch             )|',\r\n  \"pForce\":               '|NumberToString( pForce               )|',\r\n  \"pUsername\":            '|StringToJson( pUsername              )|',\r\n  \"pPassword\":            '|StringToJson( pPassword              )|',\r\n  \"pPublicKey\":           '|StringToJson( pPublicKey             )|',\r\n  \"pPrivateKey\":          '|StringToJson( pPrivateKey            )|',\r\n  \"pPassphrase\":          '|StringToJson( pPassphrase            )|',\r\n  \"pExecute\":             '|NumberToString( pExecute             )|',\r\n  \"pLogOutput\":           '|NumberToString( pLogOutput           )|',\r\n  \"pStrictErrorHandling\": '|NumberToString( pStrictErrorHandling )|'\r\n}';\r\n\r\npJson = JsonMergePatch( pPassedParameters, pJson );\r\n\r\nIF( JsonType( JsonGet( pJson, '/pConnectionName' ) ) @= 'string' );\r\n  pConnectionName = JsonToString( pJson, '/pConnectionName' );\r\nELSE;\r\n  pConnectionName = JsonGet( pJson, '/pConnectionName' );\r\nENDIF;\r\npMessage             =                 JsonToString( pJson, '/pMessage'             );\r\npAuthor              =                 JsonToString( pJson, '/pAuthor'              );\r\npEmail               =                 JsonToString( pJson, '/pEmail'               );\r\npBranch              =                 JsonToString( pJson, '/pBranch'              );\r\npNewBranch           =                 JsonToString( pJson, '/pNewBranch'           );\r\npForce               = StringToNumber( JsonToString( pJson, '/pForce'               ) );\r\npUsername            =                 JsonToString( pJson, '/pUsername'            );\r\npPassword            =                 JsonToString( pJson, '/pPassword'            );\r\npPublicKey           =                 JsonToString( pJson, '/pPublicKey'           );\r\npPrivateKey          =                 JsonToString( pJson, '/pPrivateKey'          );\r\npPassphrase          =                 JsonToString( pJson, '/pPassphrase'          );\r\npExecute             = StringToNumber( JsonToString( pJson, '/pExecute'             ) );\r\npLogOutput           = StringToNumber( JsonToString( pJson, '/pLogOutput'           ) );\r\npStrictErrorHandling = StringToNumber( JsonToString( pJson, '/pStrictErrorHandling' ) );\r\n\r\nIF( pLogOutput = 1 );\r\n  LogOutput( 'INFO', 'Process: ' | cThisProcName | ' | Author: ' | pAuthor | ' | Branch: ' | pBranch );\r\nENDIF;\r\n\r\n#EndRegion - Process Parameters\r\n#################################################################################################\r\n\r\n#################################################################################################\r\n#Region - Validate Parameters\r\n\r\nIF( pAuthor @= '' );\r\n  pAuthor = cThisProcName | ' called by user ' | cUserName;\r\nENDIF;\r\nIF( pMessage @= '' );\r\n  sMessages = JsonAdd( sMessages, '/Error/0', '\"pMessage is required.\"' );\r\nENDIF;\r\nIF( pEmail @= '' );\r\n  sMessages = JsonAdd( sMessages, '/Error/0', '\"pEmail is required.\"' );\r\nENDIF;\r\n\r\nIF( JsonSize( sMessages, '/Error' ) <> 0 );\r\n  IF( pLogOutput = 1 );\r\n    LogOutput( 'ERROR', 'Validation failed: ' | JsonToString( sMessages, '/Error' ) );\r\n  ENDIF;\r\n  IF( pStrictErrorHandling = 1 );\r\n    ProcessQuit;\r\n  ELSE;\r\n    ProcessBreak;\r\n  ENDIF;\r\nENDIF;\r\n\r\n#EndRegion - Validate Parameters\r\n#################################################################################################\r\n\r\n#################################################################################################\r\n#Region - Get Connection Details\r\n\r\n# Get Database Connection Details\r\nsDatabaseParameterType = JsonType( pConnectionName );\r\nIF( sDatabaseParameterType @<> 'object' );\r\n  ExecuteProcess( '}bedrock.session.start', 'pConnectionName', pConnectionName, 'pJson', pJson ); sConnectionDetails = sBedrockReturnValue;\r\nELSE;\r\n  sConnectionDetails = pConnectionName;\r\nENDIF;\r\npJson = JsonAdd( pJson, 'pConnectionName', sConnectionDetails );\r\n\r\nsURL        = JsonToString( sConnectionDetails, '/sURL' );\r\nsAuthHeader = JsonToString( sConnectionDetails, '/sAuthHeader' );\r\n\r\n### Authentication headers for requests to this connection\r\nsAuthHeaders = '[]';\r\nIF( JsonToString( sConnectionDetails, '/sAuthHeader' ) @<> '' );\r\n  sAuthHeaders = JsonAdd( sAuthHeaders, '', StringToJson( 'Authorization: ' | JsonToString( sConnectionDetails, '/sAuthHeader' ) ) );\r\nELSEIF( JsonToString( sConnectionDetails, '/sSID' ) @<> '' );\r\n  sAuthHeaders = JsonAdd( sAuthHeaders, '', StringToJson( 'Cookie: ' | JsonToString( sConnectionDetails, '/sSID' ) ) );\r\nENDIF;\r\n\r\n#EndRegion - Get Connection Details\r\n#################################################################################################\r\n\r\n#################################################################################################\r\n#Region - Build Request Body\r\n\r\nsBody = '{\"Message\": ' | StringToJson( pMessage ) |\r\n        ', \"Author\": ' | StringToJson( pAuthor  ) |\r\n        ', \"Email\": '  | StringToJson( pEmail   ) ;\r\n\r\nIF( pBranch @<> '' );\r\n  sBody = sBody | ', \"Branch\": ' | StringToJson( pBranch );\r\nENDIF;\r\nIF( pNewBranch @<> '' );\r\n  sBody = sBody | ', \"NewBranch\": ' | StringToJson( pNewBranch );\r\nENDIF;\r\nIF( pForce = 1 );\r\n  sBody = sBody | ', \"Force\": true';\r\nENDIF;\r\nIF( pUsername @<> '' );\r\n  sBody = sBody | ', \"Username\": ' | StringToJson( pUsername );\r\nENDIF;\r\nIF( pPassword @<> '' );\r\n  sBody = sBody | ', \"Password\": ' | StringToJson( pPassword );\r\nENDIF;\r\nIF( pPublicKey @<> '' );\r\n  sBody = sBody | ', \"PublicKey\": ' | StringToJson( pPublicKey );\r\nENDIF;\r\nIF( pPrivateKey @<> '' );\r\n  sBody = sBody | ', \"PrivateKey\": ' | StringToJson( pPrivateKey );\r\nENDIF;\r\nIF( pPassphrase @<> '' );\r\n  sBody = sBody | ', \"Passphrase\": ' | StringToJson( pPassphrase );\r\nENDIF;\r\n\r\nsBody = sBody | '}';\r\n\r\n#EndRegion - Build Request Body\r\n#################################################################################################\r\n\r\n#################################################################################################\r\n#Region - Create Push Plan\r\n\r\nExecuteProcess( '}bedrock.process.execute_http_request',\r\n  'pMethod',  'POST',\r\n  'pURL',     sURL | '/GitPush',\r\n  'pHeaders', sAuthHeaders,\r\n  'pBody',    sBody,\r\n  'pJson',    pJson\r\n);\r\n\r\nsPlanResponse = sBedrockReturnValue;\r\nsPlanId       = JsonToString( sPlanResponse, '/body/ID' );\r\n\r\nIF( pLogOutput = 1 );\r\n  LogOutput( 'INFO', 'GitPush plan created. PlanId: ' | sPlanId );\r\nENDIF;\r\n\r\n#EndRegion - Create Push Plan\r\n#################################################################################################\r\n\r\n#################################################################################################\r\n#Region - Execute Plan (if requested)\r\n\r\nIF( pExecute = 1 );\r\n\r\n  IF( sPlanId @= '' );\r\n    sMessages = JsonAdd( sMessages, '/Error/0', '\"GitPush plan was created but the plan ID could not be extracted from the response. Cannot execute.\"' );\r\n    IF( pLogOutput = 1 );\r\n      LogOutput( 'ERROR', 'Plan response: ' | sPlanResponse );\r\n    ENDIF;\r\n    IF( pStrictErrorHandling = 1 );\r\n      ProcessQuit;\r\n    ELSE;\r\n      ProcessBreak;\r\n    ENDIF;\r\n  ENDIF;\r\n\r\n  ExecuteProcess( '}bedrock.git.plan.execute',\r\n    'pPlanId', sPlanId,\r\n    'pJson',   pJson\r\n  );\r\n\r\n  IF( pLogOutput = 1 );\r\n    LogOutput( 'INFO', 'GitPush plan executed. PlanId: ' | sPlanId );\r\n  ENDIF;\r\n\r\nENDIF;\r\n\r\n### Restore the plan response as the return value regardless of execute path\r\nsBedrockReturnValue = sPlanResponse;\r\n\r\n#EndRegion - Execute Plan (if requested)\r\n#################################################################################################\r\n",
+  "MetadataProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****",
+  "DataProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****",
+  "EpilogProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n##################################################################################################\r\n#Region - Cleanup\r\n\r\nIF( sDatabaseParameterType @<> 'object' );\r\n  ExecuteProcess( '}bedrock.process.execute_http_request', 'pMethod', 'POST', 'pURL', sURL | '/ActiveSession/tm1.Close', 'pHeaders', sAuthHeaders );\r\nENDIF;\r\n\r\n#EndRegion - Cleanup\r\n#################################################################################################",
+  "HasSecurityAccess": false,
+  "UIData": "",
+  "DataSource": {
+    "Type": "None"
+  },
+  "Parameters": [
+    {
+      "Name": "pConnectionName",
+      "Prompt": "OPTIONAL: Connection name in }bedrock.session.start, or a connection-details JSON object returned by it. If blank, the session.start default connection is used",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pMessage",
+      "Prompt": "REQUIRED: Commit message",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pAuthor",
+      "Prompt": "OPTIONAL: Commit author. If blank, '<process name> called by user <TM1 user>' is used",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pEmail",
+      "Prompt": "REQUIRED: Commit author email",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pBranch",
+      "Prompt": "OPTIONAL: Existing branch whose latest commit is the parent. Leave blank only for a new repository with no commits",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pNewBranch",
+      "Prompt": "OPTIONAL: Create and push to this new branch instead of updating pBranch",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pForce",
+      "Prompt": "OPTIONAL: Override precondition checks (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pUsername",
+      "Prompt": "OPTIONAL: Git user name for HTTPS authentication",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pPassword",
+      "Prompt": "OPTIONAL: Git password or personal access token for HTTPS authentication. Never save a real value as the default",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pPublicKey",
+      "Prompt": "OPTIONAL: SSH public key for SSH authentication",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pPrivateKey",
+      "Prompt": "OPTIONAL: SSH private key for SSH authentication. Never save a real value as the default",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pPassphrase",
+      "Prompt": "OPTIONAL: Passphrase for the SSH private key",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pExecute",
+      "Prompt": "OPTIONAL: Execute the plan immediately. If 0, the plan is left pending for review (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pLogOutput",
+      "Prompt": "OPTIONAL: Write parameters and action summary to server message log (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pStrictErrorHandling",
+      "Prompt": "OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pJson",
+      "Prompt": "OPTIONAL: JSON Object with process parameter values. This will overwrite user passed parameters for all included parameters.",
+      "Value": "",
+      "Type": "String"
+    }
+  ],
+  "Variables": [],
+  "VariablesUIData": []
+}
