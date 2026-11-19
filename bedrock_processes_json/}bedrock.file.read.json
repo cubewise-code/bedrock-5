@@ -1,0 +1,50 @@
+{
+  "Name": "}bedrock.file.read",
+  "PrologProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n###################################################################################################\r\n##~~Join the bedrock TM1 community on GitHub https://github.com/cubewise-code/bedrock-5 Ver 5.4~~##\r\n###################################################################################################\r\n\r\n#Region @DOC\r\n#### Description:\r\n#Reads a text file and returns its content.\r\n#\r\n#### How to Use:\r\n#\r\n#- `pFile`: REQUIRED: the file to read, e.g. `exports/settings.json`.\r\n#- `pLogOutput`, `pStrictErrorHandling` and `pJson` work as in all bedrock processes.\r\n#\r\n#The process fails if `pFile` is blank or the file does not exist. It does not wait for the file to appear.\r\n#\r\n#### Return Value:\r\n#`sBedrockReturnValue` is set to the content of the file, with its lines joined by a line feed. It is blank if the process fails.\r\n#EndRegion @DOC\r\n\r\n### Global Variables\r\npJson = IF( pJson @= '', '{}', pJson );\r\nStringGlobalVariable(  'sBedrockReturnValue' );\r\nNumericGlobalVariable( 'nBedrockReturnValue' );\r\nsBedrockReturnValue = '';\r\n\r\n### Constants ###\r\ncThisProcName   = GetProcessName();\r\ncUserName       = TM1User();\r\ncTimeStamp      = TimSt( Now, '\\Y\\m\\d\\h\\i\\s' );\r\ncRandomInt      = NumberToString( INT( RAND( ) * 1000000000 ));\r\ncTemp           = cThisProcName |'_'| cTimeStamp |'_'| cRandomInt;\r\nsMessages       = '{\"Process\": \"'|cThisProcName|'\", \"User\": \"'|cUsername|'\", \"Info\": [\"Process: '''|cThisProcName|''' run by User: '''|cUsername|'''.\"], \"Error\": []}';\r\ncMsgErrorContent= 'User:%cUserName% Process:%cThisProcName% ErrorMsg:%sMessage%';\r\nnErrors         = 0;\r\nsContent        = '';\r\nnLines          = 0;\r\n\r\n#################################################################################################\r\n#Region - Process Parameters\r\n\r\npJson = IF( JsonType( pJson ) @<> 'object', '{}', pJson );\r\npDefaultParameters = '{\r\n  \"pFile\":                null,\r\n  \"pLogOutput\":           0,\r\n  \"pStrictErrorHandling\": 0\r\n}';\r\n\r\npPassedParameters = '{\r\n  \"pFile\":                '|StringToJson  ( pFile                )|',\r\n  \"pLogOutput\":           '|NumberToString( pLogOutput           )|',\r\n  \"pStrictErrorHandling\": '|NumberToString( pStrictErrorHandling )|'\r\n}';\r\n\r\npJson = JsonMergePatch( pPassedParameters, pJson );\r\n# String Parameters\r\npFile                =                 JsonToString( pJson, '/pFile'                );\r\n# Numeric Parameters\r\npLogOutput           = StringToNumber( JsonToString( pJson, '/pLogOutput'           ) );\r\npStrictErrorHandling = StringToNumber( JsonToString( pJson, '/pStrictErrorHandling' ) );\r\n\r\n### Get the parameters that differ from the default\r\npDiffer = JsonDiff( pDefaultParameters, pJson );\r\nnSize = JsonSize( pDiffer );\r\nWHILE( nSize > 0 );\r\n  nSize = nSize - 1;\r\n  pDiffer = JsonReplace( pDiffer, '/'|NumberToString( nSize )|'/op', '\"add\"' );\r\nEND;\r\npJson = JsonPatch( '{}', pDiffer );\r\n\r\n### LogOutput parameters\r\nnSize = JsonSize( pJson );\r\nWHILE( nSize > 0 );\r\n  nSize = nSize - 1;\r\n  sKey = JsonGetKey( pJson, nSize );\r\n  pPassedParameters = JsonReplace( pPassedParameters, sKey, JsonGet( pJson, sKey ) );\r\nEND;\r\n\r\nsMessages = JsonAdd( sMessages, '/Info/0', pPassedParameters );\r\nIF( pLogOutput = 1 );\r\n  LogOutput('INFO', JsonToString( sMessages, '/Info/0' ) );\r\nENDIF;\r\n\r\n#EndRegion - Process Parameters\r\n#################################################################################################\r\n\r\n#################################################################################################\r\n#Region - Validate Parameters\r\n\r\npFile = TRIM( pFile );\r\n\r\nIF( pFile @= '' );\r\n  nErrors = 1;\r\n  sMessage = 'pFile is required'; LogOutput( 'ERROR', EXPAND( cMsgErrorContent ) );\r\n  ProcessBreak;\r\nENDIF;\r\n\r\nIF( FileExists( pFile ) = 0 );\r\n  nErrors = 1;\r\n  sMessage = 'The file does not exist: ' | pFile; LogOutput( 'ERROR', EXPAND( cMsgErrorContent ) );\r\n  ProcessBreak;\r\nENDIF;\r\n\r\n#EndRegion - Validate Parameters\r\n#################################################################################################\r\n\r\n#################################################################################################\r\n#Region - Data Source\r\n\r\n# Each line is one record with one field: Char(1) as delimiter and no quote character keep commas and quotes.\r\nDatasourceType                = 'CHARACTERDELIMITED';\r\nDatasourceNameForServer       = pFile;\r\nDatasourceNameForClient       = pFile;\r\nDatasourceASCIIHeaderRecords  = 0;\r\nDatasourceASCIIDelimiter      = Char( 1 );\r\nDatasourceASCIIQuoteCharacter = '';\r\n\r\n#EndRegion - Data Source\r\n#################################################################################################\r\n",
+  "MetadataProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n",
+  "DataProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\nIF( nLines > 0 );\r\n  sContent = sContent | Char( 10 );\r\nENDIF;\r\nsContent = sContent | vLine;\r\nnLines = nLines + 1;\r\n",
+  "EpilogProcedure": "#****Begin: Generated Statements***\r\n#****End: Generated Statements****\r\n\r\n#################################################################################################\r\n#Region - Return Value\r\n\r\nIF( nErrors = 0 );\r\n  sBedrockReturnValue = sContent;\r\n  IF( pLogOutput = 1 );\r\n    LogOutput( 'INFO', 'Read ' | NumberToString( nLines ) | ' lines from ' | pFile );\r\n  ENDIF;\r\nENDIF;\r\n\r\n#EndRegion - Return Value\r\n#################################################################################################\r\n\r\n#################################################################################################\r\n#Region - Check Errors\r\n\r\nIF( nErrors <> 0 & pStrictErrorHandling = 1 );\r\n  ProcessQuit;\r\nENDIF;\r\n\r\n#EndRegion - Check Errors\r\n#################################################################################################\r\n",
+  "HasSecurityAccess": false,
+  "UIData": "",
+  "DataSource": {
+    "Type": "None"
+  },
+  "Parameters": [
+    {
+      "Name": "pFile",
+      "Prompt": "REQUIRED: File to read",
+      "Value": "",
+      "Type": "String"
+    },
+    {
+      "Name": "pLogOutput",
+      "Prompt": "OPTIONAL: Write parameters and action summary to server message log (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pStrictErrorHandling",
+      "Prompt": "OPTIONAL: On encountering any error, exit with major error status by ProcessQuit after writing to the server message log (Boolean. Default = 0)",
+      "Value": 0,
+      "Type": "Numeric"
+    },
+    {
+      "Name": "pJson",
+      "Prompt": "OPTIONAL: JSON Object with process parameter values. This will overwrite user passed parameters for all included parameters.",
+      "Value": "{}",
+      "Type": "String"
+    }
+  ],
+  "Variables": [
+    {
+      "Name": "vLine",
+      "Type": "String",
+      "Position": 1,
+      "StartByte": 0,
+      "EndByte": 0
+    }
+  ],
+  "VariablesUIData": [
+    "VarType=32\fColType=827\f"
+  ]
+}
